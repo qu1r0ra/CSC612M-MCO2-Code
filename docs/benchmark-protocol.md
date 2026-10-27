@@ -2,7 +2,7 @@
 
 Status: accepted protocol; executable benchmark implemented. Superseded snapshot folders were removed from the working tree under ADR 0005; their contents remain in Git history at the revisions that produced them.
 
-**Naming note.** The revisions below were fixed before [ADR 0004](adr/0004-stoquant-naming.md) renamed the code, and their text keeps the names they were fixed with. Read each old name as its current name from this table; every rule the text states is unchanged.
+**Naming note.** The revisions below were fixed before [ADR 0004](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/docs/adr/0004-stoquant-naming.md) renamed the code, and their text keeps the names they were fixed with. Read each old name as its current name from this table; every rule the text states is unchanged.
 
 | Name in the protocol text | Current name |
 | --- | --- |
@@ -156,7 +156,7 @@ Known limitations, in addition to those of run 1:
 
 ### Revision 3 (resident claim)
 
-This revision was fixed and merged before its pilot and its sweep ran. The run 1 and revision 2 snapshots stay as recorded; revision 3 is a separate snapshot. Spec: [qu1r0ra/CSC612M-MCO2-Paper#31](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/31); diagnosis: [#30](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/30). The decision record is [ADR 0002](adr/0002-core-0-exclusion-and-split-claims.md).
+This revision was fixed and merged before its pilot and its sweep ran. The run 1 and revision 2 snapshots stay as recorded; revision 3 is a separate snapshot. Spec: [qu1r0ra/CSC612M-MCO2-Paper#31](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/31); diagnosis: [#30](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/30). The decision record is [ADR 0002](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/docs/adr/0002-core-0-exclusion-and-split-claims.md).
 
 #### Diagnosis
 
@@ -249,7 +249,7 @@ Known limitations (the evidence behind them is in the revision 3 [diagnosis](#di
 
 ### Publication matrix extension
 
-This section adds paths to revision 3; it is not a new revision. The revision 3 defaults, claim rules, thresholds, readiness check, and pilot rule are unchanged, and the revision 3 snapshots and their results stand as recorded. A run with the default options measures exactly the revision 3 paths and records the same case identifiers. Spec: [qu1r0ra/CSC612M-MCO2-Paper#20](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/20); decision record: [ADR 0003](adr/0003-gpu-origin-boundary-and-transfer-policy.md). The technical contract holds the exact timing windows and rules.
+This section adds paths to revision 3; it is not a new revision. The revision 3 defaults, claim rules, thresholds, readiness check, and pilot rule are unchanged, and the revision 3 snapshots and their results stand as recorded. A run with the default options measures exactly the revision 3 paths and records the same case identifiers. Spec: [qu1r0ra/CSC612M-MCO2-Paper#20](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/20); decision record: [ADR 0003](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/docs/adr/0003-gpu-origin-boundary-and-transfer-policy.md). The technical contract holds the exact timing windows and rules.
 
 - **Opt-in paths.** `--boundaries gpu-origin` adds the GPU-origin, host-ready boundary for both backends. `--transfer-policies pageable pinned` adds page-locked host buffers for every timed transfer. With both, a cell has nine paths:
   - `cpu-comparator`, `cuda-resident`, `cuda-resident-graph`, `cuda-host-origin` (the revision 3 paths);
@@ -355,9 +355,9 @@ All manifests record `evidence=true`, a clean tree, enforced readiness passed wi
 
 | Family | Frozen raw snapshot and complete report | Grid |
 |---|---|---|
-| dense | [Raw](../results/2026-10-03-ec31947-dense-full-detached/manifest.json), [report and F1–F4 / bandwidth appendix](../results/2026-10-03-ec31947-dense-full-detached/derived/report.md) | `2^10`–`2^26` |
-| sparse | [Raw](../results/2026-10-03-ec31947-sparse-full-detached/manifest.json), [report and F1–F4 / bandwidth appendix](../results/2026-10-03-ec31947-sparse-full-detached/derived/report.md) | `2^10`–`2^26` |
-| model | [Raw](../results/2026-10-03-ec31947-model-full-detached/manifest.json), [report and F1–F4 / bandwidth appendix](../results/2026-10-03-ec31947-model-full-detached/derived/report.md) | 17 distinct synthetic ResNet-18 shapes, 10–2,359,296 elements |
+| dense | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-dense-full-detached/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-dense-full-detached/derived/report.md) | `2^10`–`2^26` |
+| sparse | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-sparse-full-detached/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-sparse-full-detached/derived/report.md) | `2^10`–`2^26` |
+| model | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-model-full-detached/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-model-full-detached/derived/report.md) | 17 distinct synthetic ResNet-18 shapes, 10–2,359,296 elements |
 
 Reports were rendered with `just figures results/<snapshot> --k1-ab results/2026-10-02-5d0841b-k1-ab`. The named A/B run supplies the 429.7 GB/s streaming-read ceiling; the matrix supplies resident K1 and total-path timings and the device peak of 448.0 GB/s. Effective K1 bandwidth above device peak in cache-sized cells is a two-read accounting measure, not a DRAM throughput claim. F1 retains the blank second-platform row; no second-machine evidence is implied. Model F3 diagnoses the four smallest recorded counts, not representative large tensors.
 
@@ -464,11 +464,11 @@ All manifests record `evidence=true`, a clean tree, enforced readiness passed wi
 
 | Family | Frozen raw snapshot and complete report | Grid |
 |---|---|---|
-| dense | [Raw](../results/2026-10-05-46c1294-dense-strict-rerun/manifest.json), [report and F1–F4 / bandwidth appendix](../results/2026-10-05-46c1294-dense-strict-rerun/derived/report.md) | `2^10`–`2^26` |
-| sparse | [Raw](../results/2026-10-05-46c1294-sparse-strict-rerun/manifest.json), [report and F1–F4 / bandwidth appendix](../results/2026-10-05-46c1294-sparse-strict-rerun/derived/report.md) | `2^10`–`2^26` |
-| model | [Raw](../results/2026-10-05-46c1294-model-strict-rerun/manifest.json), [report and F1–F4 / bandwidth appendix](../results/2026-10-05-46c1294-model-strict-rerun/derived/report.md) | 17 distinct synthetic ResNet-18 shapes, 10–2,359,296 elements |
+| dense | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-dense-strict-rerun/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-dense-strict-rerun/derived/report.md) | `2^10`–`2^26` |
+| sparse | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-sparse-strict-rerun/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-sparse-strict-rerun/derived/report.md) | `2^10`–`2^26` |
+| model | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-model-strict-rerun/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-model-strict-rerun/derived/report.md) | 17 distinct synthetic ResNet-18 shapes, 10–2,359,296 elements |
 
-Reports were rendered with `just figures results/<snapshot> --k1-ab results/2026-10-02-5d0841b-k1-ab`, as above. The comparative analysis in [`results/2026-10-05-46c1294-review/review.md`](../results/2026-10-05-46c1294-review/review.md) is regenerated from the snapshots' `summary.csv` files by `analyze.py` in the same folder; it does not modify them.
+Reports were rendered with `just figures results/<snapshot> --k1-ab results/2026-10-02-5d0841b-k1-ab`, as above. The comparative analysis in [`results/2026-10-05-46c1294-review/review.md`](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-review/review.md) is regenerated from the snapshots' `summary.csv` files by `analyze.py` in the same folder; it does not modify them.
 
 #### Claims by path
 

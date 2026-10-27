@@ -155,8 +155,7 @@ Run the full CPU verification suite or run specific components directly:
    uv run pytest tests/test_cli.py -k test_layer3_unbiasedness
    ```
 
-On Linux, including Google Colab, `build-rng` and `test-rng` call `nvcc` with the system host compiler.
-The Linux CUDA path has not been run; record the Colab GPU model and host compiler with its first run.
+On Linux, `build-rng` and `test-rng` call `nvcc` with the system host compiler. The checkpoint verification below was performed on Windows.
 
 ## Local quality preflight
 
@@ -171,7 +170,7 @@ An evidence sweep refuses to start unless the readiness check passes: at least 4
 
 ### Running the benchmark matrix
 
-`just bench-matrix` requires the local ntfy settings and sends a preflight notification before it starts the benchmark driver. See [Run notifications](run-notifications.md) to configure the benchmark topic and token, verify phone delivery, and review what each alert contains. Notification setup does not change the benchmark protocol or results.
+`just bench-matrix` requires the local ntfy settings and sends a preflight notification before it starts the benchmark driver. See [Run notifications](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/docs/run-notifications.md) to configure the benchmark topic and token, verify phone delivery, and review what each alert contains. Notification setup does not change the benchmark protocol or results.
 
 ```powershell
 # Pilot: four sizes, both bit widths, into results/pilots/ (never evidence)
@@ -204,7 +203,7 @@ just figures results/<date>-<short_rev>
 
 ### Inspecting results and provenance
 
-Snapshots are stored in `results/<local-date>-<short_rev>/`. Writers create `<name>.partial` first and rename it when the run completes. An interrupted run keeps the partial folder for diagnosis; start a new run with a new name. Raw files remain write-once. Figures and reports regenerate in `derived/`, as specified by [ADR 0005](adr/0005-snapshot-lifecycle.md).
+Snapshots are stored in `results/<local-date>-<short_rev>/`. Writers create `<name>.partial` first and rename it when the run completes. An interrupted run keeps the partial folder for diagnosis; start a new run with a new name. Raw files remain write-once. Figures and reports regenerate in `derived/`, as specified by [ADR 0005](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/docs/adr/0005-snapshot-lifecycle.md).
 
 The matrix run also writes `run-plan.json` for progress notifications. Raw files include:
 - `manifest.json`: Run-level provenance including git revision and dirty state, hardware, the verified `build_stamp` and build commands from `just --dry-run build-cuda`, CUDA toolkit, driver, transfer policies (`transfer_policies`, `["pageable"]` by default), the measured `paths` and `trial_design` (manifest 3.2), GPU state before and after the warm-up and after the run, the case order and its seed, trial orders, the statistics method and claim rule, input hashes, and from revision 3 the affinity mask, readiness facts, the memory threshold, power plan and HAGS state, and `evidence` with its `non_evidence_reasons`. Readiness metadata is in manifest version 3.3. Publication manifests that include device-only `stream_probe` attributes use version 3.4 and include the verified `probe_build_stamp`; other matrix manifests remain at 3.3. Readers continue to accept earlier manifests unchanged, and frozen snapshots keep their original version.
@@ -212,7 +211,7 @@ The matrix run also writes `run-plan.json` for progress notifications. Raw files
 - `case_*.json`: Per-trial raw samples (`trial_runs[].samples_ms`, `k1_ms`, `k2_ms`, `k3_ms`, for host-origin `h2d_ms` and `d2h_ms`, for GPU-origin `d2h_ms`, and for CPU GPU-origin `cpu_ms`) with each trial's path order and invocation identifiers, the case's `execution_index`, pooled samples, statistics, `stage_medians_ms`, configuration, and correctness validation results.
 - `msvc_vectorization_report.txt`: MSVC `/Qvec-report:2` diagnostics from recompiling the comparator sources with the exact benchmarked host flags; the command is at the top of the file.
 
-**Names across the `stoquant` rename.** Snapshots written after [ADR 0004](adr/0004-stoquant-naming.md) record the `stoquant` binary, `native/` sources, `tools/with-msvc.ps1`, the `SQ_ENABLE_CUDA` build flag, and the readiness fact `stoquant_pids`. Earlier snapshots record `mco2`, `src/`, `scripts/`, `MCO2_ENABLE_CUDA`, and `mco2_pids`. Compare these provenance values within one side of the rename, and reproduce an earlier snapshot from its recorded revision.
+**Names across the `stoquant` rename.** Snapshots written after [ADR 0004](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/docs/adr/0004-stoquant-naming.md) record the `stoquant` binary, `native/` sources, `tools/with-msvc.ps1`, the `SQ_ENABLE_CUDA` build flag, and the readiness fact `stoquant_pids`. Earlier snapshots record `mco2`, `src/`, `scripts/`, `MCO2_ENABLE_CUDA`, and `mco2_pids`. Compare these provenance values within one side of the rename, and reproduce an earlier snapshot from its recorded revision.
 
 ```powershell
 # View summary table of latest snapshot
