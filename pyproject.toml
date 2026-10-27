@@ -1,0 +1,45 @@
+[project]
+name = "stoquant"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib>=3.11.2",
+    "numpy>=2.4.6",
+]
+
+[project.scripts]
+stoquant = "stoquant.__main__:main"
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.13"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.40.1",
+    "clang-format>=23.1.1",
+    "clang-tidy>=22.1.8",
+    "pre-commit>=4.6.2",
+    "pytest>=9.1.1",
+    "ruff>=0.16.9",
+]
+
+[tool.uv.workspace]
+members = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tools"]
+
+[tool.ruff.lint]
+# Ruff's default rule set plus the full import-order, bugbear and pyupgrade families.
+extend-select = ["I", "B", "UP"]
+
+[tool.basedpyright]
+include = ["src", "tools", "tests"]
+typeCheckingMode = "standard"
+pythonVersion = "3.11"
