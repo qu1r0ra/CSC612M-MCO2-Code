@@ -1,8 +1,8 @@
 # Benchmark protocol
 
-Status: accepted protocol; executable benchmark implemented. Superseded snapshot folders were removed from the working tree under ADR 0005; their contents remain in Git history at the revisions that produced them.
+Status: accepted protocol; executable benchmark implemented. Superseded snapshot folders were removed from the working tree; their contents remain in Git history at the revisions that produced them.
 
-**Naming note.** The revisions below were fixed before [ADR 0004](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/docs/adr/0004-stoquant-naming.md) renamed the code, and their text keeps the names they were fixed with. Read each old name as its current name from this table; every rule the text states is unchanged.
+**Naming note.** The revisions below were fixed before the code was renamed to `stoquant`, and their text keeps the names they were fixed with. Read each old name as its current name from this table; every rule the text states is unchanged.
 
 | Name in the protocol text | Current name |
 | --- | --- |
@@ -21,7 +21,7 @@ The week-13 course submission requires the protocol below except these later ext
 - The sparse input family and the synthetic collection shaped like reference-model tensors.
 - Crossover analysis (locating the element count where CUDA overtakes the comparator). The course run includes only a between-process stability check; the crossover study is the size sweep below.
 
-The in-process benchmark driver is implemented in `src/stoquant/matrix.py` and can be reproduced with `just bench-matrix`. The historical course matrix result is archived at [revision 59c8967](https://github.com/qu1r0ra/stochastic-quantization-backends/tree/59c8967/results/2026-09-25-59c8967); its `summary.csv` is the source for every figure reported here. In that snapshot, `claim_supported` holds for these cases only (speedup vs the C comparator as pooled-median point estimate [trial-median range]):
+The in-process benchmark driver is implemented in `src/stoquant/matrix.py` and can be reproduced with `just bench-matrix`. The historical course matrix result came from revision `59c8967`; its `summary.csv` is the source for every figure reported here. In that snapshot, `claim_supported` holds for these cases only (speedup vs the C comparator as pooled-median point estimate [trial-median range]):
 
 | Elements | Bits | CUDA boundary | Speedup |
 | --- | --- | --- | --- |
@@ -51,7 +51,7 @@ This protocol was fixed before the sweep ran. The course snapshot above remains 
 
 ### Sweep result (run 1)
 
-The size-sweep run 1 snapshot at clean revision `674bd5b` is [archived here](https://github.com/qu1r0ra/stochastic-quantization-backends/tree/674bd5b/results/2026-09-25-674bd5b): 102 cases, all passing the correctness gates. The T1 table and crossover lines are in [its report](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/674bd5b/results/2026-09-25-674bd5b/report.md), and its figures are [F1](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/674bd5b/results/2026-09-25-674bd5b/f1_time_vs_elements.png), [F2](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/674bd5b/results/2026-09-25-674bd5b/f2_speedup_vs_elements.png) and [F3](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/674bd5b/results/2026-09-25-674bd5b/f3_stage_breakdown.png). The GPU stayed in P1 at 2,932–2,947 MHz SM with no active clock-event reasons at the start, after the warm-up, and at the end.
+The size-sweep run 1 snapshot at clean revision `674bd5b` has 102 cases, all passing the correctness gates. The GPU stayed in P1 at 2,932–2,947 MHz SM with no active clock-event reasons at the start, after the warm-up, and at the end.
 
 - Crossover: not resolved for any path or bit width. No slowdown has claim support. The smallest supported faster sizes are `2^18` (host-origin, 4-bit), `2^20` (host-origin, 8-bit), and `2^26` (resident, both widths). Pooled-median point estimates cross 1× between `2^13` and `2^14` for 4-bit resident and between `2^14` and `2^15` for host-origin at both widths; 8-bit resident rises above 1× at `2^13`, dips below at `2^14`, and stays above from `2^15`. These point estimates support no claim.
 - Supported claims: resident at `2^26` only (257× 4-bit, 230× 8-bit). Host-origin at `2^18` 4-bit, `2^20` 8-bit, `2^23` 8-bit, and every case from `2^24` up (27–31×).
@@ -114,7 +114,7 @@ If no path and bit width resolves a crossover under the unchanged rules, the pap
 
 ### Sweep result (revision 2)
 
-The snapshot from clean revision `2c190af` is [archived here](https://github.com/qu1r0ra/stochastic-quantization-backends/tree/2c190af/results/2026-09-26-2c190af). All 102 cases passed the correctness gates, and the sweep took 2,707 s (about 45 minutes). The T1 table and crossover lines are in [its report](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/2c190af/results/2026-09-26-2c190af/report.md), and its figures are [F1](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/2c190af/results/2026-09-26-2c190af/f1_time_vs_elements.png), [F2](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/2c190af/results/2026-09-26-2c190af/f2_speedup_vs_elements.png) and [F3](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/2c190af/results/2026-09-26-2c190af/f3_stage_breakdown.png). The manifest records the GPU state at three points, with no active clock-event reasons at any of them:
+The snapshot from clean revision `2c190af` had all 102 cases pass the correctness gates, and the sweep took 2,707 s (about 45 minutes). The manifest records the GPU state at three points, with no active clock-event reasons at any of them:
 
 - start: P3 at 870 MHz SM (idle);
 - after the warm-up: P1 at 2,940 MHz;
@@ -156,7 +156,7 @@ Known limitations, in addition to those of run 1:
 
 ### Revision 3 (resident claim)
 
-This revision was fixed and merged before its pilot and its sweep ran. The run 1 and revision 2 snapshots stay as recorded; revision 3 is a separate snapshot. Spec: [qu1r0ra/CSC612M-MCO2-Paper#31](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/31); diagnosis: [#30](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/30). The decision record is [ADR 0002](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/docs/adr/0002-core-0-exclusion-and-split-claims.md).
+This revision was fixed and merged before its pilot and its sweep ran. The run 1 and revision 2 snapshots stay as recorded; revision 3 is a separate snapshot.
 
 #### Diagnosis
 
@@ -212,7 +212,7 @@ Revision 3's result is final for resident stability: whatever it supports is wha
 
 ### Sweep result (revision 3)
 
-The snapshot from clean revision `a1d2439`, the merged tree after the pilot fix, is [archived here](https://github.com/qu1r0ra/stochastic-quantization-backends/tree/a1d2439/results/2026-09-26-a1d2439). The readiness check passed and was enforced, with no override, 5 minutes after a fresh reboot. The manifest records `evidence: true` and affinity mask `0xffc`. All 136 cases passed the correctness gates. The sweep ran from 11:34 to 14:22 UTC (about 2 h 48 min). The T1 table and crossover lines are in [its report](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/a1d2439/results/2026-09-26-a1d2439/report.md), and its figures are [F1](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/a1d2439/results/2026-09-26-a1d2439/f1_time_vs_elements.png), [F2](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/a1d2439/results/2026-09-26-a1d2439/f2_speedup_vs_elements.png), [F3](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/a1d2439/results/2026-09-26-a1d2439/f3_stage_breakdown.png) and [F4](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/a1d2439/results/2026-09-26-a1d2439/f4_graph_vs_resident.png). The GPU reported no active clock-event reason at any of three readings:
+The snapshot from clean revision `a1d2439`, the merged tree after the pilot fix, is the evidence run. The readiness check passed and was enforced, with no override, 5 minutes after a fresh reboot. The manifest records `evidence: true` and affinity mask `0xffc`. All 136 cases passed the correctness gates. The sweep ran from 11:34 to 14:22 UTC (about 2 h 48 min). The GPU reported no active clock-event reason at any of three readings:
 
 - start: P8 at 405 MHz SM (idle);
 - after the warm-up: P1 at 2,955 MHz;
@@ -249,7 +249,7 @@ Known limitations (the evidence behind them is in the revision 3 [diagnosis](#di
 
 ### Publication matrix extension
 
-This section adds paths to revision 3; it is not a new revision. The revision 3 defaults, claim rules, thresholds, readiness check, and pilot rule are unchanged, and the revision 3 snapshots and their results stand as recorded. A run with the default options measures exactly the revision 3 paths and records the same case identifiers. Spec: [qu1r0ra/CSC612M-MCO2-Paper#20](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/20); decision record: [ADR 0003](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/docs/adr/0003-gpu-origin-boundary-and-transfer-policy.md). The technical contract holds the exact timing windows and rules.
+This section adds paths to revision 3; it is not a new revision. The revision 3 defaults, claim rules, thresholds, readiness check, and pilot rule are unchanged, and the revision 3 snapshots and their results stand as recorded. A run with the default options measures exactly the revision 3 paths and records the same case identifiers. The technical contract holds the exact timing windows and rules.
 
 - **Opt-in paths.** `--boundaries gpu-origin` adds the GPU-origin, host-ready boundary for both backends. `--transfer-policies pageable pinned` adds page-locked host buffers for every timed transfer. With both, a cell has nine paths:
   - `cpu-comparator`, `cuda-resident`, `cuda-resident-graph`, `cuda-host-origin` (the revision 3 paths);
@@ -267,7 +267,7 @@ This section adds paths to revision 3; it is not a new revision. The revision 3 
 
 ### Input families (paper extension)
 
-`--input-family dense|sparse|model` selects the inputs of a matrix run; the default is `dense`, and a dense run records the revision 3 case identifiers and input hashes. Spec: [qu1r0ra/CSC612M-MCO2-Paper#21](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/21). Every family uses the same correctness gate, statistics, and claim rules; `input_provenance` and the manifest's `inputs` record how each input was made.
+`--input-family dense|sparse|model` selects the inputs of a matrix run; the default is `dense`, and a dense run records the revision 3 case identifiers and input hashes. Every family uses the same correctness gate, statistics, and claim rules; `input_provenance` and the manifest's `inputs` record how each input was made.
 
 - **Dense.** Standard-normal FP32 values from `numpy.random.default_rng([count, 2026])`, one generator per count. Input bytes are unchanged when other counts or a different count order are requested; provenance records `[count, seed]`. Case identifiers end in `n{count}`.
 - **Sparse.** The dense vector of the same seed and count, with each element set to `+0.0` independently with probability 0.9 by a Bernoulli mask from `default_rng(1021)`. The manifest records the mask seed and the target and realised zero fractions. Case identifiers end in `sparse_n{count}`.
@@ -277,7 +277,7 @@ This section adds paths to revision 3; it is not a new revision. The revision 3 
 
 ### AVX2 comparator (paper extension)
 
-`--backends cpu cuda cpu-avx2` adds `cpu-avx2-optimized`, a multithreaded AVX2 build of the CPU compressor, timed on the comparator's host-host boundary. Spec: [qu1r0ra/CSC612M-MCO2-Paper#22](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/22). It answers how much of the CUDA speedup a tuned CPU recovers; it does not replace the baseline.
+`--backends cpu cuda cpu-avx2` adds `cpu-avx2-optimized`, a multithreaded AVX2 build of the CPU compressor, timed on the comparator's host-host boundary. It answers how much of the CUDA speedup a tuned CPU recovers; it does not replace the baseline.
 
 - **Opt-in.** A default run has no AVX2 path and records the revision 3 paths and case identifiers. The AVX2 path runs right after the comparator.
 - **Baseline.** Every claim stays against the single-thread scalar comparator. The AVX2 path's ratio to the comparator, and each CUDA path's `vs_cpu_avx2` ratio, are descriptive: `descriptive` is true and the claim fields are null. The AVX2 path never raises a boundary inversion and stays out of T1 and the crossovers; `src/stoquant/report.py` draws it as an extra F1 line and a dashed F2 line.
@@ -291,7 +291,7 @@ This section adds paths to revision 3; it is not a new revision. The revision 3 
 
 ### K1 bandwidth baseline (issue #23)
 
-Spec: [qu1r0ra/CSC612M-MCO2-Paper#23](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/issues/23). Before any K1 change, `just k1-baseline` freezes how far the reference K1 sits from the memory system, so that a later change is judged against a measured headroom rather than an assumed one.
+Before any K1 change, `just k1-baseline` freezes how far the reference K1 sits from the memory system, so that a later change is judged against a measured headroom rather than an assumed one.
 
 - **Theoretical peak.** `2 * memory_clock_khz * 1e3 * bus_width_bits / 8 / 1e9` GB/s from `cudaDeviceGetAttribute`, the DDR convention of the CUDA C++ Best Practices Guide. On the RTX 5060 it gives 448 GB/s, which matches the vendor figure for 28 Gbps GDDR7 on a 128-bit bus; the summary records both so the convention can be checked.
 - **Achievable ceiling.** `build/stream_probe` reads a float32 buffer once with a grid-stride `float4` kernel at 4, 8, 16, and 32 blocks per multiprocessor. The ceiling is the best time over kept repetitions and grids (the STREAM convention), taken over sizes of at least four times L2. The probe runs after the GPU warm-up, and the GPU state is recorded around it.
@@ -299,7 +299,7 @@ Spec: [qu1r0ra/CSC612M-MCO2-Paper#23](https://github.com/qu1r0ra/CSC612M-MCO2-Pa
 - **Regime.** An input of at least four times L2 is `dram`, one between L2 and four times L2 is `transitional`, and a smaller one is `l2-resident`. Near L2, part of K1's second read and of the probe's repeated scans can still hit L2, so fractions of peak and ceiling, and the headroom (K1 median over the ideal time at the ceiling), are reported only for `dram` cells. Other cells record K1's launch count (`4 + log2` of the padded block count); small cells are likely launch-bound, but the baseline does not measure a launch floor. On the RTX 5060 (24 MiB L2) only the 2^25 and larger counts are `dram`, so headroom and later K1 claims are scoped to them; the probe runs to 2^27 so its ceiling is not set at the edge of its range.
 - **Protocol.** Every matrix count at both bit widths, 12 processes per cell in a per-round shuffled order, each with the in-process warm-up of revision 2 and 30 repetitions, after a 20 s GPU warm-up. `compute_case_statistics` gives the pooled median, the between-process spread, and the `stable` flag of revision 3.
 - **Evidence status.** The baseline snapshot is `results/<date>-<short_rev>-k1-baseline/`, run from a clean merged tree. `summary.json` records both build recipes' commands and the SHA-256 of `mco2` and `stream_probe`; the tool stops if either dry-run fails. A K1 change is kept only if an A/B run on the same tree is supported as faster under the revision 3 claim rule.
-- **Baseline result.** The snapshot from clean revision `f665f6d` is [archived here](https://github.com/qu1r0ra/stochastic-quantization-backends/tree/f665f6d/results/2026-09-27-f665f6d-k1-baseline). The theoretical peak is 448.0 GB/s and the probe ceiling 429.5 GB/s, set at 2^27 elements. All four `dram` cells (2^25 and 2^26 at both bit widths) are `stable`; K1 reaches 159–166 GB/s there, 35.5–37.1% of peak and 37.0–38.7% of the ceiling, a headroom of 2.58–2.70. K1 is 62–66% of the resident path's median stage time in those cells. The GPU reported no active clock-event reason at the start or end of the run.
+- **Baseline result.** The snapshot from clean revision `f665f6d` is the baseline result. The theoretical peak is 448.0 GB/s and the probe ceiling 429.5 GB/s, set at 2^27 elements. All four `dram` cells (2^25 and 2^26 at both bit widths) are `stable`; K1 reaches 159–166 GB/s there, 35.5–37.1% of peak and 37.0–38.7% of the ceiling, a headroom of 2.58–2.70. K1 is 62–66% of the resident path's median stage time in those cells. The GPU reported no active clock-event reason at the start or end of the run.
 - **Optimized variant.** `--k1 optimized` keeps the reference arithmetic and changes only its mapping. The max pass reads `float4` words grid-stride and reduces in registers with warp shuffles, leaving one partial per block instead of one per 256 elements. In the sum pass one warp builds each 256-leaf subtree: a lane sums its 8 contiguous leaves as a 3-level tree, and shuffles at offsets 1, 2, 4, 8, and 16 add the next 5 levels in the reference pairing. The levels above reduce 2048 inputs per block per launch instead of one level per launch. At 2^25 elements that is 6 launches instead of 21. Tests require byte-identical records to the reference across counts, bit widths, grids, and zero, subnormal, large, and non-finite inputs. Its speed and keep decision are the K1 A/B result below.
 
 ### K1 A/B (issue #23)
@@ -315,7 +315,7 @@ This rule was fixed and merged before its pilot and its run. `just k1-ab` compar
 - **Readiness.** The readiness facts are recorded, not enforced; the machine is not rebooted for this run. The arms are interleaved and order-balanced within each process round, so machine drift affects both.
 - **Pilot.** `--pilot` runs 2 processes per variant at 2^10, 2^14, 2^20, 2^25, and 2^26 into `results/pilots/`, and is never evidence. After the pilot, only outright bugs may be fixed, each with a test.
 - **Outputs.** `summary.json` (cells, comparisons, decision), `processes.json`, `stream_probe.json`, and F5 (`f5_k1_stages.png`): stacked K1, K2, K3, and other stage medians for both arms at 2^14, 2^18, 2^22, 2^25, and 2^26, as a share of the reference arm's stage sum. `just k1-ab --figure <snapshot>` re-renders F5 from `summary.json`.
-- **Result.** The K1 A/B snapshot from the clean merged tree at `73ffbf5` is [archived here](https://github.com/qu1r0ra/stochastic-quantization-backends/tree/73ffbf5/results/2026-09-27-73ffbf5-k1-ab) with `evidence` true. Every record pair was byte-identical. The probe ceiling was 430.0 GB/s against a 448.0 GB/s peak, and the GPU held P1 at 14001 MHz memory with no active clock-event reason at both probe ends. In the four dram cells the optimized K1 is supported as faster, with both arms stable, so the magnitude claim holds as well:
+- **Result.** The K1 A/B snapshot from the clean merged tree at `73ffbf5` has `evidence` true. Every record pair was byte-identical. The probe ceiling was 430.0 GB/s against a 448.0 GB/s peak, and the GPU held P1 at 14001 MHz memory with no active clock-event reason at both probe ends. In the four dram cells the optimized K1 is supported as faster, with both arms stable, so the magnitude claim holds as well:
 
   | Count | Bits | Reference K1 (ms) | Optimized K1 (ms) | Speedup | 95% CI | Optimized GB/s | Of ceiling |
   |---|---|---|---|---|---|---|---|
@@ -355,9 +355,9 @@ All manifests record `evidence=true`, a clean tree, enforced readiness passed wi
 
 | Family | Frozen raw snapshot and complete report | Grid |
 |---|---|---|
-| dense | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-dense-full-detached/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-dense-full-detached/derived/report.md) | `2^10`–`2^26` |
-| sparse | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-sparse-full-detached/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-sparse-full-detached/derived/report.md) | `2^10`–`2^26` |
-| model | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-model-full-detached/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-03-ec31947-model-full-detached/derived/report.md) | 17 distinct synthetic ResNet-18 shapes, 10–2,359,296 elements |
+| dense | Raw manifest and derived report | `2^10`–`2^26` |
+| sparse | Raw manifest and derived report | `2^10`–`2^26` |
+| model | Raw manifest and derived report | 17 distinct synthetic ResNet-18 shapes, 10–2,359,296 elements |
 
 Reports were rendered with `just figures results/<snapshot> --k1-ab results/2026-10-02-5d0841b-k1-ab`. The named A/B run supplies the 429.7 GB/s streaming-read ceiling; the matrix supplies resident K1 and total-path timings and the device peak of 448.0 GB/s. Effective K1 bandwidth above device peak in cache-sized cells is a two-read accounting measure, not a DRAM throughput claim. F1 retains the blank second-platform row; no second-machine evidence is implied. Model F3 diagnoses the four smallest recorded counts, not representative large tensors.
 
@@ -464,11 +464,11 @@ All manifests record `evidence=true`, a clean tree, enforced readiness passed wi
 
 | Family | Frozen raw snapshot and complete report | Grid |
 |---|---|---|
-| dense | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-dense-strict-rerun/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-dense-strict-rerun/derived/report.md) | `2^10`–`2^26` |
-| sparse | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-sparse-strict-rerun/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-sparse-strict-rerun/derived/report.md) | `2^10`–`2^26` |
-| model | [Raw](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-model-strict-rerun/manifest.json), [report and F1–F4 / bandwidth appendix](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-model-strict-rerun/derived/report.md) | 17 distinct synthetic ResNet-18 shapes, 10–2,359,296 elements |
+| dense | Raw manifest and derived report | `2^10`–`2^26` |
+| sparse | Raw manifest and derived report | `2^10`–`2^26` |
+| model | Raw manifest and derived report | 17 distinct synthetic ResNet-18 shapes, 10–2,359,296 elements |
 
-Reports were rendered with `just figures results/<snapshot> --k1-ab results/2026-10-02-5d0841b-k1-ab`, as above. The comparative analysis in [`results/2026-10-05-46c1294-review/review.md`](https://github.com/qu1r0ra/stochastic-quantization-backends/blob/f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb/results/2026-10-05-46c1294-review/review.md) is regenerated from the snapshots' `summary.csv` files by `analyze.py` in the same folder; it does not modify them.
+Reports were rendered with `just figures results/<snapshot> --k1-ab results/2026-10-02-5d0841b-k1-ab`, as above. The comparative analysis in `results/2026-10-05-46c1294-review/review.md` is regenerated from the snapshots' `summary.csv` files by `analyze.py` in the same folder; it does not modify them.
 
 #### Claims by path
 
