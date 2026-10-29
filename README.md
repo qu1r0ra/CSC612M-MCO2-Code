@@ -9,9 +9,13 @@ Course-scoped code submission repository for CSC612M (Advanced Computer Architec
 
 ## Implementation
 
-This snapshot was exported from [stochastic-quantization-backends](https://github.com/qu1r0ra/stochastic-quantization-backends) at commit `f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb`. It includes the CPU and CUDA 4-bit and 8-bit pipelines, host decoder, tests, and dependencies. Upstream result snapshots are not included.
+This repository holds the CPU and CUDA 4-bit and 8-bit pipelines, the host decoder, tests, and dependencies. It is self-contained: build, test, and benchmark it from this checkout.
 
 - [Build and reproduction instructions](docs/reproduction.md)
 - [Technical contract](docs/technical-contract.md)
 - [Benchmark protocol](docs/benchmark-protocol.md)
-- [Checkpoint verification and preliminary timings](CHECKPOINT-WORKING-EVIDENCE.md)
+
+## Checkpoint 2
+
+- [Checkpoint verification and benchmark summary](CHECKPOINT-WORKING-EVIDENCE.md): test results, the correctness gate, and the timing table.
+- [Benchmark snapshot](results/2026-10-29-b2f6b09/): raw records and `summary.csv` for revision `b2f6b09`, produced by `uv run python -m stoquant bench-matrix --counts 1024 262144 4194304 --bits 4 8`.

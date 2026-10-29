@@ -1,6 +1,6 @@
 # Checkpoint 2 working evidence (in progress)
 
-The selected source files were exported from `qu1r0ra/stochastic-quantization-backends` commit `f591c9d2a1f3c9e922ac67a6f4e93bd951e56efb`. The export retains the Python package, native sources, vendored Random123, tests, tools, build configuration, and selected documentation; it excludes upstream result snapshots. The course repository's proposal PDF and README predate this export. This worktree is not yet a completed submission snapshot.
+This repository retains the Python package, native sources, vendored Random123, tests, tools, build configuration, and selected documentation. The proposal PDF predates the code. This worktree is not yet a completed submission snapshot.
 
 On 2026-10-27, on NVIDIA GeForce RTX 5060 (driver 610.88), `uv sync --group dev` and `just build-cuda` succeeded in this course worktree. With `STOQUANT_TEST_CUDA=1`, `uv run pytest --require-cuda tests/test_cuda.py -k 'prescribed_scale_and_words_match_oracle or layer_two_decode_satisfies_fp64_bound or k3_4bit_packing or match_cpu' -q` passed 21 tests (266 deselected). The native codec and quantizer test binaries also built and ran here, each reporting zero failures.
 
