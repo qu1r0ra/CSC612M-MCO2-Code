@@ -17,5 +17,7 @@ This repository holds the CPU and CUDA 4-bit and 8-bit pipelines, the host decod
 
 ## Checkpoint 2
 
+- [Milestone report](checkpoint2-milestone-report.pdf): the Week 10 progress report against the proposal, with the remaining work.
+- [Update video](https://drive.google.com/file/d/1zJISAswdwxyUksUcP5S6J4XF97GNEwYM/view?usp=sharing) (Google Drive, 7 min 31 s): the Week 10 mid-project update.
 - [Checkpoint verification and benchmark summary](CHECKPOINT-WORKING-EVIDENCE.md): test results, the correctness gate, and the timing table.
 - [Benchmark snapshot](results/2026-10-29-b2f6b09/): raw records and `summary.csv` for revision `b2f6b09`, produced by `uv run python -m stoquant bench-matrix --counts 1024 262144 4194304 --bits 4 8`.
