@@ -677,6 +677,8 @@ def test_cuda_k3_4bit_packing_structure_and_odd_length(tmp_path):
 @pytest.mark.parametrize(
     "block_size,grid_size",
     [
+        (1, 1),  # 1 thread for all philox groups
+        (31, 1),  # partial warp
         (32, 1),  # grid smaller than element count
         (64, 2),  # small grid
         (128, 7),
