@@ -233,3 +233,35 @@ def test_failed_sweep_restores_the_affinity_mask(tmp_path, monkeypatch):
     with pytest.raises(FileNotFoundError):
         run_cpu_snapshot(tmp_path / "out", readiness_facts=READY_FACTS)
     assert get_process_affinity() == before
+
+
+def test_duplicate_bit_widths_are_rejected_by_api_and_cli_before_work(tmp_path, monkeypatch, capsys):
+    def unexpected(*args, **kwargs):
+        pytest.fail("work started before bit width validation")
+
+    monkeypatch.setattr("stoquant.matrix.benchmark_process_affinity", unexpected)
+    monkeypatch.setattr("stoquant.matrix.probe_readiness_facts", unexpected)
+    monkeypatch.setattr("stoquant.matrix.create_snapshot", unexpected)
+    monkeypatch.setattr(sweep, "find_binary", unexpected)
+    api = tmp_path / "api"
+    cli_output = tmp_path / "cli"
+    with pytest.raises(ValueError, match="bit widths must be unique"):
+        run_benchmark_matrix(root=ROOT, output_dir=api, bit_widths=[4, 4], backends=["cpu"])
+    with pytest.raises(SystemExit):
+        cli.main(["--output-dir", str(cli_output), "--bits", "4", "4"])
+    assert "bit widths must be unique" in capsys.readouterr().err
+    for output in (api, cli_output):
+        assert not output.exists()
+        assert not output.with_name(output.name + ".partial").exists()
+
+
+@pytest.mark.parametrize("bit_widths", [[4, 8], [8, 4]])
+def test_distinct_bit_widths_reach_matrix_setup_in_either_order(tmp_path, monkeypatch, bit_widths):
+    def reached_setup():
+        raise RuntimeError("reached matrix setup")
+
+    monkeypatch.setattr("stoquant.matrix.benchmark_process_affinity", reached_setup)
+    with pytest.raises(RuntimeError, match="reached matrix setup"):
+        run_benchmark_matrix(
+            root=ROOT, output_dir=tmp_path / "out", bit_widths=bit_widths, backends=["cpu"]
+        )

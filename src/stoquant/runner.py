@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from stoquant.design import CUDA_RESIDENT
+from stoquant.oracle import HEADER_STRUCT
 
 DEFAULT_WARMUPS = 10
 DEFAULT_REPS = 30
@@ -419,6 +420,16 @@ def validate_bench_response(
                 )
         else:
             _validate_echoed_value(configuration, key, value)
+
+    for field, size in (
+        ("header_bytes", HEADER_STRUCT.size),
+        ("payload_bytes", count if bits == 8 else (count + 1) // 2),
+    ):
+        actual = payload.get(field)
+        if type(actual) is not int or actual != size:
+            raise BenchResponseError(
+                f"stoquant bench response {field} must be the integer {size}; got {actual!r}"
+            )
 
     samples = _finite_nonnegative_samples(payload, "samples_ms", reps)
     stages = _required_stages(backend, expected["boundary"])

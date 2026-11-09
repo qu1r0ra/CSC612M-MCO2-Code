@@ -153,6 +153,8 @@ def main(argv: list[str] | None = None, prog: str | None = None) -> None:
     args = parser.parse_args(argv)
     if len(set(args.counts)) != len(args.counts):
         parser.error("--counts values must be unique")
+    if len(set(args.bits)) != len(args.bits):
+        parser.error("bit widths must be unique")
     root = layout.ROOT
 
     try:
