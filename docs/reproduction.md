@@ -4,8 +4,6 @@ Status: The CPU 8-bit and 4-bit pipelines, the CUDA 8-bit and 4-bit pipelines, l
 
 This document is the public entry point for reproducing the course implementation.
 
-For the reduced course test suite, see the [removal log and step-by-step validation guide](../test_documentation_log.md). Historical acceptance results below describe the suite at the recorded revision.
-
 ## What exists
 
 The repository builds the command-line tool `build/stoquant`, as a CPU-only or a CUDA-enabled build, the CUDA RNG check `build/test_rng`, and the CPU-only Philox check `build/test_rng_cpu`.
@@ -68,7 +66,7 @@ Requires `just`, Python 3.11 or newer, `uv`, and a C compiler. On Windows, `tool
 just test-cpu
 ```
 
-`just test-cpu` builds the native CPU CLI and three C test executables (codec, quantizer, and Philox), then runs the retained NumPy/pytest suite with CUDA tests disabled. The first run resolves dependencies from the checked-in `pyproject.toml` and `uv.lock`. The optional native AVX2 comparison runs separately with `just test-avx2`.
+`just test-cpu` builds the native CPU CLI and three C test executables (codec, quantizer, and Philox), then runs the retained NumPy/pytest suite with CUDA tests disabled. The first run resolves dependencies from the checked-in `pyproject.toml` and `uv.lock`. 
 
 The CLI consumes and produces raw little-endian FP32 files. A seeded compression computes the FP32 L2 scale and uses the logical Philox stream:
 
