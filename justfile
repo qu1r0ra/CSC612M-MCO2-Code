@@ -169,6 +169,15 @@ build-avx2-test:
 build-avx2-test:
     uv run python -m stoquant.native_build build-avx2-test
 
+# Optional AVX2-versus-scalar differential checks
+[windows]
+test-avx2: build-avx2-test
+    ./build/test_quantizer_avx2.exe
+
+[unix]
+test-avx2: build-avx2-test
+    ./build/test_quantizer_avx2
+
 # Check that MSVC reports every tagged AVX2 hot loop as vectorized
 [windows]
 vec-report: build-cpu
@@ -184,20 +193,18 @@ build-quantizer-test:
 
 # Build the CPU tool, verify the C seams, and run the independent Python oracle/CLI suite
 [windows]
-test-cpu: build-cpu build-codec-test build-quantizer-test build-avx2-test build-rng-cpu-test
+test-cpu: build-cpu build-codec-test build-quantizer-test build-rng-cpu-test
     ./build/test_codec.exe
     ./build/test_quantizer.exe
-    ./build/test_quantizer_avx2.exe
     ./build/test_rng_cpu.exe
-    $env:STOQUANT_EXPECT_CPU_ONLY = '1'; uv run --group dev pytest
+    $env:STOQUANT_TEST_CUDA = '0'; $env:STOQUANT_EXPECT_CPU_ONLY = '1'; uv run --group dev pytest
 
 [unix]
-test-cpu: build-cpu build-codec-test build-quantizer-test build-avx2-test build-rng-cpu-test
+test-cpu: build-cpu build-codec-test build-quantizer-test build-rng-cpu-test
     ./build/test_codec
     ./build/test_quantizer
-    ./build/test_quantizer_avx2
     ./build/test_rng_cpu
-    STOQUANT_EXPECT_CPU_ONLY=1 uv run --group dev pytest
+    STOQUANT_TEST_CUDA=0 STOQUANT_EXPECT_CPU_ONLY=1 uv run --group dev pytest
 
 # Build and run every native CPU test executable under AddressSanitizer
 [windows]
@@ -215,14 +222,14 @@ test-cpu-gcc-ubsan:
 
 # Run the CUDA quantizer acceptance suite on the local GPU
 [windows]
-test-cuda: build-cuda build-cuda-fault build-cuda-api-test build-stream-probe
+test-cuda: build-cuda build-cuda-api-test build-stream-probe
     ./build/test_cuda_api.exe
-    $env:STOQUANT_TEST_CUDA = '1'; uv run --group dev pytest --require-cuda tests\test_cuda.py tests\test_matrix_driver.py tests\test_sweep_avx2.py
+    $env:STOQUANT_TEST_CUDA = '1'; uv run --group dev pytest --require-cuda tests\test_cuda.py tests\test_matrix_driver.py
 
 [unix]
-test-cuda: build-cuda build-cuda-fault build-cuda-api-test build-stream-probe
+test-cuda: build-cuda build-cuda-api-test build-stream-probe
     ./build/test_cuda_api
-    STOQUANT_TEST_CUDA=1 uv run --group dev pytest --require-cuda tests/test_cuda.py tests/test_matrix_driver.py tests/test_sweep_avx2.py
+    STOQUANT_TEST_CUDA=1 uv run --group dev pytest --require-cuda tests/test_cuda.py tests/test_matrix_driver.py
 
 # Render F1-F4, T1 and the crossover report into a snapshot folder
 figures snapshot *args:

@@ -4,6 +4,8 @@ Status: The CPU 8-bit and 4-bit pipelines, the CUDA 8-bit and 4-bit pipelines, l
 
 This document is the public entry point for reproducing the course implementation.
 
+For the reduced course test suite, see the [removal log and step-by-step validation guide](../test_documentation_log.md). Historical acceptance results below describe the suite at the recorded revision.
+
 ## What exists
 
 The repository builds the command-line tool `build/stoquant`, as a CPU-only or a CUDA-enabled build, the CUDA RNG check `build/test_rng`, and the CPU-only Philox check `build/test_rng_cpu`.
@@ -66,7 +68,7 @@ Requires `just`, Python 3.11 or newer, `uv`, and a C compiler. On Windows, `tool
 just test-cpu
 ```
 
-`just test-cpu` builds the native CPU CLI and four C test executables, then runs the NumPy/pytest oracle and CLI suite. The first run resolves NumPy and pytest from the checked-in `pyproject.toml` and `uv.lock`.
+`just test-cpu` builds the native CPU CLI and three C test executables (codec, quantizer, and Philox), then runs the retained NumPy/pytest suite with CUDA tests disabled. The first run resolves dependencies from the checked-in `pyproject.toml` and `uv.lock`. The optional native AVX2 comparison runs separately with `just test-avx2`.
 
 The CLI consumes and produces raw little-endian FP32 files. A seeded compression computes the FP32 L2 scale and uses the logical Philox stream:
 
@@ -116,16 +118,16 @@ Run the full CPU verification suite or run specific components directly:
    ```powershell
    just test-cpu
    ```
-   Builds `build/stoquant`, `build/test_codec`, `build/test_quantizer`, `build/test_quantizer_avx2`, and `build/test_rng_cpu`, executes the native C test binaries, and runs the pytest test suites.
+   Builds `build/stoquant`, `build/test_codec`, `build/test_quantizer`, and `build/test_rng_cpu`, executes the three native C test binaries, and runs the retained pytest suites. CUDA tests are skipped on this path.
 
-2. **C unit tests (codec, quantizer, AVX2 quantizer and Philox RNG)**:
+2. **C unit tests (codec, quantizer and Philox RNG)**:
    ```powershell
-   just build-cpu
+   just build-codec-test build-quantizer-test build-rng-cpu-test
    .\build\test_codec.exe
    .\build\test_quantizer.exe
-   .\build\test_quantizer_avx2.exe
    .\build\test_rng_cpu.exe
    ```
+   Run `just test-avx2` separately for the optional AVX2-versus-scalar comparison.
    - `test_codec.exe` verifies 4-bit and 8-bit header encoding, 4-bit nibble decoding, odd-length records, and every decoder rejection branch (magic mismatch, unsupported version, unsupported bit width, nonzero reserved bytes, nonfinite/negative scale, payload length mismatch, nonzero padding nibble, out-of-range codes, and malformed zero-scale records).
    - `test_quantizer.exe` verifies FP32 L2 norm reduction, 4-bit and 8-bit quantization against prescribed words, signed zero (+0 decode), large magnitudes without intermediate overflow via max-rescaling, saturation boundaries, odd lengths (1, 3, 5, 257), and the 4,096-seed C Layer 3 unbiasedness loop.
    - `test_rng_cpu.exe` verifies Philox known-answer vectors, logical stream mapping, and rejection of tensor and invocation identifiers above `2^32-1` without requiring CUDA.
@@ -146,13 +148,13 @@ Run the full CPU verification suite or run specific components directly:
    uv run pytest tests/test_cli.py -k test_decompress_rejects
 
    # FP32 L2 scale overflow test
-   uv run pytest tests/test_cli.py -k test_compress_fp32_norm_overflow_rejects
+   uv run pytest tests/test_cli.py -k test_compress_rejects_l2_norm_overflow
 
    # Edge cases (signed zero, large magnitudes, saturation, non-multiple & odd lengths)
-   uv run pytest tests/test_cli.py -k "test_compress_edge_cases or test_compress_signed_zero"
+   uv run pytest tests/test_cli.py -k test_edge_cases
 
    # Layer 3 empirical unbiasedness across 4,096 seeds
-   uv run pytest tests/test_cli.py -k test_layer3_unbiasedness
+   uv run pytest tests/test_cli.py -k test_layer_three_course_subset_unbiasedness
    ```
 
 On Linux, `build-rng` and `test-rng` call `nvcc` with the system host compiler. The checkpoint verification below was performed on Windows.

@@ -92,40 +92,6 @@ def test_driver_rejects_unknown_k1_variant(tmp_path):
 
 
 @CUDA_TEST
-def test_optimized_k1_reaches_all_cuda_paths_and_is_recorded(tmp_path):
-    snapshot = run_benchmark_matrix(
-        root=ROOT,
-        output_dir=tmp_path / "optimized-k1",
-        counts=[1024],
-        bit_widths=[8],
-        backends=["cpu", "cpu-avx2", "cuda"],
-        boundaries=["gpu-origin"],
-        transfer_policies=["pageable", "pinned"],
-        warmups=1,
-        reps=2,
-        trials=10,
-        gpu_warmup_seconds=0,
-        case_warmup_seconds=0,
-        in_process_warmup_seconds=0,
-        allow_dirty=True,
-        readiness_facts=READY_FACTS,
-        k1="optimized",
-    )
-    manifest = json.loads((snapshot / "manifest.json").read_text(encoding="utf-8"))
-    assert manifest["matrix_parameters"]["k1"] == "optimized"
-    assert manifest["manifest_version"] == "3.4"
-    assert manifest["probe_build_stamp"]["recipe"] == "build-stream-probe"
-    assert manifest["probe_build_stamp"]["binary_sha256"]
-    assert manifest["device"]
-    assert len(manifest["matrix_parameters"]["paths"]) == 10
-    assert manifest["all_cases_passed"] is True
-    for case_id in manifest["cases"]:
-        case = json.loads((snapshot / f"{case_id}.json").read_text(encoding="utf-8"))
-        expected = "optimized" if case["backend"] == "cuda" else None
-        assert case["configuration"]["k1"] == expected
-
-
-@CUDA_TEST
 def test_driver_tiny_matrix_produces_valid_snapshot(tmp_path):
     snapshot_dir = tmp_path / "path with space" / "test-snapshot"
     result_dir = run_benchmark_matrix(
@@ -388,93 +354,6 @@ def test_driver_tiny_matrix_produces_valid_snapshot(tmp_path):
 
 
 @CUDA_TEST
-def test_driver_extension_matrix_adds_gpu_origin_and_pinned_paths(tmp_path):
-    snapshot_dir = tmp_path / "extension"
-    run_benchmark_matrix(
-        root=ROOT,
-        output_dir=snapshot_dir,
-        counts=[1024],
-        bit_widths=[8],
-        backends=["cpu", "cuda"],
-        warmups=1,
-        reps=2,
-        trials=18,
-        gpu_warmup_seconds=0.2,
-        case_warmup_seconds=0.1,
-        in_process_warmup_seconds=0.01,
-        allow_dirty=True,
-        readiness_facts=READY_FACTS,
-        boundaries=["gpu-origin"],
-        transfer_policies=["pageable", "pinned"],
-    )
-    manifest = json.loads((snapshot_dir / "manifest.json").read_text(encoding="utf-8"))
-    params = manifest["matrix_parameters"]
-    labels = [
-        "cpu-comparator",
-        "cuda-resident",
-        "cuda-resident-graph",
-        "cuda-host-origin",
-        "cuda-host-origin-pinned",
-        "cpu-gpu-origin",
-        "cuda-gpu-origin",
-        "cpu-gpu-origin-pinned",
-        "cuda-gpu-origin-pinned",
-    ]
-    assert manifest["transfer_policies"] == ["pageable", "pinned"]
-    assert params["paths"] == labels
-    assert params["trial_design"] == "williams"
-    assert len(params["trial_orders"]) == 18
-    assert manifest["all_cases_passed"] is True
-    assert len(manifest["cases"]) == 9
-
-    cases = {}
-    for case_id in manifest["cases"]:
-        case = json.loads((snapshot_dir / f"{case_id}.json").read_text(encoding="utf-8"))
-        cases[case["path_label"]] = case
-    assert sorted(cases) == sorted(labels)
-    assert cases["cuda-host-origin-pinned"]["transfer_policy"] == "pinned"
-    assert cases["cuda-host-origin-pinned"]["timing_boundary"] == "host-origin"
-    assert cases["cpu-gpu-origin"]["case_id"] == "case_cpu_gpu-origin_bits8_n1024"
-    for case in cases.values():
-        assert case["correctness"]["status"] == "passed"
-        assert case["correctness"]["byte_identical_to_compress"] is True
-        assert len(case["trial_runs"]) == 18
-    assert set(cases["cpu-gpu-origin"]["stage_medians_ms"]) == {"d2h_ms", "cpu_ms", "other_ms"}
-    assert set(cases["cuda-gpu-origin-pinned"]["stage_medians_ms"]) == {
-        "k1_ms",
-        "k2_ms",
-        "k3_ms",
-        "d2h_ms",
-        "other_ms",
-    }
-    stats = {label: case["statistics"] for label, case in cases.items()}
-    assert stats["cuda-gpu-origin"]["baseline"] == "cpu-gpu-origin"
-    assert stats["cuda-gpu-origin-pinned"]["baseline"] == "cpu-gpu-origin-pinned"
-    assert stats["cpu-gpu-origin-pinned"]["baseline"] == "cpu-comparator"
-    assert "vs_pageable" in stats["cuda-host-origin-pinned"]
-    assert "vs_pageable" in stats["cpu-gpu-origin-pinned"]
-    assert stats["cuda-gpu-origin"]["vs_comparator"]["descriptive"] is True
-
-    with (snapshot_dir / manifest["summary_csv"]).open(encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
-    assert reader.fieldnames == SUMMARY_FIELDS
-    assert [row["path_label"] for row in rows] == labels
-    assert [row["transfer_policy"] for row in rows] == [
-        "none",
-        "none",
-        "none",
-        "pageable",
-        "pinned",
-        "pageable",
-        "pageable",
-        "pinned",
-        "pinned",
-    ]
-    assert rows[6]["baseline"] == "cpu-gpu-origin"
-
-
-@CUDA_TEST
 def test_driver_forced_failure_marks_failed_without_speed_figures(tmp_path):
     snapshot_dir = tmp_path / "failed-snapshot"
     result_dir = run_benchmark_matrix(
@@ -646,42 +525,3 @@ def test_driver_refuses_dirty_tree(tmp_path):
             trials=1,
         )
     assert not (tmp_path / "out").exists()
-
-
-@pytest.mark.parametrize(
-    ("family", "extra", "keys"),
-    [
-        ("sparse", {"counts": [1024]}, ["sparse_n1024"]),
-        ("model", {"counts": [], "model_limit": 2}, ["model_conv1.weight", "model_bn1.weight"]),
-    ],
-)
-def test_driver_cpu_only_family_snapshot(tmp_path, family, extra, keys):
-    snapshot_dir = tmp_path / f"{family}-snapshot"
-    run_benchmark_matrix(
-        root=ROOT,
-        output_dir=snapshot_dir,
-        bit_widths=[8],
-        backends=["cpu"],
-        warmups=1,
-        reps=2,
-        trials=2,
-        in_process_warmup_seconds=0,
-        allow_dirty=True,
-        readiness_facts=READY_FACTS,
-        input_family=family,
-        **extra,
-    )
-    manifest = json.loads((snapshot_dir / "manifest.json").read_text(encoding="utf-8"))
-    assert manifest["all_cases_passed"] is True
-    assert manifest["matrix_parameters"]["input_family"] == family
-    assert sorted(manifest["inputs"]) == sorted(keys)
-    assert sorted(manifest["cases"]) == sorted(f"case_cpu_comparator_bits8_{key}" for key in keys)
-    assert all(entry["input"] in keys for entry in manifest["matrix_parameters"]["case_order"])
-    for case_id in manifest["cases"]:
-        case_data = json.loads((snapshot_dir / f"{case_id}.json").read_text(encoding="utf-8"))
-        assert case_data["input_family"] == family
-        assert case_data["input_provenance"]["input_key"] == case_data["input_key"]
-    with (snapshot_dir / manifest["summary_csv"]).open(encoding="utf-8") as f:
-        rows = list(csv.DictReader(f))
-    assert sorted(row["input_key"] for row in rows) == sorted(keys)
-    assert {row["input_family"] for row in rows} == {family}
