@@ -296,6 +296,20 @@ def check_fp64_bounds(run: RecordRun, cpu_bench_bytes: bytes) -> dict[str, Any]:
             }
         ) from exc
 
+    header = HEADER_STRUCT.unpack_from(cpu_bench_bytes)
+    for field, actual, expected in (("count", header[4], count), ("bits", header[2], bits)):
+        if actual != expected:
+            raise CorrectnessFailure(
+                {
+                    "status": "failed",
+                    "byte_identical_to_compress": True,
+                    "cpu_cuda_byte_identical": True,
+                    "layer2_scale_within_bound": False,
+                    "layer2_reconstruction_within_bound": False,
+                    "error_message": f"Record {field} mismatch: expected {expected}, got {actual}",
+                }
+            )
+
     fp64_scale, fp64_decoded = reference_fp64(
         values,
         bits=bits,
@@ -304,7 +318,6 @@ def check_fp64_bounds(run: RecordRun, cpu_bench_bytes: bytes) -> dict[str, Any]:
         invocation_id=run.invocation_id,
     )
 
-    header = HEADER_STRUCT.unpack_from(cpu_bench_bytes)
     fp32_scale = header[5]
 
     try:

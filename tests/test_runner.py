@@ -516,3 +516,38 @@ def test_trial_failure_preserves_the_complete_correctness_gate():
     assert case["correctness"]["gate_error_message"] == gate["error_message"]
     assert case["correctness"]["failure_phase"] == "trial"
     assert case["correctness"]["error_message"] == "stoquant bench failed: native trial failed"
+
+
+@pytest.mark.parametrize("field", ["header_bytes", "payload_bytes"])
+@pytest.mark.parametrize("value", [None, True, "20", -1])
+def test_invalid_record_size_response_names_field(field, value):
+    payload = bench_payload(count=5, bits=8, backend="cpu", seed=42, warmups=0, reps=1)
+    if value is None:
+        del payload[field]
+    else:
+        payload[field] = value
+    result, error = run_bench_process(
+        Path("stoquant"), Path("input.f32"), count=5, bits=8, backend="cpu",
+        extra_args=[], seed=42, warmups=0, reps=1,
+        process=FakeBenchProcess([process_result(payload)]),
+    )
+    assert result is None
+    assert field in error
+
+
+@pytest.mark.parametrize("count,bits,size,valid", [
+    (5, 4, 3, True), (5, 4, 2, False), (5, 8, 5, True),
+    (5, 8, 3, False), (0, 8, 0, True), (0, 4, 0, True),
+])
+def test_record_payload_size_matches_workload(count, bits, size, valid):
+    payload = bench_payload(count=count, bits=bits, backend="cpu", seed=42, warmups=0, reps=1)
+    payload["payload_bytes"] = size
+    result, error = run_bench_process(
+        Path("stoquant"), Path("input.f32"), count=count, bits=bits, backend="cpu",
+        extra_args=[], seed=42, warmups=0, reps=1,
+        process=FakeBenchProcess([process_result(payload)]),
+    )
+    if valid:
+        assert result is not None and error is None
+    else:
+        assert result is None and "payload_bytes" in error

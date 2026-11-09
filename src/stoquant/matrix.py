@@ -78,6 +78,8 @@ def run_benchmark_matrix(
     monitoring = parse_monitoring_config(root).manifest_metadata()
     if len(set(counts)) != len(counts):
         raise ValueError("--counts values must be unique")
+    if len(set(bit_widths)) != len(bit_widths):
+        raise ValueError("bit widths must be unique")
     if k1 not in K1_VARIANTS:
         raise ValueError(f"unknown K1 variant {k1!r}; choose from {K1_VARIANTS}")
     if input_family not in INPUT_FAMILIES:
