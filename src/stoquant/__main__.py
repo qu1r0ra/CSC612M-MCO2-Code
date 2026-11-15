@@ -15,8 +15,6 @@ COMMANDS = {
     "figures": ("stoquant.report", "Render snapshot figures and the report"),
     "bench-matrix": ("stoquant.cli", "Run the benchmark matrix"),
     "unbiasedness": ("stoquant.unbiasedness", "Run the Layer 3 expectation suite"),
-    "k1-baseline": ("stoquant.k1_bandwidth", "Measure K1 against device bandwidth"),
-    "k1-ab": ("stoquant.k1_ab", "A/B the reference and optimized K1"),
     "vec-report": ("stoquant.vectorization", "Check AVX2 hot-loop vectorization"),
 }
 
