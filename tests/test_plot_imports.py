@@ -8,7 +8,7 @@ def test_stoquant_imports_do_not_load_pyplot():
     code = """
 import importlib
 import sys
-for name in ('report', 'publication', 'k1_ab', 'unbiasedness'):
+for name in ('report', 'publication', 'unbiasedness'):
     importlib.import_module('stoquant.' + name)
 assert 'matplotlib.pyplot' not in sys.modules
 """

@@ -143,7 +143,7 @@ build-cuda-api-test: build-cuda
 build-cuda-fault: build-cuda
     uv run python -m stoquant.native_build build-cuda-fault
 
-# Build the device-attribute and streaming-read probe for the K1 baseline
+# Build the device probe used by matrix provenance and CUDA tests
 [windows]
 build-stream-probe:
     uv run python -m stoquant.native_build build-stream-probe
@@ -246,26 +246,8 @@ unbiasedness *args: build-cuda
 unbiasedness *args: build-cuda
     uv run python -m stoquant unbiasedness {{args}}
 
-# Measure the reference K1 against the device bandwidth (issue #23 baseline)
-[windows]
-k1-baseline *args: build-cuda build-stream-probe
-    uv run python -m stoquant k1-baseline {{args}}
-
-[unix]
-k1-baseline *args: build-cuda build-stream-probe
-    uv run python -m stoquant k1-baseline {{args}}
-
-# A/B the reference and optimized K1 on the same tree, or re-render F5 (issue #23)
-[windows]
-k1-ab *args: build-cuda build-stream-probe
-    uv run python -m stoquant k1-ab {{args}}
-
-[unix]
-k1-ab *args: build-cuda build-stream-probe
-    uv run python -m stoquant k1-ab {{args}}
-
 # Capture or compare the restructure equivalence baseline (issue #47)
-equivalence *args: build-cuda build-stream-probe
+equivalence *args: build-cuda
     uv run python tools/equivalence.py {{args}}
 
 # Fast, bounded record-parity smoke for routine implementation changes

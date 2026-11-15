@@ -1,4 +1,4 @@
-// Device-attribute and streaming-read probe for the K1 bandwidth baseline
+// Device-attribute and streaming-read probe retained for benchmark support
 // (issue #23).
 //
 // Reads a float32 buffer once with a grid-stride float4 kernel and reports the
