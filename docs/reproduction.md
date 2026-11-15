@@ -197,7 +197,7 @@ just figures results/<date>-<short_rev>
 
 `just unbiasedness` builds the CUDA executable and runs the full expectation suite of the technical contract (correctness layer 3): four inputs, both bit widths, both backends, 4,096 seeds, about a minute on the RTX 5060. It writes `results/<date>-<short_rev>-unbiasedness/unbiasedness.json` and `derived/f_unbiasedness.png` and exits nonzero if any case fails. Run it from a clean tree; `--allow-dirty`, `--seeds N`, `--backends cpu`, and `--output-dir DIR` give non-evidence runs.
 
-The shared `build-stream-probe` recipe remains available because matrix provenance and the CUDA test suite use its device attributes. The standalone K1 bandwidth baseline and A/B research runners are not part of the course command set.
+The shared `build-stream-probe` recipe remains available because matrix provenance and the CUDA test suite use its device attributes.
 
 ### Inspecting results and provenance
 

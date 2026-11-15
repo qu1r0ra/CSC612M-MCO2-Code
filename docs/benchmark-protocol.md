@@ -291,7 +291,7 @@ This section adds paths to revision 3; it is not a new revision. The revision 3 
 
 ### K1 bandwidth baseline (issue #23)
 
-The K1 baseline and A/B sections below document historical research runs. Their standalone commands are omitted from the course edition; the optimized K1 used by compression remains available.
+The K1 baseline and A/B sections below document historical research runs. Their commands refer to the source revisions used for those runs. For current commands, see `just --list`.
 
 Before any K1 change, `just k1-baseline` freezes how far the reference K1 sits from the memory system, so that a later change is judged against a measured headroom rather than an assumed one.
 
