@@ -218,7 +218,7 @@ Get-Content (Get-ChildItem results -Directory | Sort-Object LastWriteTime -Desce
 
 ## Restructure equivalence check
 
-The restructure stages (issue #46) used a full behavior fingerprint. `just equivalence` builds the CUDA executable, then runs `tools/equivalence.py`, which drives command-line interfaces and imports no project code. Its live runs cover the benchmark matrix, unbiasedness, and fixed compression/decompression records; routine implementation and refinement PRs use the bounded smoke below.
+The restructure stages (issue #46) used a full behavior fingerprint. `just equivalence` builds the CUDA executable and stream probe, then runs `tools/equivalence.py`, which drives command-line interfaces and imports no project code. Its live runs cover the benchmark matrix, unbiasedness, and fixed compression/decompression records; routine implementation and refinement PRs use the bounded smoke below.
 
 ```powershell
 # On the reference commit, with no modified tracked files: write the baseline

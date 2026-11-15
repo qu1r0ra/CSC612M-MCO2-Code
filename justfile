@@ -247,7 +247,7 @@ unbiasedness *args: build-cuda
     uv run python -m stoquant unbiasedness {{args}}
 
 # Capture or compare the restructure equivalence baseline (issue #47)
-equivalence *args: build-cuda
+equivalence *args: build-cuda build-stream-probe
     uv run python tools/equivalence.py {{args}}
 
 # Fast, bounded record-parity smoke for routine implementation changes
