@@ -35,9 +35,16 @@ def test_gate_rejects_agreeing_records_for_wrong_workload(tmp_path, mismatch):
 
     process = RecordProcess()
     passed, info = verify_correctness(
-        Path("stoquant"), input_path, 2, 8 if mismatch == "count" else 4,
-        backends=["cpu"], seed=42, tensor_id=3, invocation_id=7,
-        tmp_dir=tmp_path, process=process,
+        Path("stoquant"),
+        input_path,
+        2,
+        8 if mismatch == "count" else 4,
+        backends=["cpu"],
+        seed=42,
+        tensor_id=3,
+        invocation_id=7,
+        tmp_dir=tmp_path,
+        process=process,
     )
     assert process.records == [record, record]
     assert not passed

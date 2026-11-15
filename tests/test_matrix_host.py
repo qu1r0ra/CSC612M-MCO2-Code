@@ -235,7 +235,9 @@ def test_failed_sweep_restores_the_affinity_mask(tmp_path, monkeypatch):
     assert get_process_affinity() == before
 
 
-def test_duplicate_bit_widths_are_rejected_by_api_and_cli_before_work(tmp_path, monkeypatch, capsys):
+def test_duplicate_bit_widths_are_rejected_by_api_and_cli_before_work(
+    tmp_path, monkeypatch, capsys
+):
     def unexpected(*args, **kwargs):
         pytest.fail("work started before bit width validation")
 

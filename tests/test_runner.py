@@ -527,27 +527,48 @@ def test_invalid_record_size_response_names_field(field, value):
     else:
         payload[field] = value
     result, error = run_bench_process(
-        Path("stoquant"), Path("input.f32"), count=5, bits=8, backend="cpu",
-        extra_args=[], seed=42, warmups=0, reps=1,
+        Path("stoquant"),
+        Path("input.f32"),
+        count=5,
+        bits=8,
+        backend="cpu",
+        extra_args=[],
+        seed=42,
+        warmups=0,
+        reps=1,
         process=FakeBenchProcess([process_result(payload)]),
     )
     assert result is None
     assert field in error
 
 
-@pytest.mark.parametrize("count,bits,size,valid", [
-    (5, 4, 3, True), (5, 4, 2, False), (5, 8, 5, True),
-    (5, 8, 3, False), (0, 8, 0, True), (0, 4, 0, True),
-])
+@pytest.mark.parametrize(
+    "count,bits,size,valid",
+    [
+        (5, 4, 3, True),
+        (5, 4, 2, False),
+        (5, 8, 5, True),
+        (5, 8, 3, False),
+        (0, 8, 0, True),
+        (0, 4, 0, True),
+    ],
+)
 def test_record_payload_size_matches_workload(count, bits, size, valid):
     payload = bench_payload(count=count, bits=bits, backend="cpu", seed=42, warmups=0, reps=1)
     payload["payload_bytes"] = size
     result, error = run_bench_process(
-        Path("stoquant"), Path("input.f32"), count=count, bits=bits, backend="cpu",
-        extra_args=[], seed=42, warmups=0, reps=1,
+        Path("stoquant"),
+        Path("input.f32"),
+        count=count,
+        bits=bits,
+        backend="cpu",
+        extra_args=[],
+        seed=42,
+        warmups=0,
+        reps=1,
         process=FakeBenchProcess([process_result(payload)]),
     )
     if valid:
         assert result is not None and error is None
     else:
-        assert result is None and "payload_bytes" in error
+        assert result is None and error is not None and "payload_bytes" in error
