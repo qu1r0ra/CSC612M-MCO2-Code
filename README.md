@@ -8,15 +8,13 @@
 
 When does CUDA compression cost less time than sequential C compression? This project measures norm-scaled stochastic quantization: it replaces FP32 values with compact, randomly rounded codes and reconstructs approximations using a shared scale.
 
-The required course comparison is **single-thread scalar C versus CUDA SIMT**, at **4 and 8 bits**, on dense synthetic vectors of **1,024, 16,384, 262,144, and 4,194,304 elements**. Optional AVX2/OpenMP remains an extra because it shares the CLI, build, and tests; it is not the course baseline.
+The required course comparison is **single-thread scalar C versus CUDA SIMT**, at **4 and 8 bits**, on dense synthetic vectors of **1,024, 16,384, 262,144, and 4,194,304 elements**. The repository also provides an optional AVX2/OpenMP backend through the CLI, build, and tests. Scalar C is the course baseline.
 
-This is the course submission copy. The [complete implementation](https://github.com/qu1r0ra/stochastic-quantization-backends) owns the full implementation and publication experiments. The publication paper is separate from this course package. Historical reports remain below.
-
-The settled release scope excludes publication-only sparse/model families, GPU-origin/pinned-transfer experiments, K1 research utilities, and unrelated automation where safely separable. **This draft does not establish that extraction is complete.** The current checkout and older supporting documents may still expose extras. Shared dependencies, licenses, and verification for retained behavior remain required.
+This repository contains the course implementation, tests, benchmark tooling, and historical reports. Its upstream source is [stochastic-quantization-backends](https://github.com/qu1r0ra/stochastic-quantization-backends). The publication paper is separate from this course package. Final source correspondence and candidate verification remain pending below.
 
 | Final provenance | Pending evidence |
 | --- | --- |
-| Course candidate and upstream correspondence | **TODO:** full course/upstream SHAs, intentional course fixes, retained/omitted components and reasons |
+| Course candidate and upstream correspondence | **TODO:** actual full course/upstream source SHAs and any verified course-specific fixes |
 | Requirement coverage | **TODO:** assignment/proposal/checkpoint/final-brief requirement-to-evidence matrix |
 | Candidate verification | **TODO:** commands, environment, outcomes, skipped checks, and source-equivalence receipt |
 | Independent reproduction | **TODO:** Chan's actual receipt from another machine, including revision, differences, failures, and scope exercised |
@@ -67,7 +65,7 @@ Matching hashes check parity for this example only. Decoded values require numer
 
 ### Evaluation methodology
 
-The four retained paths are scalar C (`cpu-comparator`), CUDA resident, CUDA resident-graph, and CUDA host-origin. Resident paths start and finish in device memory. Host-origin includes pageable input upload and packed payload/scale download. Graph replay excludes capture/instantiation and repeats the captured invocation's random stream. Allocation, input generation, file I/O, correctness checks, and host decoding are outside compression timing.
+The four course benchmark paths are scalar C (`cpu-comparator`), CUDA resident, CUDA resident-graph, and CUDA host-origin. Resident paths start and finish in device memory. Host-origin includes pageable input upload and packed payload/scale download. Graph replay excludes capture/instantiation and repeats the captured invocation's random stream. Allocation, input generation, file I/O, correctness checks, and host decoding are outside compression timing.
 
 The [benchmark protocol](docs/benchmark-protocol.md) defines synchronized elapsed timing, balanced path orders over repeated processes, warm-ups, raw samples, medians, IQR, trial ranges, and evidence eligibility. Stage events diagnose costs; summing stage medians does not produce measured end-to-end time. Report absolute scalar time beside speedups, preserve losing/inconclusive cases, and distinguish supported direction from supported magnitude.
 
@@ -83,7 +81,7 @@ uv run python -m stoquant bench-matrix --counts 1024 16384 262144 4194304 --bits
 
 Explicit sizes avoid the current driver's larger default sweep. Keep dense inputs and default paths. Readiness checks cover memory, competing processes, clean Git state, and GPU clock-event reasons. Pilots and readiness overrides are non-evidence. Preserve manifests, build/source provenance, input hashes, correctness results, raw samples, and `summary.csv` unchanged.
 
-Verification covers prescribed-scale/random-word cases, CPU/CUDA bytes and scales, FP64 reconstruction bounds, empirical means across seeds, Philox known-answer/mapping checks, malformed records, nonfinite/overflow rejection, saturation, zero, and tail/odd lengths at both widths. Extraction also requires matching-input/seed comparison against the pinned full implementation. Historical test counts do not verify a final candidate.
+Verification covers prescribed-scale/random-word cases, CPU/CUDA bytes and scales, FP64 reconstruction bounds, empirical means across seeds, Philox known-answer/mapping checks, malformed records, nonfinite/overflow rejection, saturation, zero, and tail/odd lengths at both widths. Source correspondence requires matching-input/seed comparison against the pinned upstream revision. Historical test counts do not verify a final candidate.
 
 ### Final measured outcomes — pending
 
