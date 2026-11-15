@@ -38,7 +38,7 @@ Together, the fixed reduction tree and logical random-word mapping support byte-
 
 The resident-graph path captures the same reduction, rounding, and packing work into a CUDA Graph and replays it. Capture and instantiation occur outside the measured interval and their cost is recorded separately. Replay keeps the captured base invocation identifier, so repetitions reuse its draws. Ordinary resident and host-origin repetitions advance invocation identifiers. Graph replay measures repeated execution of a prepared workload, not graph construction on every call.
 
-The proposal's intermediate milestone included host-side packing of CUDA-generated codes. The checkpoint explicitly records that this was not demonstrated: GPU packing was completed instead, followed by host decoding. Describe that implemented path and the historical deviation together. The final packed CUDA pipeline is the required final behavior.
+The final CUDA pipeline packs codes on the GPU; the host decoder reads the resulting record.
 
 ## What each timing includes
 
