@@ -21,4 +21,3 @@ commands will be recorded for the candidate used in the final submission.
 The accepted [proposal](../proposal-paper.pdf) and [checkpoint report](../checkpoint2-milestone-report.pdf)
 remain available. The checkpoint snapshot covers three of the four final sizes;
 it is historical evidence, not the final four-size result.
-
