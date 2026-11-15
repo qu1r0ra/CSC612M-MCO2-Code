@@ -421,14 +421,14 @@ def validate_bench_response(
         else:
             _validate_echoed_value(configuration, key, value)
 
-    for field, size in (
+    for field_name, size in (
         ("header_bytes", HEADER_STRUCT.size),
         ("payload_bytes", count if bits == 8 else (count + 1) // 2),
     ):
-        actual = payload.get(field)
+        actual = payload.get(field_name)
         if type(actual) is not int or actual != size:
             raise BenchResponseError(
-                f"stoquant bench response {field} must be the integer {size}; got {actual!r}"
+                f"stoquant bench response {field_name} must be the integer {size}; got {actual!r}"
             )
 
     samples = _finite_nonnegative_samples(payload, "samples_ms", reps)

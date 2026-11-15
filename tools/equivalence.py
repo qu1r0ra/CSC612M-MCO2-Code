@@ -11,8 +11,8 @@ seed-determined values, record and decompressed bytes, input hashes, and the
 bytes of every frozen snapshot and of its regenerated report and figures.
 Redacted by key path (the leaf stays, so the key structure is still compared):
 timings and everything derived from them in a live run (statistics, speedups,
-verdicts, K1 bandwidth and the keep decision), timestamps, git provenance, GPU
-and host state, and run conditions that depend on the shell. Collapsed to one
+verdicts and claims), timestamps, git provenance, GPU and host state, and run
+conditions that depend on the shell. Collapsed to one
 leaf (key names included): path-valued provenance, that is build commands and
 flags, binary hashes keyed by binary name, and readiness facts.
 Build-stamp revisions and executable hashes are redacted because the golden
@@ -55,8 +55,6 @@ INVOCATION = {
     "binary": REPO / "build" / ("stoquant.exe" if os.name == "nt" else "stoquant"),
     "bench-matrix": [sys.executable, "-m", "stoquant", "bench-matrix"],
     "unbiasedness": [sys.executable, "-m", "stoquant", "unbiasedness"],
-    "k1-baseline": [sys.executable, "-m", "stoquant", "k1-baseline"],
-    "k1-ab": [sys.executable, "-m", "stoquant", "k1-ab"],
     "figures": [sys.executable, "-m", "stoquant", "figures"],
     # Environment variables removed before every run, so each run uses defaults.
     "scrubbed_env_prefixes": ("STOQUANT_",),
@@ -77,10 +75,6 @@ BENCH_COMMON = [
     *NO_WARMUP,
     "--allow-dirty", "--ignore-readiness",
 ]  # fmt: skip
-K1_COMMON = [
-    "--bits", "4", "8", "--processes", "2", "--reps", "3",
-    "--gpu-warmup-seconds", "0", "--in-process-warmup-seconds", "0", "--allow-dirty",
-]  # fmt: skip
 LIVE_RUNS = {
     "bench-dense": ("bench-matrix", ["--counts", "1024", "4096", *BENCH_COMMON]),
     "bench-sparse": (
@@ -95,9 +89,6 @@ LIVE_RUNS = {
         "unbiasedness",
         ["--seeds", "8", "--backends", "cpu", "cuda", "--allow-dirty"],
     ),
-    "k1-baseline": ("k1-baseline", ["--counts", "1024", "65536", *K1_COMMON]),
-    # F5 draws only its fixed counts, so the A/B uses two of them.
-    "k1-ab": ("k1-ab", ["--counts", "16384", "262144", *K1_COMMON]),
 }
 
 RECORD_INPUT_SEED = 2026
@@ -367,15 +358,6 @@ def frozen_snapshots(work: Path) -> dict[str, Any]:
         if (snap / "manifest.json").exists():
             renders[f"figures/{snap.name}"] = render(
                 [*INVOCATION["figures"], snap], renders_root / snap.name, work
-            )
-        if (snap / "summary.json").exists() and snap.name.endswith("-k1-ab"):
-            copy = renders_root / f"k1-ab-figure/{snap.name}"
-            shutil.copytree(snap, copy)
-            (copy / "f5_k1_stages.png").unlink(missing_ok=True)
-            log = work / "logs" / f"f5_{snap.name}.log"
-            result = run([*INVOCATION["k1-ab"], "--figure", copy], log)
-            renders[f"k1-ab-figure/{snap.name}"] = outcome(
-                result, copy, work, only="f5_k1_stages.png"
             )
     for bench in (p for p in snapshots if (p / "manifest.json").exists()):
         for ab in (p for p in snapshots if p.name.endswith("-k1-ab")):
