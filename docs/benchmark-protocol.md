@@ -291,6 +291,8 @@ This section adds paths to revision 3; it is not a new revision. The revision 3 
 
 ### K1 bandwidth baseline (issue #23)
 
+The K1 baseline and A/B sections below document historical research runs. Their standalone commands are omitted from the course edition; the optimized K1 used by compression remains available.
+
 Before any K1 change, `just k1-baseline` freezes how far the reference K1 sits from the memory system, so that a later change is judged against a measured headroom rather than an assumed one.
 
 - **Theoretical peak.** `2 * memory_clock_khz * 1e3 * bus_width_bits / 8 / 1e9` GB/s from `cudaDeviceGetAttribute`, the DDR convention of the CUDA C++ Best Practices Guide. On the RTX 5060 it gives 448 GB/s, which matches the vendor figure for 28 Gbps GDDR7 on a 128-bit bus; the summary records both so the convention can be checked.
