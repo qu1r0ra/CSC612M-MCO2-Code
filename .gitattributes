@@ -10,3 +10,5 @@ results/2026-10-29-b2f6b09/*.csv -text whitespace=cr-at-eol
 results/2026-10-29-b2f6b09/*.txt -text whitespace=cr-at-eol
 results/2026-11-16-b3b3e8a/*.csv -text whitespace=cr-at-eol
 results/2026-11-16-b3b3e8a/*.txt -text whitespace=cr-at-eol
+results/2026-11-16-4f1ae10/*.csv -text whitespace=cr-at-eol
+results/2026-11-16-4f1ae10/*.txt -text whitespace=cr-at-eol

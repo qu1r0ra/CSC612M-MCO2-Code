@@ -13,7 +13,7 @@ The CUDA tool supports 8-bit and 4-bit compression and shares the CPU decoder. `
 
 ## Verified toolchain
 
-Verified on 2026-11-16 with the final benchmark snapshot `results/2026-11-16-b3b3e8a/`:
+Verified on 2026-11-16 with the final benchmark snapshots `results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/`:
 
 | Component | Version |
 | --- | --- |
