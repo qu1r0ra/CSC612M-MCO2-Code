@@ -2,7 +2,7 @@
 
 ## Final report
 
-**Draft scaffold: measurements are complete (two full sweeps, see Final measured outcomes). The candidate verification receipt is written. Chan's rerun, screenshots, video, and final artifacts are pending.**
+**Status: measurements are complete (two full sweeps) and the candidate verification receipt is written. Chan's rerun, screenshots, the video, and the final report link are pending.**
 
 ### Purpose and scope
 
@@ -28,6 +28,13 @@ This repository contains the course implementation, tests, benchmark tooling, an
 3. **K3, packing:** CUDA packs on the GPU, with one thread writing each output byte. At 4 bits two codes share a byte; an odd final element leaves a zero high nibble. The host writes the header and decodes the returned record.
 
 **Output:** a version-1 `MSQ1` record with a 20-byte header and `ceil(N*bits/8)` payload bytes. Decoding produces FP32 approximations. For nonempty input the byte compression ratio is `4*N / (20 + ceil(N*bits/8))`; tiny records can exceed input size. The [technical contract](docs/technical-contract.md) defines arithmetic, layout, and rejection rules.
+
+### Design choices
+
+- **Fixed reduction order.** Floating-point addition is not associative, so K1 uses one pairwise tree over 256-element blocks on both backends. The scale is then identical on CPU and CUDA, and the records can be compared byte for byte.
+- **Counter-based random numbers.** Philox gives each group of four elements its random words from the seed and identifiers alone, so the rounding choices do not depend on thread scheduling or launch geometry.
+- **Packing on the GPU.** K3 packs the codes before they leave the device. Copying unpacked codes back would lengthen the transfer that the host-origin path counts.
+- **Scalar baseline.** The course asks for a sequential comparison, so the baseline stays single-threaded and simple. The AVX2 backend is an extra and is outside the comparison.
 
 ### Build, verify, and run
 
@@ -81,7 +88,7 @@ uv run python -m stoquant bench-matrix --counts 1024 16384 262144 4194304 --bits
 
 Explicit sizes avoid the current driver's larger default sweep. Keep dense inputs and default paths. Readiness checks cover memory, competing processes, clean Git state, and GPU clock-event reasons. Pilots and readiness overrides are non-evidence. Preserve manifests, build/source provenance, input hashes, correctness results, raw samples, and `summary.csv` unchanged.
 
-Verification covers prescribed-scale/random-word cases, CPU/CUDA bytes and scales, FP64 reconstruction bounds, empirical means across seeds, Philox known-answer/mapping checks, malformed records, nonfinite/overflow rejection, saturation, zero, and tail/odd lengths at both widths. Source correspondence requires matching-input/seed comparison against the pinned upstream revision. Historical test counts do not verify a final candidate.
+Verification covers prescribed-scale/random-word cases, CPU/CUDA bytes and scales, FP64 reconstruction bounds, empirical means across seeds, Philox known-answer/mapping checks, malformed records, nonfinite/overflow rejection, saturation, zero, and tail/odd lengths at both widths. Source correspondence requires matching-input/seed comparison against the pinned upstream revision. Historical test counts do not verify a final candidate. The final candidate's results (457 CPU tests passed with 295 skipped by design, 311 CUDA tests passed, 6 of 6 record-identity cases, 8 of 8 unbiasedness cases at 4,096 seeds) are in the [verification receipt](docs/verification-receipt.md).
 
 ### Final measured outcomes
 
@@ -134,7 +141,7 @@ Full per-case tables and crossover detail: [first run report](results/2026-11-16
 
 The checkpoint measured three sizes at an older revision. It supplies neither the missing 16,384-element measurement nor final-candidate results.
 
-### Limitations and actual lessons
+### Limitations and lessons
 
 This measures synthetic-vector compression and reconstruction, without training accuracy, convergence, network transmission, or federated-learning benefit. Ideal-arithmetic unbiasedness differs from finite-precision and empirical checks. Scalar C speedups do not establish an advantage over every optimized CPU implementation. Resident timings exclude transfers; graph replay uses a different launch boundary. A rerun on another machine establishes only the behavior it exercised. A100 and publication experiments are separate work.
 
@@ -144,7 +151,7 @@ This measures synthetic-vector compression and reconstruction, without training 
 
 - **TODO — screenshots:** embed readable candidate build/test, scalar/CUDA compression at both widths, decode/parity, and benchmark captures. Caption revision, command, and what each demonstrates.
 - **TODO — final video:** add the accessible recording link after checking playback, audio, execution segments, and duration. The working plan is at most 20 minutes, pending instructor clarification.
-- **TODO — final course report/artifacts:** link completed deliverables and verify access. Keep the separate publication paper outside the package.
+- **TODO — final course report:** link the built PDF of the course report (drafted in the paper repository, `course/final/report/`) and verify access. Keep the separate publication paper outside the package.
 
 ---
 
