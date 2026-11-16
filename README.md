@@ -85,7 +85,9 @@ Verification covers prescribed-scale/random-word cases, CPU/CUDA bytes and scale
 
 ### Final measured outcomes — pending
 
-**TODO:** link the reviewed final snapshot and figures. Report all four sizes, both widths, and all four paths, with hardware, OS, driver, toolkit/compiler and flags, revision, absolute times, variability, speedup intervals/eligibility, stage/transfer costs, and record bytes. State where CUDA wins, loses, or remains inconclusive; report only tested crossover intervals. No final speedup or crossover is asserted here.
+Final snapshot: [`results/2026-11-16-b3b3e8a/`](results/2026-11-16-b3b3e8a/), revision `b3b3e8a` on a clean tree with readiness not overridden. It has 32 cases from `just bench-matrix --counts 1024 16384 262144 4194304 --bits 4 8`, all correctness gates passed, and no boundary inversions.
+
+**TODO:** generate figures and `report.md` (`just figures results/2026-11-16-b3b3e8a`), link them here, and report all four sizes, both widths, and all four paths, with hardware, OS, driver, toolkit/compiler and flags, revision, absolute times, variability, speedup intervals/eligibility, stage/transfer costs, and record bytes. State where CUDA wins, loses, or remains inconclusive; report only tested crossover intervals. No final speedup or crossover is asserted here.
 
 The checkpoint measured three sizes at an older revision. It supplies neither the missing 16,384-element measurement nor final-candidate results.
 
