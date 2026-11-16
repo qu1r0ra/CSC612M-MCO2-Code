@@ -29,6 +29,7 @@ Each command ran from the repository root through `just`, one after another, and
 | `just test-cuda` | 0 | 257 | Builds the CUDA CLI; runs `test_cuda_api`; then pytest on `tests/test_cuda.py`, `tests/test_matrix_driver.py`, and `tests/test_sweep_avx2.py` with a CUDA device required | 311 passed, 0 skipped, 0 failed |
 | `just build-cuda` | 0 | 26 | Rebuilds the CUDA CLI that the next command checks | Built |
 | `just equivalence-smoke` | 0 | 3 | Fixed normal (1,024), mixed odd-length (4,099), and all-zero (513) inputs at 4 and 8 bits through scalar CPU, AVX2 CPU, and CUDA reference and optimized K1 | 6 of 6 cases passed: all four encoders write identical record bytes and all four decoders agree |
+| `just unbiasedness` | 0 | about 60 | Builds the CUDA CLI and runs the expectation suite: four inputs, both widths, CPU and CUDA backends, 4,096 seeds | 8 of 8 cases pass with identical CPU and CUDA results; max error over bound 0.627 to 0.959 (gate is 1); pooled variance ratio 0.9991 to 1.0002; snapshot `results/2026-11-16-52890d6-unbiasedness/` (`evidence: true`), run at `52890d6` |
 | `just vec-report` | 0 | 24 | Recompiles the AVX2 sources with `/Qvec-report:2` | 7 of 7 AVX2 hot loops vectorized |
 | `just test-cpu-asan` | 0 | 31 | Builds the CPU tests under AddressSanitizer and runs them | 0 failures; the sanitizer caught its deliberate one-byte heap overread |
 
@@ -37,8 +38,7 @@ The test scope is listed in [reproduction.md](reproduction.md#verified-test-comm
 ## Skipped or not run
 
 - The 295 skipped pytest cases in `just test-cpu` carry the marker "run with `just test-cuda` on a CUDA device". That recipe runs CPU-only by design. The CUDA recipe ran 311 cases over three of the test files, and no case skipped. The skipped and executed sets are not the same cases, so the skip count is not a count of untested CUDA behavior.
-- `just equivalence capture` and `just equivalence compare`, the whole-output fingerprint against an earlier revision, were not run. The bounded smoke above ran in their place. The full fingerprint belongs to the upstream restructure work and its golden baseline.
-- `just unbiasedness`, the standalone four-input, 4,096-seed expectation suite on both backends with its figure, was not run for this receipt. Two narrower unbiasedness checks did run through `just test-cpu`: the 4,096-seed loop in `test_quantizer`, and the CPU-backend smoke of the same suite in `tests/test_unbiasedness.py` (13 tests passed, none skipped). The CUDA backend's expectation check is therefore not covered by this receipt.
+- `just equivalence compare` against upstream's golden baseline `tests/golden/b569a35…json` was run once and reported NOT EQUIVALENT with 1,653 differences, so it does not serve as a gate for the course copy. The baseline fingerprints upstream-only outputs (the K1 A/B experiment, which the course copy omits) and every snapshot under `results/` (which differ between the repositories). The visible differences also include build provenance (dirty tree from the untracked unbiasedness output) and MSVC vectorization-report counts. The console output was truncated at about 70 live entries, so this receipt makes no leaf-by-leaf claim; record-byte agreement rests on `equivalence-smoke` and the byte-parity tests above. `capture` was not run.
 - The two benchmark sweeps are separate evidence: `results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/`.
 
 ## Source correspondence with the upstream repository

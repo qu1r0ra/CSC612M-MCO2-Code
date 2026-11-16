@@ -16,7 +16,7 @@ This repository contains the course implementation, tests, benchmark tooling, an
 | --- | --- |
 | Course candidate and upstream correspondence | Candidate `a2a746f` against upstream `9ccbe03`: native, vendored, and project-configuration sources match except one comment; course-specific omissions are listed in the [verification receipt](docs/verification-receipt.md#source-correspondence-with-the-upstream-repository). Shared Python differences not yet reviewed line by line. |
 | Requirement coverage | [Requirement-to-evidence checklist](docs/course-requirements.md) |
-| Candidate verification | [Verification receipt](docs/verification-receipt.md): nine commands, all exit 0, with environment, skipped checks, and source correspondence |
+| Candidate verification | [Verification receipt](docs/verification-receipt.md): ten commands, all exit 0, with environment, skipped checks, and source correspondence |
 | Independent rerun (repeatability) | **TODO:** Chan's filled [receipt](docs/independent-rerun-receipt.md) from another machine, with revision, differences, failures, and scope exercised |
 
 ### Input, process, output
