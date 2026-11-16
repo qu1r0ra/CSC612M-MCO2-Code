@@ -2,7 +2,7 @@
 
 ## Final report
 
-**Draft scaffold: measurements are complete (two full sweeps, see Final measured outcomes). Final candidate verification receipt, screenshots, video, and final artifacts are pending.**
+**Draft scaffold: measurements are complete (two full sweeps, see Final measured outcomes). The candidate verification receipt is written. Chan's rerun, screenshots, video, and final artifacts are pending.**
 
 ### Purpose and scope
 
@@ -10,14 +10,14 @@ When does CUDA compression cost less time than sequential C compression? This pr
 
 The required course comparison is **single-thread scalar C versus CUDA SIMT**, at **4 and 8 bits**, on dense synthetic vectors of **1,024, 16,384, 262,144, and 4,194,304 elements**. The repository also provides an optional AVX2/OpenMP backend through the CLI, build, and tests. Scalar C is the course baseline.
 
-This repository contains the course implementation, tests, benchmark tooling, and historical reports. Its upstream source is [stochastic-quantization-backends](https://github.com/qu1r0ra/stochastic-quantization-backends). The publication paper is separate from this course package. Final source correspondence and candidate verification remain pending below.
+This repository contains the course implementation, tests, benchmark tooling, and historical reports. Its upstream source is [stochastic-quantization-backends](https://github.com/qu1r0ra/stochastic-quantization-backends). The publication paper is separate from this course package. Source correspondence and candidate verification are recorded below; Chan's rerun is still pending.
 
-| Final provenance | Pending evidence |
+| Final provenance | Evidence |
 | --- | --- |
-| Course candidate and upstream correspondence | **TODO:** actual full course/upstream source SHAs and any verified course-specific fixes |
-| Requirement coverage | **TODO:** assignment/proposal/checkpoint/final-brief requirement-to-evidence matrix |
-| Candidate verification | **TODO:** commands, environment, outcomes, skipped checks, and source-equivalence receipt |
-| Independent reproduction | **TODO:** Chan's actual receipt from another machine, including revision, differences, failures, and scope exercised |
+| Course candidate and upstream correspondence | Candidate `a2a746f` against upstream `9ccbe03`: native, vendored, and project-configuration sources match except one comment; course-specific omissions are listed in the [verification receipt](docs/verification-receipt.md#source-correspondence-with-the-upstream-repository). Shared Python differences not yet reviewed line by line. |
+| Requirement coverage | [Requirement-to-evidence checklist](docs/course-requirements.md) |
+| Candidate verification | [Verification receipt](docs/verification-receipt.md): nine commands, all exit 0, with environment, skipped checks, and source correspondence |
+| Independent rerun (repeatability) | **TODO:** Chan's filled [receipt](docs/independent-rerun-receipt.md) from another machine, with revision, differences, failures, and scope exercised |
 
 ### Input, process, output
 
@@ -127,7 +127,7 @@ The 2^14 resident-graph intervals are narrow because that path's trial medians b
 - **Crossovers (revision 3 trial-range rule).** Five of six path-width pairs cross between 2^10 and 2^14 elements. Resident-graph at 4 bits is not resolved, because its 2^10 verdict is inconclusive, not because it loses at larger sizes.
 - **The gap widens with size.** At 2^22, resident reaches 157–162×, resident-graph 211–222×, and host-origin 19–20×. Host-origin includes host–device copies that the resident paths exclude. At 2^22 and 4 bits that is 3.28 ms against 0.42 ms.
 - **Stability.** In the rerun all 32 cells pass the 1.25 spread check. The first run had one failure, 2^10 4-bit host-origin (spread 1.26). That cell passed in the rerun at 1.19, and its verdict (slower) matched in both runs.
-- **Reproducibility.** The largest change in any median between runs is 5.6% (2^18, 8-bit, resident). The largest change in any speedup is 5.3%, in the same cell. All 32 verdicts agree, and the revision 3 crossover intervals are identical.
+- **Repeatability.** The two sweeps ran on one machine by one operator. The largest change in any median between runs is 5.6% (2^18, 8-bit, resident). The largest change in any speedup is 5.3%, in the same cell. All 32 verdicts agree, and the revision 3 crossover intervals are identical.
 - **Record sizes.** Each record has a 20-byte header and a payload of n/2 bytes at 4 bits or n bytes at 8 bits. At 2^22 elements that is 2,097,152 and 4,194,304 payload bytes. Checked across all rerun cases.
 
 Full per-case tables and crossover detail: [first run report](results/2026-11-16-b3b3e8a/derived/report.md) and [rerun report](results/2026-11-16-4f1ae10/derived/report.md). Figures F1–F4 are in each snapshot's `derived/` folder.
@@ -136,7 +136,7 @@ The checkpoint measured three sizes at an older revision. It supplies neither th
 
 ### Limitations and actual lessons
 
-This measures synthetic-vector compression and reconstruction, without training accuracy, convergence, network transmission, or federated-learning benefit. Ideal-arithmetic unbiasedness differs from finite-precision and empirical checks. Scalar C speedups do not establish an advantage over every optimized CPU implementation. Resident timings exclude transfers; graph replay uses a different launch boundary. Another-machine reproduction establishes only behavior actually exercised. A100 and publication experiments are separate work.
+This measures synthetic-vector compression and reconstruction, without training accuracy, convergence, network transmission, or federated-learning benefit. Ideal-arithmetic unbiasedness differs from finite-precision and empirical checks. Scalar C speedups do not establish an advantage over every optimized CPU implementation. Resident timings exclude transfers; graph replay uses a different launch boundary. A rerun on another machine establishes only the behavior it exercised. A100 and publication experiments are separate work.
 
 **TODO — actual AHA moments:** record observed surprises, the execution/debugging evidence behind each, and what changed in the team's understanding. Distinguish measured explanations from hypotheses; fill this from actual experience.
 

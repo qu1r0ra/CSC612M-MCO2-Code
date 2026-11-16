@@ -76,14 +76,14 @@ Relevant suites include native codec, quantizer and random-number generator test
 | Source inspected for this draft | Course `main` at `dec4447`; canonical checkout at `9ccbe032e6f3d5ee2c8f4fef6ec0ab3f5d739356`. The inspected native directories have no content differences. This is source inspection, not fresh runtime equivalence verification. |
 | Historical checkpoint | Frozen `results/2026-10-29-b2f6b09/` records a clean `b2f6b09ed49787cb2630ef9425bc34a0b841308b` run on RTX 5060, driver 610.88. Its 24 cases cover three sizes and both widths across four paths, with record identity and FP64 checks. |
 | Historical test receipts | The checkpoint records CPU/native/RNG and CUDA suite passes. Its later claim trace binds those checks to `5fd0b78`, whose relevant source matched checkpoint `b2f6b09`; this does not establish fresh final-candidate passes. |
-| Final candidate verification | Pending: standalone build and command checks, formatting, lint, native/CPU/CUDA/RNG tests, and same-input packed-byte and decoded-output agreement with the reference implementation. The verification receipt must identify committed revisions, environment, commands, failures and skips. |
+| Final candidate verification | Recorded in [verification-receipt.md](verification-receipt.md) for `a2a746f` on 2026-11-16: formatting and lint, native, CPU, CUDA, and RNG tests, the equivalence smoke (6 of 6 cases with identical record bytes across scalar C, AVX2, and CUDA), AVX2 vectorization report, and AddressSanitizer run, all exit 0. Not run: the full equivalence fingerprint and the standalone two-backend unbiasedness suite. Shared Python differences from upstream are not reviewed line by line. |
 | Final measurements | Recorded: all four sizes and both widths on the four course paths, in two full sweeps at revisions `b3b3e8a` (headline) and `4f1ae10` (rerun), with raw samples, configuration, build flags, hardware, correctness status and statistics. See `results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/`. |
-| Teammate rerun | Chan's independent execution receipt remains pending. A second machine may use the same GPU model. A coauthor rerun is course repeatability evidence, not external artifact evaluation. |
+| Teammate rerun | Chan's execution receipt remains pending; the [template](independent-rerun-receipt.md) fixes the agreement tolerance beforehand and asks for two runs. A coauthor rerun, even on another machine, is repeatability evidence, not reproducibility or external artifact evaluation. |
 | Final written and recorded artifacts | Final README, execution screenshots, presentation, video, and teammate accounts remain pending; a historical demonstration does not complete them. |
 
 At the checkpoint, the 4-bit host-origin median was 0.206 ms versus 0.0153 ms for C at 1,024 elements. At 4,194,304 elements, it was 3.28 ms versus 65.2 ms for C. Thus C was faster for the small input and CUDA was faster for the large input on this system, even with transfers counted. The checkpoint has no 16,384-element measurement and cannot locate the precise size where the winner changes. These historical results retain their original revision and protocol qualifications; there are no new timings here.
 
-Final results: **pending** a benchmark snapshot of the committed final course candidate.
+Final results: see the two full sweeps in the table above and the "Final measured outcomes" section of the README.
 
 ## Execution artifacts and teammate observations
 
