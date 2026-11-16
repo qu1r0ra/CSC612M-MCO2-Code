@@ -13,7 +13,7 @@ The CUDA tool supports 8-bit and 4-bit compression and shares the CPU decoder. `
 
 ## Verified toolchain
 
-Verified on 2026-11-16 with the final benchmark snapshots `results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/`:
+Verified on 2026-11-16 with the earlier four-size benchmark snapshots `results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/` (superseded by the nine-size course sweeps; the toolchain is unchanged):
 
 | Component | Version |
 | --- | --- |
@@ -173,14 +173,14 @@ An evidence sweep refuses to start unless the readiness check passes: at least 4
 `just bench-matrix` requires the local ntfy settings and sends a preflight notification before it starts the benchmark driver. Notification setup does not change the benchmark protocol or results.
 
 ```powershell
-# Pilot: four sizes, both bit widths, into results/pilots/ (never evidence)
+# Pilot: four sizes (2^10, 2^14, 2^18, 2^22), both bit widths, into results/pilots/ (never evidence)
 just bench-matrix --pilot
 
 # Build the CUDA executable and run the 136-case size sweep (about 2.8 hours)
 just bench-matrix
 
-# Course sizes only, with the sweep's warm-up and random case order
-just bench-matrix --counts 1024 16384 262144 4194304
+# Course report grid: nine sizes, 2^10 to 2^22, both bit widths (72 cases), with the sweep's warm-up and random case order
+just bench-matrix --course
 
 # Publication extension: GPU-origin paths and pinned transfers (nine paths, trials a multiple of 18)
 just bench-matrix --boundaries gpu-origin --transfer-policies pageable pinned --trials 18

@@ -2,7 +2,7 @@
 
 Status: template. Chan fills this in from a run on another machine. Until it is filled and merged, no independent-rerun result exists.
 
-The measurements this receipt is compared against are the two full sweeps on the project machine: `results/2026-11-16-b3b3e8a/` (headline) and `results/2026-11-16-4f1ae10/` (replicate). A rerun by a co-author is repeatability evidence: same procedure, a different machine, run by a member of the same team. It is not reproducibility or replication, and it is not external artifact evaluation.
+The measurements this receipt is compared against are the two nine-size course sweeps (`bench-matrix --course`) on the project machine, a headline run and a replicate. Their snapshot folders are named in the final report once they exist; the earlier four-size snapshots are history and are not the comparison. A rerun by a co-author is repeatability evidence: same procedure, a different machine, run by a member of the same team. It is not reproducibility or replication, and it is not external artifact evaluation.
 
 ## What the rerun checks
 
@@ -15,8 +15,8 @@ The measurements this receipt is compared against are the two full sweeps on the
 Absolute times differ across GPUs and CPUs, so equality of timings is neither required nor expected. The rerun agrees with the project machine when all of these hold:
 
 - Every correctness and record-identity check passes, or each failure is explained and attributed to the environment.
-- For each of the 32 (size, bit width, path) cells, the verdict (`faster`, `slower`, `inconclusive`, or `comparator`) matches the project machine's. A mismatch is listed with its cell and both confidence intervals, not hidden.
-- Small inputs favor the scalar C comparator, large inputs favor every CUDA path, and the crossover size for each path and width falls within one size step (a factor of 16 in element count) of the project machine's crossover.
+- For each of the 72 (size, bit width, path) cells, the verdict (`faster`, `slower`, `inconclusive`, or `comparator`) matches the project machine's. A mismatch is listed with its cell and both confidence intervals, not hidden.
+- Small inputs favor the scalar C comparator, large inputs favor every CUDA path, and the crossover size for each path and width falls within one size step (the adjacent measured size on the nine-size grid) of the project machine's crossover.
 - The speedup against scalar C grows with input size for each CUDA path.
 
 A cell that disagrees does not by itself invalidate the claims. The consolidation names each disagreement and states whether the main claims change. Analyses added after seeing the rerun data are marked exploratory.
@@ -46,8 +46,8 @@ For the two benchmark runs, close other programs, plug in power, and keep the ma
 
 ```powershell
 just build-cuda build-stream-probe
-uv run python -m stoquant bench-matrix --counts 1024 16384 262144 4194304 --output-dir results/<date>-<short_rev>-chan-run1
-uv run python -m stoquant bench-matrix --counts 1024 16384 262144 4194304 --output-dir results/<date>-<short_rev>-chan-run2
+uv run python -m stoquant bench-matrix --course --output-dir results/<date>-<short_rev>-chan-run1
+uv run python -m stoquant bench-matrix --course --output-dir results/<date>-<short_rev>-chan-run2
 just figures results/<date>-<short_rev>-chan-run1
 just figures results/<date>-<short_rev>-chan-run2
 ```
@@ -99,7 +99,7 @@ Fill each field with what happened. Write "not run" or "failed" where that is th
 | Evidence status in `manifest.json` (`evidence`, `non_evidence_reasons`) | | |
 | Readiness facts (available RAM, clock-event reasons) | | |
 | Start and end time | | |
-| Stable cells of 32 | | |
+| Stable cells of 72 | | |
 | Cells whose verdict differs from the project machine | | |
 | Largest change in a pooled median against the other run | | |
 

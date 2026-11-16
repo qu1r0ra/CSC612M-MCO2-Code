@@ -28,6 +28,14 @@ PILOT_PROFILE = SweepProfile(
     bit_widths=DEFAULT_BITS,
 )
 
+# The course report's grid: powers of two from 2^10 to 2^14, then every second power
+# to 2^22, so the small-size crossover is bracketed by adjacent measured sizes.
+COURSE_PROFILE = SweepProfile(
+    name="course",
+    counts=tuple(1 << exponent for exponent in (10, 11, 12, 13, 14, 16, 18, 20, 22)),
+    bit_widths=DEFAULT_BITS,
+)
+
 DEFAULT_CASE_ORDER_SEED = 612
 
 # Twenty-four trials run every ordering of the four paths once, balancing both the
