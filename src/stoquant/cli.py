@@ -9,6 +9,7 @@ from pathlib import Path
 
 from stoquant import layout
 from stoquant.design import (
+    COURSE_PROFILE,
     DEFAULT_BITS,
     DEFAULT_CASE_ORDER_SEED,
     DEFAULT_COUNTS,
@@ -37,10 +38,18 @@ def main(argv: list[str] | None = None, prog: str | None = None) -> None:
     )
     parser.add_argument("--output-dir", type=Path, default=None, help="Directory to save snapshot")
     parser.add_argument(
-        "--counts", type=int, nargs="+", default=DEFAULT_COUNTS, help="Element counts"
+        "--counts",
+        type=int,
+        nargs="+",
+        default=None,
+        help="Element counts (default: every power of two from 2^10 to 2^26)",
     )
     parser.add_argument(
-        "--bits", type=int, nargs="+", default=DEFAULT_BITS, help="Bit widths (4 or 8)"
+        "--bits",
+        type=int,
+        nargs="+",
+        default=None,
+        help="Bit widths, 4 or 8 (default: both)",
     )
     parser.add_argument("--warmup", type=int, default=DEFAULT_WARMUPS, help="Warmup runs")
     parser.add_argument("--reps", type=int, default=DEFAULT_REPS, help="Measured repetitions")
@@ -145,24 +154,39 @@ def main(argv: list[str] | None = None, prog: str | None = None) -> None:
         ),
     )
     parser.add_argument(
+        "--course",
+        action="store_true",
+        help=(
+            "The course report's grid: nine sizes from 2^10 to 2^22 at 4 and 8 bits; "
+            "cannot be combined with --counts or --bits"
+        ),
+    )
+    parser.add_argument(
         "--ignore-readiness",
         action="store_true",
         help="Run despite a failed readiness check (marks the snapshot non-evidence)",
     )
 
     args = parser.parse_args(argv)
+    if args.course and (args.counts is not None or args.bits is not None):
+        parser.error("--course fixes the sizes and bit widths; drop --counts and --bits")
+    if args.counts is None:
+        args.counts = list(DEFAULT_COUNTS)
+    if args.bits is None:
+        args.bits = list(DEFAULT_BITS)
     if len(set(args.counts)) != len(args.counts):
         parser.error("--counts values must be unique")
     if len(set(args.bits)) != len(args.bits):
         parser.error("bit widths must be unique")
+    profile = PILOT_PROFILE if args.pilot else COURSE_PROFILE if args.course else None
     root = layout.ROOT
 
     try:
         snapshot_dir = run_benchmark_matrix(
             root=root,
             output_dir=args.output_dir,
-            counts=PILOT_PROFILE.counts if args.pilot else args.counts,
-            bit_widths=PILOT_PROFILE.bit_widths if args.pilot else args.bits,
+            counts=profile.counts if profile else args.counts,
+            bit_widths=profile.bit_widths if profile else args.bits,
             backends=args.backends,
             warmups=args.warmup,
             reps=args.reps,

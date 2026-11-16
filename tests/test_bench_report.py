@@ -7,6 +7,7 @@ import pytest
 from stoquant.design import CUDA_RESIDENT
 from stoquant.report import (
     FIGURES,
+    STAGE_COUNTS,
     STAGE_PATHS,
     find_crossovers,
     has_speedup_data,
@@ -207,6 +208,49 @@ def test_render_report_writes_figures_and_table(tmp_path):
     # Direction alone resolves host-origin; the rev 2 rule does not.
     assert result["crossovers"][(8, "host-origin")]["status"] == "resolved"
     assert result["crossovers_rev2"][(8, "host-origin")]["status"] == "not resolved"
+
+
+COURSE_GRID = [1024, 2048, 4096, 8192, 16384, 65536, 262144, 1048576, 4194304]
+
+
+def course_grid_cases(flip_after):
+    """Every CUDA path is slower than C up to flip_after elements and faster beyond it."""
+    cases = []
+    for count in COURSE_GRID:
+        ratio, verdict = (4.0, "slower") if count <= flip_after else (0.25, "faster")
+        for bits in (4, 8):
+            cases.append(make_case(count, bits, "comparator", 1.0, None, None))
+            for boundary in ("resident", "resident-graph", "host-origin"):
+                cases.append(
+                    make_case(
+                        count,
+                        bits,
+                        boundary,
+                        ratio,
+                        verdict,
+                        True,
+                        stages=boundary != "resident-graph",
+                    )
+                )
+    return cases
+
+
+def test_nine_size_grid_resolves_the_crossover_between_adjacent_sizes(tmp_path):
+    snapshot = tmp_path / "snap"
+    write_snapshot(snapshot, course_grid_cases(flip_after=8192))
+
+    result = render_report(snapshot, tmp_path / "out")
+
+    report = result["report"].read_text(encoding="utf-8")
+    assert report.count("| 2^") == 54  # nine sizes, two widths, three CUDA paths
+    assert "CUDA resident, 4-bit: resolved between 2^13 and 2^14" in report
+    assert "CUDA host-origin, 8-bit: resolved between 2^13 and 2^14" in report
+    assert all(path.read_bytes().startswith(PNG_MAGIC) for path in result["figures"])
+    assert len(result["figures"]) == 4
+
+
+def test_stage_figure_sizes_exist_on_the_course_grid():
+    assert [n for n in STAGE_COUNTS if n in COURSE_GRID] == [1 << 14, 1 << 18, 1 << 22]
 
 
 def test_render_report_defaults_to_derived_folder(tmp_path):

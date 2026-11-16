@@ -111,6 +111,60 @@ def test_pilot_is_four_sizes_from_the_sweep_grid():
     assert set(PILOT_PROFILE.counts) <= set(DEFAULT_COUNTS)
 
 
+def capture_matrix_call(monkeypatch, argv):
+    """Run the CLI with the driver replaced by a recorder; return the driver's keyword arguments."""
+    calls = []
+
+    def record(**kwargs):
+        calls.append(kwargs)
+        raise RuntimeError("recorded; no sweep runs")
+
+    monkeypatch.setattr(cli, "run_benchmark_matrix", record)
+    with pytest.raises(SystemExit):
+        cli.main(argv)
+    assert len(calls) == 1
+    return calls[0]
+
+
+def test_course_flag_runs_the_nine_size_grid_at_both_widths(monkeypatch):
+    call = capture_matrix_call(monkeypatch, ["--course"])
+
+    assert list(call["counts"]) == [
+        1024,
+        2048,
+        4096,
+        8192,
+        16384,
+        65536,
+        262144,
+        1048576,
+        4194304,
+    ]
+    assert list(call["bit_widths"]) == [4, 8]
+    assert call["pilot"] is False
+
+
+@pytest.mark.parametrize("override", [["--counts", "1024"], ["--bits", "4"]])
+def test_course_flag_rejects_a_conflicting_grid_before_any_work(monkeypatch, capsys, override):
+    def unexpected_run(**_kwargs):
+        pytest.fail("the driver started with a conflicting grid")
+
+    monkeypatch.setattr(cli, "run_benchmark_matrix", unexpected_run)
+
+    with pytest.raises(SystemExit) as exit_info:
+        cli.main(["--course", *override])
+
+    assert exit_info.value.code == 2
+    assert "--course" in capsys.readouterr().err
+
+
+def test_course_flag_combines_with_run_options(monkeypatch):
+    call = capture_matrix_call(monkeypatch, ["--course", "--trials", "24", "--allow-dirty"])
+
+    assert len(call["counts"]) == 9
+    assert call["trials"] == 24
+
+
 def test_affinity_mask_excludes_core_zero():
     assert affinity_mask_excluding(EXCLUDED_LOGICAL_CPUS, 0b1111_1111_1111) == 0b1111_1111_1100
     # Built from the current mask, so CPUs the process never had stay excluded.

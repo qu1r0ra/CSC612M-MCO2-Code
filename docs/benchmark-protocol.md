@@ -568,6 +568,17 @@ Dense and sparse share all 34 count/bit cells; the model collection matches dens
 
 Sparse inputs target 90% zeros; each report lists the realised fraction. Model tensors are synthetic values shaped like the 17 distinct reference-model tensors, not trained weights or a training workload. Separate family runs do not isolate input effects from session variability. Claims are limited to the recorded RTX 5060 system, affinity, compiler flags, implementations and memory boundaries. Stage-event medians are diagnostic and are never summed to form a complete-path timing.
 
+### Course grid (final course report, 2026-11-16)
+
+This rule was fixed and merged before its pilot and its sweeps ran. It adds a grid, not a revision. The revision 3 paths, 24 trials, 10 warm-ups, 30 measured repetitions, in-process warm-up, readiness gate, statistics, claim rules, thresholds, and seeds are unchanged.
+
+- **Reason.** The first final-report sweep (four sizes, `2^10`, `2^14`, `2^18`, `2^22`) could place each crossover only between `2^10` and `2^14`, a gap of sixteen times. Adding sizes narrows that gap, and the final report is stronger with a more complete size curve.
+- **Grid.** Nine sizes at 4 and 8 bits on the four revision 3 paths: `2^10`, `2^11`, `2^12`, `2^13`, `2^14`, `2^16`, `2^18`, `2^20`, `2^22`. That is 72 cases. Steps of one power cover the range where the first sweep found every crossover, and steps of two power cover growth to `2^22`. `--course` runs this grid; it cannot be combined with `--counts` or `--bits`. The grid stops at `2^22` as in the first course sweep.
+- **Runs.** Two full sweeps. The first is the headline and the second is the replicate. Each runs from a clean committed revision with the readiness check enforced and no override. The second runs at the revision that commits the first's snapshot, so its code is identical. Both are reported, and neither is chosen after the results are seen.
+- **Replaced data.** The two four-size snapshots (`results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/`) stay as recorded history. The final report cites only the nine-size snapshots.
+- **Pilot.** `--pilot` runs from the merged tree before the first sweep, at its four pilot sizes. The pilot rule above applies: after the pilot, only an outright bug may be fixed, with a regression test, and no parameter or threshold changes.
+- **Report.** `just figures <snapshot>` renders F1–F4 and `report.md` from each snapshot. F3 shows the stage shares at `2^14`, `2^18`, and `2^22`, the sizes of its fixed list that this grid contains. The crossover rule is unchanged and reads adjacent measured sizes, so a gap of one power or two powers is one step.
+
 ## Comparison backends
 
 - Build the compiled CPU and CUDA backends as one native executable: a C host driver and single-thread C comparator, with CUDA kernels reached through `extern "C"` launch functions. Use Python for the reference and analysis.
@@ -597,7 +608,7 @@ Timed CUDA repetitions do not copy or inspect the device status or the validatio
 ## Matrix
 
 - Main platform: the local RTX 5060, subject to fresh inventory and successful build verification.
-- Element counts: `2^10`, `2^14`, `2^18`, and `2^22` for the course run; the size sweep covers every power of two to `2^26`.
+- Element counts: the nine-size course grid (`2^10` to `2^14` in steps of one power, then `2^16`, `2^18`, `2^20`, `2^22`) for the course report; the earlier course sweeps used `2^10`, `2^14`, `2^18`, and `2^22`; the size sweep covers every power of two to `2^26`.
 - Bit widths: 4 and 8.
 - Input families: dense centered values for the course run; sparse values and a pinned synthetic collection shaped like reference-model tensors, without training data, as the paper extension above.
 - Use 10 warmups and at least 30 measured repetitions per case.
