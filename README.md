@@ -2,7 +2,7 @@
 
 ## Final report
 
-**Draft scaffold: final candidate verification, measurements, and artifacts are pending.**
+**Draft scaffold: measurements are complete (two full sweeps, see Final measured outcomes). Final candidate verification receipt, screenshots, video, and final artifacts are pending.**
 
 ### Purpose and scope
 
@@ -131,8 +131,6 @@ The 2^14 resident-graph intervals are narrow because that path's trial medians b
 - **Record sizes.** Each record has a 20-byte header and a payload of n/2 bytes at 4 bits or n bytes at 8 bits. At 2^22 elements that is 2,097,152 and 4,194,304 payload bytes. Checked across all rerun cases.
 
 Full per-case tables and crossover detail: [first run report](results/2026-11-16-b3b3e8a/derived/report.md) and [rerun report](results/2026-11-16-4f1ae10/derived/report.md). Figures F1–F4 are in each snapshot's `derived/` folder.
-
-**TODO:** generate figures and `report.md` (`just figures results/2026-11-16-b3b3e8a`), link them here, and report all four sizes, both widths, and all four paths, with hardware, OS, driver, toolkit/compiler and flags, revision, absolute times, variability, speedup intervals/eligibility, stage/transfer costs, and record bytes. State where CUDA wins, loses, or remains inconclusive; report only tested crossover intervals. No final speedup or crossover is asserted here.
 
 The checkpoint measured three sizes at an older revision. It supplies neither the missing 16,384-element measurement nor final-candidate results.
 

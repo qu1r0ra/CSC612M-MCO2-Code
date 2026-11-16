@@ -1,6 +1,6 @@
 # Course implementation and verification discussion (draft)
 
-Status: draft course discussion, prepared November 15, 2026. Final candidate verification, the complete four-size results, and final execution artifacts are pending.
+Status: draft course discussion, prepared November 15, 2026. The complete four-size results are recorded in two sweeps (November 16, 2026). Final candidate verification and final execution artifacts are pending.
 
 ## What the program does
 
@@ -8,7 +8,7 @@ The project asks when GPU compression saves time once computation and data trans
 
 The course compares scalar, single-thread C with CUDA at 4 and 8 bits. Scalar C processes values sequentially. CUDA uses SIMT execution: many GPU threads execute the same function, called a kernel, on different data. An optional AVX2/OpenMP CPU backend is also available; the required comparison remains scalar C versus CUDA.
 
-The course experiment calls for dense synthetic vectors of 1,024, 16,384, 262,144, and 4,194,304 elements at both widths. Historical checkpoint measurements on one RTX 5060 found C faster at the smallest tested size and CUDA faster at the largest, including transfers. The absolute times and evidence limits appear below. Final checks and the complete four-size comparison remain pending. This experiment measures compression; it cannot establish faster training, better model accuracy, or communication savings in a deployed system.
+The course experiment calls for dense synthetic vectors of 1,024, 16,384, 262,144, and 4,194,304 elements at both widths. Historical checkpoint measurements on one RTX 5060 found C faster at the smallest tested size and CUDA faster at the largest, including transfers. The absolute times and evidence limits appear below. The complete four-size comparison is recorded in two sweeps, with final checks still pending. This experiment measures compression; it cannot establish faster training, better model accuracy, or communication savings in a deployed system.
 
 ## From values to a packed record
 
@@ -77,7 +77,7 @@ Relevant suites include native codec, quantizer and random-number generator test
 | Historical checkpoint | Frozen `results/2026-10-29-b2f6b09/` records a clean `b2f6b09ed49787cb2630ef9425bc34a0b841308b` run on RTX 5060, driver 610.88. Its 24 cases cover three sizes and both widths across four paths, with record identity and FP64 checks. |
 | Historical test receipts | The checkpoint records CPU/native/RNG and CUDA suite passes. Its later claim trace binds those checks to `5fd0b78`, whose relevant source matched checkpoint `b2f6b09`; this does not establish fresh final-candidate passes. |
 | Final candidate verification | Pending: standalone build and command checks, formatting, lint, native/CPU/CUDA/RNG tests, and same-input packed-byte and decoded-output agreement with the reference implementation. The verification receipt must identify committed revisions, environment, commands, failures and skips. |
-| Final measurements | Pending: all four sizes and both widths on the four course paths at the committed course revision, with raw samples, configuration, build flags, hardware, correctness status and statistics. |
+| Final measurements | Recorded: all four sizes and both widths on the four course paths, in two full sweeps at revisions `b3b3e8a` (headline) and `4f1ae10` (rerun), with raw samples, configuration, build flags, hardware, correctness status and statistics. See `results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/`. |
 | Teammate rerun | Chan's independent execution receipt remains pending. A second machine may use the same GPU model. A coauthor rerun is course repeatability evidence, not external artifact evaluation. |
 | Final written and recorded artifacts | Final README, execution screenshots, presentation, video, and teammate accounts remain pending; a historical demonstration does not complete them. |
 
