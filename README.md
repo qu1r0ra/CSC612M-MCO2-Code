@@ -83,9 +83,56 @@ Explicit sizes avoid the current driver's larger default sweep. Keep dense input
 
 Verification covers prescribed-scale/random-word cases, CPU/CUDA bytes and scales, FP64 reconstruction bounds, empirical means across seeds, Philox known-answer/mapping checks, malformed records, nonfinite/overflow rejection, saturation, zero, and tail/odd lengths at both widths. Source correspondence requires matching-input/seed comparison against the pinned upstream revision. Historical test counts do not verify a final candidate.
 
-### Final measured outcomes — pending
+### Final measured outcomes
 
-**TODO:** link the reviewed final snapshot and figures. Report all four sizes, both widths, and all four paths, with hardware, OS, driver, toolkit/compiler and flags, revision, absolute times, variability, speedup intervals/eligibility, stage/transfer costs, and record bytes. State where CUDA wins, loses, or remains inconclusive; report only tested crossover intervals. No final speedup or crossover is asserted here.
+Two complete sweeps used the same command on the same machine, with nothing else running. Both are kept, and neither replaces the other. The tables below use the first run; the rerun matches every verdict.
+
+| Snapshot | Revision | Role |
+| --- | --- | --- |
+| [`2026-11-16-b3b3e8a`](results/2026-11-16-b3b3e8a/) | `b3b3e8a` | First run |
+| [`2026-11-16-4f1ae10`](results/2026-11-16-4f1ae10/) | `4f1ae10` | Rerun (docs-only commit; code identical to `b3b3e8a`) |
+
+Setup, the same for both runs: NVIDIA GeForce RTX 5060 (`sm_120`), driver 610.88, Windows 11 Pro 10.0.26300, CUDA 13.5 (V13.5.37), MSVC 19.52.37029 x64. Command: `just bench-matrix --counts 1024 16384 262144 4194304 --bits 4 8`. That is 32 cases (4 paths, 4 sizes, 2 widths), each 24 trials of 30 measured repetitions after 10 warm-ups, on dense FP32 normal input. The Git tree was clean, and readiness passed without override (the rerun had 7.9 GiB available at launch, against a 4 GiB floor). All 32 correctness checks passed, with no boundary inversions.
+
+Pooled median times, first run (ms):
+
+| Elements | Bits | C comparator | CUDA resident | CUDA resident-graph | CUDA host-origin |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 2^10 | 4 | 0.0156 | 0.1063 | 0.0193 | 0.2016 |
+| 2^10 | 8 | 0.0142 | 0.1060 | 0.0193 | 0.2044 |
+| 2^14 | 4 | 0.2586 | 0.1384 | 0.0225 | 0.2223 |
+| 2^14 | 8 | 0.2838 | 0.1371 | 0.0225 | 0.2205 |
+| 2^18 | 4 | 4.157 | 0.1589 | 0.0399 | 0.4757 |
+| 2^18 | 8 | 4.353 | 0.1593 | 0.0409 | 0.5020 |
+| 2^22 | 4 | 66.50 | 0.4234 | 0.3001 | 3.285 |
+| 2^22 | 8 | 67.14 | 0.4154 | 0.3184 | 3.596 |
+
+Speedup over the comparator, with 95% bootstrap interval, first run. The rerun gives the same verdicts.
+
+| Elements | Bits | CUDA resident | CUDA resident-graph | CUDA host-origin |
+| --- | ---: | --- | --- | --- |
+| 2^10 | 4 | slower, 0.147× [0.143, 0.157] | inconclusive, 0.808× [0.804, 0.839] | slower, 0.0774× [0.0755, 0.0812] |
+| 2^10 | 8 | slower, 0.134× [0.132, 0.140] | slower, 0.736× [0.732, 0.768] | slower, 0.0695× [0.0685, 0.0718] |
+| 2^14 | 4 | faster, 1.87× [1.85, 1.89] | faster, 11.5× [11.5, 11.5] | faster, 1.16× [1.14, 1.20] |
+| 2^14 | 8 | faster, 2.07× [2.04, 2.11] | faster, 12.6× [12.6, 12.6] | faster, 1.29× [1.25, 1.35] |
+| 2^18 | 4 | faster, 26.2× [25.4, 26.4] | faster, 104× [102, 107] | faster, 8.74× [8.53, 8.80] |
+| 2^18 | 8 | faster, 27.3× [26.6, 27.5] | faster, 106× [106, 106] | faster, 8.67× [8.57, 8.83] |
+| 2^22 | 4 | faster, 157× [157, 158] | faster, 222× [221, 222] | faster, 20.2× [20.2, 20.3] |
+| 2^22 | 8 | faster, 162× [161, 162] | faster, 211× [211, 212] | faster, 18.7× [18.6, 18.7] |
+
+The 2^14 resident-graph intervals are narrow because that path's trial medians barely vary. They describe these 24 trials and are not a precision guarantee.
+
+- **Small inputs favor the scalar comparator.** At 2^10 elements the comparator is faster than resident and host-origin at both widths, and graph replay is slower at 8 bits and inconclusive at 4 bits. Fixed launch and transfer overhead is a likely explanation; this run does not measure it.
+- **From 2^14 up, every CUDA cell is faster.** All 18 CUDA cells at 2^14, 2^18 and 2^22 are faster in both runs.
+- **Crossovers (revision 3 trial-range rule).** Five of six path-width pairs cross between 2^10 and 2^14 elements. Resident-graph at 4 bits is not resolved, because its 2^10 verdict is inconclusive, not because it loses at larger sizes.
+- **The gap widens with size.** At 2^22, resident reaches 157–162×, resident-graph 211–222×, and host-origin 19–20×. Host-origin includes host–device copies that the resident paths exclude. At 2^22 and 4 bits that is 3.28 ms against 0.42 ms.
+- **Stability.** In the rerun all 32 cells pass the 1.25 spread check. The first run had one failure, 2^10 4-bit host-origin (spread 1.26). That cell passed in the rerun at 1.19, and its verdict (slower) matched in both runs.
+- **Reproducibility.** The largest change in any median between runs is 5.6% (2^18, 8-bit, resident). The largest change in any speedup is 5.3%, in the same cell. All 32 verdicts agree, and the revision 3 crossover intervals are identical.
+- **Record sizes.** Each record has a 20-byte header and a payload of n/2 bytes at 4 bits or n bytes at 8 bits. At 2^22 elements that is 2,097,152 and 4,194,304 payload bytes. Checked across all rerun cases.
+
+Full per-case tables and crossover detail: [first run report](results/2026-11-16-b3b3e8a/derived/report.md) and [rerun report](results/2026-11-16-4f1ae10/derived/report.md). Figures F1–F4 are in each snapshot's `derived/` folder.
+
+**TODO:** generate figures and `report.md` (`just figures results/2026-11-16-b3b3e8a`), link them here, and report all four sizes, both widths, and all four paths, with hardware, OS, driver, toolkit/compiler and flags, revision, absolute times, variability, speedup intervals/eligibility, stage/transfer costs, and record bytes. State where CUDA wins, loses, or remains inconclusive; report only tested crossover intervals. No final speedup or crossover is asserted here.
 
 The checkpoint measured three sizes at an older revision. It supplies neither the missing 16,384-element measurement nor final-candidate results.
 

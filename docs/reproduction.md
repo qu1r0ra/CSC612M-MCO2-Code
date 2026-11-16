@@ -13,19 +13,19 @@ The CUDA tool supports 8-bit and 4-bit compression and shares the CPU decoder. `
 
 ## Verified toolchain
 
-Verified on 2026-09-25:
+Verified on 2026-11-16 with the final benchmark snapshots `results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/`:
 
 | Component | Version |
 | --- | --- |
 | GPU | NVIDIA GeForce RTX 5060, compute capability 12.0 (`sm_120`), driver 610.88 |
-| CUDA toolkit | 13.4 (`nvcc` V13.4.59) |
-| C compiler | MSVC `cl` 19.51.36260 for x64 (Visual Studio Community 2026 18.10, toolset 14.51) |
+| CUDA toolkit | 13.5 (`nvcc` V13.5.37) |
+| C compiler | MSVC `cl` 19.52.37029 for x64 |
 | RNG dependency | Random123 v1.14.0, commit `726a093`, vendored in `third_party/random123` |
 | CUDA RNG build flags | `-O2 -arch=native -Inative -Ithird_party/random123/include --Werror all-warnings -Xcompiler /W4 -Xcompiler /WX -Xcompiler /wd4068` |
 | CUDA quantizer build flags | `-O2 -arch=native -Inative -Ithird_party/random123/include --fmad=false --ftz=false --prec-div=true --prec-sqrt=true --Werror all-warnings -Xcompiler /W4 -Xcompiler /WX -Xcompiler /wd4068` |
 | CPU build flags | `/O2 /W4 /WX /std:c11 /fp:strict /Inative /Ithird_party/random123/include` |
 
-`nvcc --list-gpu-arch` includes `compute_120`, and `nvcc` accepted MSVC 19.51 without `-allow-unsupported-compiler`.
+`nvcc --list-gpu-arch` includes `compute_120`, and `nvcc` 13.5 accepted MSVC 19.52 without `-allow-unsupported-compiler`.
 The `/wd4068` flag silences MSVC warnings about CUDA-only pragmas in the vendored Random123 headers.
 
 ## Build and RNG check
