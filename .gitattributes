@@ -15,3 +15,6 @@ results/2026-11-16-4f1ae10/*.txt -text whitespace=cr-at-eol
 # Preserve the nine-size course snapshot's raw CSV and compiler-report bytes.
 results/2026-11-17-3feab89/*.csv -text whitespace=cr-at-eol
 results/2026-11-17-3feab89/*.txt -text whitespace=cr-at-eol
+# Preserve the nine-size replicate snapshot's raw CSV and compiler-report bytes.
+results/2026-11-17-fbeede0/*.csv -text whitespace=cr-at-eol
+results/2026-11-17-fbeede0/*.txt -text whitespace=cr-at-eol

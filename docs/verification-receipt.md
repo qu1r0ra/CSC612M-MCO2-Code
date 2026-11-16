@@ -1,6 +1,6 @@
 # Candidate verification receipt
 
-Candidate: `main` at `a2a746f` of `qu1r0ra/CSC612M-MCO2-Code`, checked out clean on 2026-11-16. Later commits change documentation only. This receipt covers the project machine; the second-machine rerun by Chan has its own [receipt](independent-rerun-receipt.md).
+Candidate: `main` at `5c4e64f` of `qu1r0ra/CSC612M-MCO2-Code`, run on the project machine on 2026-11-17. The tree at `5c4e64f` is identical to `fbeede0` on `main`, the merge that landed PR #13 and the revision that ran the replicate sweep. The earlier candidate `a2a746f` (2026-11-16) stays below as history. This receipt covers the project machine; the second-machine rerun by Chan has its own [receipt](independent-rerun-receipt.md).
 
 ## Environment
 
@@ -14,34 +14,36 @@ Candidate: `main` at `a2a746f` of `qu1r0ra/CSC612M-MCO2-Code`, checked out clean
 | Operating system | Windows 11 Pro 10.0.26300 |
 | Random123 | v1.14.0, commit `726a093`, vendored in `third_party/random123` |
 
-Flags are in [reproduction.md](reproduction.md#verified-toolchain). The two benchmark snapshots record the same hardware, driver, and toolkit.
+Flags are in [reproduction.md](reproduction.md#verified-toolchain). `just toolchain` was not rerun at `5c4e64f`; the values above are the ones recorded in the `a2a746f` run on the same project machine.
 
-## Commands and outcomes
+## Run at 5c4e64f (2026-11-17)
 
-Each command ran from the repository root through `just`, one after another, and exited 0. Durations are wall-clock seconds on the project machine.
+Commands ran from the repository root through `just`, one after another, from 02:25:59 to 02:36:34 (+08:00). Durations are wall-clock seconds. The equivalence smoke failed on its first attempt and passed after a rebuild (see the note below).
 
 | Command | Exit | Seconds | What it ran | Result |
 | --- | --- | --- | --- | --- |
-| `just toolchain` | 0 | 2 | Prints `nvcc`, `cl`, and GPU versions | Values in the table above |
-| `just verify` | 0 | 62 | Format check and lint: ruff, basedpyright, clang-format, clang-tidy, MSVC `/analyze` | 69 files already formatted; ruff "All checks passed"; basedpyright 0 errors, 0 warnings, 0 notes |
-| `just test-cpu` | 0 | 160 | Builds the CPU CLI; runs the codec, quantizer, AVX2 quantizer, and CPU Philox C tests; then pytest with `STOQUANT_EXPECT_CPU_ONLY=1` | Each native test reported 0 failures; pytest 457 passed, 295 skipped, 0 failed |
-| `just test-rng` | 0 | 7 | CUDA Philox known-answer, stream-mapping, six launch-geometry, and Bernoulli-threshold checks | 0 failures |
-| `just test-cuda` | 0 | 257 | Builds the CUDA CLI; runs `test_cuda_api`; then pytest on `tests/test_cuda.py`, `tests/test_matrix_driver.py`, and `tests/test_sweep_avx2.py` with a CUDA device required | 311 passed, 0 skipped, 0 failed |
-| `just build-cuda` | 0 | 26 | Rebuilds the CUDA CLI that the next command checks | Built |
-| `just equivalence-smoke` | 0 | 3 | Fixed normal (1,024), mixed odd-length (4,099), and all-zero (513) inputs at 4 and 8 bits through scalar CPU, AVX2 CPU, and CUDA reference and optimized K1 | 6 of 6 cases passed: all four encoders write identical record bytes and all four decoders agree |
-| `just unbiasedness` | 0 | about 60 | Builds the CUDA CLI and runs the expectation suite: four inputs, both widths, CPU and CUDA backends, 4,096 seeds | 8 of 8 cases pass with identical CPU and CUDA results; max error over bound 0.627 to 0.959 (gate is 1); pooled variance ratio 0.9991 to 1.0002; snapshot `results/2026-11-16-52890d6-unbiasedness/` (`evidence: true`), run at `52890d6` |
-| `just vec-report` | 0 | 24 | Recompiles the AVX2 sources with `/Qvec-report:2` | 7 of 7 AVX2 hot loops vectorized |
-| `just test-cpu-asan` | 0 | 31 | Builds the CPU tests under AddressSanitizer and runs them | 0 failures; the sanitizer caught its deliberate one-byte heap overread |
+| `just build-cuda` | 0 | 32 | Builds the CUDA CLI | Built |
+| `just verify` | 0 | 64 | Format check and lint: ruff, basedpyright, clang-format, clang-tidy, MSVC `/analyze` | 72 files already formatted; ruff "All checks passed!"; basedpyright 0 errors, 0 warnings, 0 notes |
+| `just test-cpu` | 0 | 164 | Builds the CPU CLI; runs the codec, quantizer, AVX2 quantizer, and CPU Philox C tests; then pytest with `STOQUANT_EXPECT_CPU_ONLY=1` | Each native test reported 0 failures; pytest 463 passed, 295 skipped, 0 failed |
+| `just test-cuda` | 0 | 254 | Builds the CUDA CLI; runs `test_cuda_api`; then pytest on `tests/test_cuda.py`, `tests/test_matrix_driver.py`, and `tests/test_sweep_avx2.py` with a CUDA device required | 311 passed, 0 failed |
+| `just test-cpu-asan` | 0 | 30 | Builds the CPU tests under AddressSanitizer and runs them | 0 failures; the sanitizer caught its deliberate one-byte heap overread |
+| `just vec-report` | 0 | 24 | Recompiles the AVX2 sources with `/Qvec-report:2`; relinks `build/stoquant.exe` as a CPU-only binary | 7 of 7 AVX2 hot loops vectorized |
+| `just equivalence-smoke` | 1, then passed | 0.7 (failed), 2.3 (passed) | Fixed normal (1,024), mixed odd-length (4,099), and all-zero (513) inputs at 4 and 8 bits through scalar CPU, AVX2 CPU, and CUDA reference and optimized K1 | First attempt failed: "build-cpu binary cannot serve CUDA paths". After `just build-cuda`, the rerun passed 6 of 6 cases: all four encoders write identical record bytes and all four decoders agree |
+| `just unbiasedness` | 0 | 65 | Builds the CUDA CLI and runs the expectation suite: four inputs, both widths, CPU and CUDA backends, 4,096 seeds | 8 of 8 cases pass with identical CPU and CUDA results; max error over bound 0.627 to 0.959 (gate is 1); variance ratio 0.9991 to 1.0002; snapshot `results/2026-11-17-5c4e64f-unbiasedness/` (`evidence: true`, no non-evidence reasons) |
 
-The test scope is listed in [reproduction.md](reproduction.md#verified-test-commands): decoder rejection branches, edge cases (empty, all-zero, signed zero, saturation, odd and partial-block lengths, nonfinite input), the 4,096-seed unbiasedness loop, byte parity of CPU and CUDA records, prescribed-scale and FP64 reconstruction-bound checks, launch-geometry independence, and determinism.
+- **Ordering.** `just vec-report` relinks `build/stoquant.exe` as a CPU-only binary, so `just build-cuda` must run before `just equivalence-smoke`. The smoke refuses a CPU-only binary before any case runs. The rerun's exit code was not written to the exit-code log; its log ends "behavior smoke passed in 2.3s".
+- **Not run at this revision.** `just toolchain` and `just test-rng`. `test-rng` last passed at `a2a746f` (7 seconds, 0 failures); its checks are not repeated here.
+- **Timing.** This receipt ran before the sweeps. The sweeps ran at `fbeede0`, whose tree is identical to `5c4e64f`, so the receipt was not rerun after them.
 
 ## Skipped or not run
 
 - The 295 skipped pytest cases in `just test-cpu` carry the marker "run with `just test-cuda` on a CUDA device". That recipe runs CPU-only by design. The CUDA recipe ran 311 cases over three of the test files, and no case skipped. The skipped and executed sets are not the same cases, so the skip count is not a count of untested CUDA behavior.
-- `just equivalence compare` against upstream's golden baseline `tests/golden/b569a35…json` was run once and reported NOT EQUIVALENT with 1,653 differences, so it does not serve as a gate for the course copy. The baseline fingerprints upstream-only outputs (the K1 A/B experiment, which the course copy omits) and every snapshot under `results/` (which differ between the repositories). The visible differences also include build provenance (dirty tree from the untracked unbiasedness output) and MSVC vectorization-report counts. The console output was truncated at about 70 live entries, so this receipt makes no leaf-by-leaf claim; record-byte agreement rests on `equivalence-smoke` and the byte-parity tests above. `capture` was not run.
-- The two benchmark sweeps are separate evidence: `results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/`.
+- At `a2a746f`, `just equivalence compare` against upstream's golden baseline `tests/golden/b569a35…json` was run once and reported NOT EQUIVALENT with 1,653 differences, so it does not serve as a gate for the course copy. The baseline fingerprints upstream-only outputs (the K1 A/B experiment, which the course copy omits) and every snapshot under `results/` (which differ between the repositories). The visible differences also include build provenance (dirty tree from the untracked unbiasedness output) and MSVC vectorization-report counts. The console output was truncated at about 70 live entries, so this receipt makes no leaf-by-leaf claim; record-byte agreement rests on `equivalence-smoke` and the byte-parity tests. `capture` was not run.
+- The benchmark sweeps are separate evidence: nine-size `results/2026-11-17-3feab89/` (headline) and `results/2026-11-17-fbeede0/` (replicate), 72 cases each, all passed, `evidence: true`. Both are reported; neither was chosen after its results were seen. The four-size pair `results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/` is superseded history.
 
 ## Source correspondence with the upstream repository
+
+This comparison was made at `a2a746f` and was not redone at `5c4e64f`. Since `a2a746f`, four course files changed: `src/stoquant/cli.py`, `src/stoquant/design.py`, `tests/test_bench_report.py`, and `tests/test_matrix_host.py`. The table below describes the `a2a746f` tree.
 
 Upstream is `qu1r0ra/stochastic-quantization-backends`, `main` at `9ccbe03` (local checkout equal to `origin/main` on 2026-11-16). The course repository does not record an upstream commit in its history, so this section compares trees directly. The comparison ignores carriage returns, because the two checkouts differ in line endings. It used `diff -rq --strip-trailing-cr` on each path.
 
@@ -58,5 +60,25 @@ The record-producing code is the same in both repositories. The differences are 
 ## Remaining gates
 
 - Chan's rerun on a second machine ([receipt template](independent-rerun-receipt.md)).
-- A line-by-line review of the shared-module differences listed above, if the final report is to state that the course Python is behavior-equivalent to upstream.
+- A line-by-line review of the shared-module differences listed above, if the final report is to state that the course Python is behavior-equivalent to upstream. Repeat the upstream comparison at the final revision if the report states it.
+- `just toolchain` and `just test-rng` at the final revision, if the final report cites them as run there.
 - Screenshots, the demonstration video, member observations, and the final presentation.
+
+## Earlier candidate: a2a746f (2026-11-16)
+
+Kept as history. Each command ran from the repository root through `just`, one after another, and exited 0. Durations are wall-clock seconds on the project machine.
+
+| Command | Exit | Seconds | What it ran | Result |
+| --- | --- | --- | --- | --- |
+| `just toolchain` | 0 | 2 | Prints `nvcc`, `cl`, and GPU versions | Values in the table above |
+| `just verify` | 0 | 62 | Format check and lint: ruff, basedpyright, clang-format, clang-tidy, MSVC `/analyze` | 69 files already formatted; ruff "All checks passed"; basedpyright 0 errors, 0 warnings, 0 notes |
+| `just test-cpu` | 0 | 160 | Builds the CPU CLI; runs the codec, quantizer, AVX2 quantizer, and CPU Philox C tests; then pytest with `STOQUANT_EXPECT_CPU_ONLY=1` | Each native test reported 0 failures; pytest 457 passed, 295 skipped, 0 failed |
+| `just test-rng` | 0 | 7 | CUDA Philox known-answer, stream-mapping, six launch-geometry, and Bernoulli-threshold checks | 0 failures |
+| `just test-cuda` | 0 | 257 | Builds the CUDA CLI; runs `test_cuda_api`; then pytest on `tests/test_cuda.py`, `tests/test_matrix_driver.py`, and `tests/test_sweep_avx2.py` with a CUDA device required | 311 passed, 0 skipped, 0 failed |
+| `just build-cuda` | 0 | 26 | Rebuilds the CUDA CLI that the next command checks | Built |
+| `just equivalence-smoke` | 0 | 3 | Fixed normal (1,024), mixed odd-length (4,099), and all-zero (513) inputs at 4 and 8 bits through scalar CPU, AVX2 CPU, and CUDA reference and optimized K1 | 6 of 6 cases passed: all four encoders write identical record bytes and all four decoders agree |
+| `just unbiasedness` | 0 | about 60 | Builds the CUDA CLI and runs the expectation suite: four inputs, both widths, CPU and CUDA backends, 4,096 seeds | 8 of 8 cases pass with identical CPU and CUDA results; max error over bound 0.627 to 0.959 (gate is 1); pooled variance ratio 0.9991 to 1.0002; snapshot `results/2026-11-16-52890d6-unbiasedness/` (`evidence: true`), run at `52890d6` |
+| `just vec-report` | 0 | 24 | Recompiles the AVX2 sources with `/Qvec-report:2` | 7 of 7 AVX2 hot loops vectorized |
+| `just test-cpu-asan` | 0 | 31 | Builds the CPU tests under AddressSanitizer and runs them | 0 failures; the sanitizer caught its deliberate one-byte heap overread |
+
+The test scope is listed in [reproduction.md](reproduction.md#verified-test-commands): decoder rejection branches, edge cases (empty, all-zero, signed zero, saturation, odd and partial-block lengths, nonfinite input), the 4,096-seed unbiasedness loop, byte parity of CPU and CUDA records, prescribed-scale and FP64 reconstruction-bound checks, launch-geometry independence, and determinism.
