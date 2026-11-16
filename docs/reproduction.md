@@ -257,6 +257,11 @@ just equivalence-smoke
 
 This is a selected behavior smoke against implementations in the current tree. It does not compare the whole current tree with a fingerprint from an earlier revision, nor cover snapshot rendering, monitoring, or every benchmark and report output. Run focused tests for the changed modules as usual. Use the full capture/compare workflow when publication output contracts or claim rules change and for the final whole-output audit associated with an evidence pin.
 
+## Receipts
+
+- [Candidate verification receipt](verification-receipt.md): the commands above run against revision `a2a746f` on the project machine, with outcomes, skipped checks, and source correspondence with upstream.
+- [Independent rerun receipt](independent-rerun-receipt.md): the template for the second-machine rerun, with its agreement tolerance fixed in advance.
+
 ## Scope boundary
 
 The course implementation does not require full federated training, network transport, or compatibility with other wire formats.
