@@ -1,0 +1,375 @@
+Command: gcc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -fopt-info-vec-optimized -fopt-info-vec-missed -c native/main.c -o /home/jupyter-christian_bunyi@dl-3b8eb/projects/csc612m-mco2-code/results/2026-11-17-9446386.partial/_temp/vec_obj/native_main.c.o
+Exit code: 0
+
+native/byteorder.h:33:17: missed: couldn't vectorize loop
+native/byteorder.h:33:17: missed: not vectorized: unsupported data-type
+native/byteorder.h:41:17: missed: couldn't vectorize loop
+native/byteorder.h:41:17: missed: not vectorized: unsupported data-type
+native/main.c:107:8: missed: statement clobbers memory: _1 = sq_avx2_is_supported ();
+native/main.c:91:16: missed: statement clobbers memory: count_15 = sysconf (84);
+native/bench_clock.h:33:7: missed: statement clobbers memory: _1 = clock_gettime (1, &current);
+native/main.c:436:12: missed: statement clobbers memory: status_113 = sq_cli_parse (1, argc_110(D), argv_111(D), &options);
+native/main.c:438:14: missed: statement clobbers memory: status_115 = sq_cli_validate (1, &options, 1);
+native/main.c:443:14: missed: statement clobbers memory: legality_117 = sq_cli_legality (_2, _1);
+native/main.c:411:18: missed: statement clobbers memory: _159 = resolve_cpu_threads.part.0.constprop (_9, _6, &threads);
+native/main.c:474:8: missed: statement clobbers memory: _13 = sq_read_file (input_path_118, &input_bytes, &input_size);
+native/main.c:494:23: missed: statement clobbers memory: record_381 = malloc (record_size_136);
+native/main.c:495:32: missed: statement clobbers memory: samples_383 = calloc (reps_128, 56);
+native/main.c:492:41: missed: statement clobbers memory: iftmp.29_138 = malloc (_19);
+native/main.c:493:43: missed: statement clobbers memory: iftmp.30_140 = malloc (_19);
+native/main.c:494:23: missed: statement clobbers memory: record_374 = malloc (record_size_136);
+native/main.c:495:32: missed: statement clobbers memory: samples_376 = calloc (reps_128, 56);
+native/main.c:501:3: missed: statement clobbers memory: sq_load_f32_array_le (iftmp.29_392, input_bytes.31_26, count_134);
+native/main.c:503:10: missed: statement clobbers memory: _27 = sq_read_file (words_path_120, &word_bytes, &word_size);
+native/main.c:512:5: missed: statement clobbers memory: sq_load_u32_array_le (iftmp.30_386, word_bytes.33_30, count_134);
+native/main.c:514:12: missed: statement clobbers memory: status_150 = sq_validate_input (iftmp.29_392, count_134);
+native/main.c:526:14: missed: statement clobbers memory: status_153 = sq_cpu_compress_workspace_reserve (&cpu_workspace, _34, threads.34_35, count_134);
+native/main.c:593:14: missed: statement clobbers memory: status_174 = sq_cuda_bench (&config, base_payload_171, &scale, samples_391, &capture_ms);
+native/main.c:597:14: missed: statement clobbers memory: status_176 = sq_header_encode (_59, count_134, scale.45_58, record_389);
+native/main.c:602:10: missed: statement clobbers memory: _60 = sq_write_file (output_path_119, record_389, record_size_136);
+native/main.c:345:12: missed: statement clobbers memory: status_288 = sq_cuda_staging_create (iftmp.29_392, count_134, _236, &staging);
+native/main.c:349:12: missed: statement clobbers memory: status_290 = sq_cuda_staging_download (staging.51_289, &landing, &d2h_ms);
+native/main.c:351:14: missed: statement clobbers memory: status_293 = sq_cpu_compress (_385, _292, landing.52_291, count_134, seed_121, tensor_id_122, invocation_id_123, scale_seen_130, prescribed_scale_131, iftmp.43_87, 0, &cpu_workspace, record_389);
+native/main.c:358:31: missed: statement clobbers memory: _294 = sq_write_file (output_path_119, record_389, record_size_136);
+native/main.c:371:10: missed: statement clobbers memory: _303 = bench_clock_now_ms.isra (&start_ms);
+native/main.c:375:14: missed: statement clobbers memory: status_305 = sq_cuda_staging_download (staging.53_304, &landing, &d2h_ms);
+native/main.c:379:10: missed: statement clobbers memory: _306 = bench_clock_now_ms.isra (&cpu_start_ms);
+native/main.c:383:14: missed: statement clobbers memory: status_308 = sq_cpu_compress (_385, _292, landing.54_307, count_134, seed_121, tensor_id_122, _302, scale_seen_130, prescribed_scale_131, iftmp.43_87, 0, &cpu_workspace, record_389);
+native/main.c:389:10: missed: statement clobbers memory: _309 = bench_clock_now_ms.isra (&stop_ms);
+native/main.c:406:3: missed: statement clobbers memory: sq_cuda_staging_destroy (staging.60_342);
+native/main.c:404:11: missed: statement clobbers memory: remove (output_path_119);
+native/main.c:406:3: missed: statement clobbers memory: sq_cuda_staging_destroy (staging.60_55);
+native/main.c:406:3: missed: statement clobbers memory: sq_cuda_staging_destroy (staging.60_326);
+native/main.c:534:19: missed: statement clobbers memory: team_size_155 = sq_avx2_team_size (threads.34_35);
+native/main.c:536:14: missed: statement clobbers memory: status_157 = sq_cpu_compress (_40, _39, iftmp.29_392, count_134, seed_121, tensor_id_122, invocation_id_123, scale_seen_130, prescribed_scale_131, iftmp.38_86, threads.34_35, &cpu_workspace, record_389);
+native/main.c:544:10: missed: statement clobbers memory: _41 = sq_write_file (output_path_119, record_389, record_size_136);
+native/main.c:609:20: missed: statement clobbers memory: _62 = sq_backend_name (_61);
+native/main.c:611:28: missed: statement clobbers memory: _65 = sq_transfer_policy_name (_64);
+native/main.c:612:52: missed: statement clobbers memory: iftmp.46_188 = sq_k1_name (k1_129);
+native/main.c:630:3: missed: statement clobbers memory: sq_bench_print_json (&result);
+native/main.c:556:12: missed: statement clobbers memory: _43 = bench_clock_now_ms.isra (&start_ms);
+native/main.c:560:16: missed: statement clobbers memory: status_163 = sq_cpu_compress (_45, _39, iftmp.29_392, count_134, seed_121, tensor_id_122, _234, scale_seen_130, prescribed_scale_131, iftmp.38_86, threads.34_35, &cpu_workspace, record_389);
+native/main.c:567:12: missed: statement clobbers memory: _46 = bench_clock_now_ms.isra (&stop_ms);
+native/main.c:634:3: missed: statement clobbers memory: free (samples_79);
+native/main.c:635:3: missed: statement clobbers memory: sq_cpu_compress_workspace_destroy (&cpu_workspace);
+native/main.c:636:3: missed: statement clobbers memory: free (words_78);
+native/main.c:637:3: missed: statement clobbers memory: free (record_76);
+native/main.c:638:3: missed: statement clobbers memory: free (values_77);
+native/main.c:639:3: missed: statement clobbers memory: free (word_bytes.48_72);
+native/main.c:640:3: missed: statement clobbers memory: free (input_bytes.49_73);
+native/main.c:323:10: missed: not vectorized: vectorization is not profitable.
+native/main.c:624:21: missed: not vectorized: vectorization is not profitable.
+native/main.c:616:16: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:616:16: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:616:16: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:616:16: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:616:16: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:616:16: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:131:12: missed: statement clobbers memory: status_95 = sq_cli_parse (0, argc_92(D), argv_93(D), &options);
+native/main.c:133:14: missed: statement clobbers memory: status_97 = sq_cli_validate (0, &options, 1);
+native/main.c:141:13: missed: statement clobbers memory: backend_102 = sq_backend_name (_1);
+native/main.c:114:18: missed: statement clobbers memory: _159 = resolve_cpu_threads.part.0.constprop (_8, _5, &threads);
+native/main.c:158:8: missed: statement clobbers memory: _11 = sq_read_file (input_path_98, &input_bytes, &input_size);
+native/main.c:170:41: missed: statement clobbers memory: iftmp.6_113 = malloc (_14);
+native/main.c:175:3: missed: statement clobbers memory: sq_load_f32_array_le (iftmp.6_236, input_bytes.7_18, count_111);
+native/main.c:177:7: missed: statement clobbers memory: _19 = strcmp (backend_102, "cuda");
+native/main.c:237:10: missed: statement clobbers memory: _45 = sq_read_file (words_path_100, &word_bytes, &word_size);
+native/main.c:249:45: missed: statement clobbers memory: iftmp.16_117 = malloc (_46);
+native/main.c:254:5: missed: statement clobbers memory: sq_load_u32_array_le (iftmp.16_238, word_bytes.17_50, count_111);
+native/main.c:259:25: missed: statement clobbers memory: record_121 = malloc (_52);
+native/main.c:264:14: missed: statement clobbers memory: status_123 = sq_cpu_compress_workspace_reserve (&cpu_workspace, _54, threads.18_53, count_111);
+native/main.c:269:14: missed: statement clobbers memory: status_125 = sq_cpu_compress (_57, _56, iftmp.6_236, count_111, seed_103, tensor_id_104, invocation_id_105, scale_seen_107, prescribed_scale_108, iftmp.20_76, threads.18_53, &cpu_workspace, record_121);
+native/main.c:276:10: missed: statement clobbers memory: _58 = sq_write_file (output_path_99, record_121, _52);
+native/main.c:201:25: missed: statement clobbers memory: record_216 = malloc (_220);
+native/main.c:184:12: missed: statement clobbers memory: _23 = sq_read_file (words_path_100, &word_bytes, &word_size);
+native/main.c:193:47: missed: statement clobbers memory: iftmp.9_134 = malloc (_24);
+native/main.c:198:7: missed: statement clobbers memory: sq_load_u32_array_le (iftmp.9_237, word_bytes.10_28, count_111);
+native/main.c:201:25: missed: statement clobbers memory: record_212 = malloc (_221);
+native/main.c:210:16: missed: statement clobbers memory: status_139 = sq_cuda_compress (&config, _30, &scale, iftmp.12_74);
+native/main.c:216:14: missed: statement clobbers memory: status_142 = sq_header_encode (_32, count_111, scale.13_31, record_243);
+native/main.c:220:10: missed: statement clobbers memory: _33 = sq_write_file (output_path_99, record_243, _234);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:79:10: missed: statement clobbers memory: __fprintf_chk (stderr.14_44, 2, "{\"k1_ms\":%.6f,\"k2_ms\":%.6f,\"k3_ms\":%.6f,\"h2d_ms\":%.6f,\"d2h_ms\":%.6f}\n", _43, _41, _39, _37, _35);
+native/main.c:282:3: missed: statement clobbers memory: sq_cpu_compress_workspace_destroy (&cpu_workspace);
+native/main.c:283:3: missed: statement clobbers memory: free (record_62);
+native/main.c:284:3: missed: statement clobbers memory: free (words_67);
+native/main.c:285:3: missed: statement clobbers memory: free (word_bytes.21_59);
+native/main.c:286:3: missed: statement clobbers memory: free (values_63);
+native/main.c:287:3: missed: statement clobbers memory: free (input_bytes.22_60);
+native/main.c:323:10: missed: not vectorized: vectorization is not profitable.
+native/main.c:323:10: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:323:10: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:323:10: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:323:10: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:776:17: missed: couldn't vectorize loop
+native/main.c:776:17: missed: not vectorized: control flow in loop.
+native/main.c:818:29: missed: couldn't vectorize loop
+native/main.c:819:33: missed: not vectorized: no vectype for stmt: _33 = *_32;
+ scalar_type: float
+native/main.c:722:12: missed: statement clobbers memory: status_90 = sq_cli_parse (3, argc_87(D), argv_88(D), &options);
+native/main.c:724:14: missed: statement clobbers memory: status_92 = sq_cli_validate (3, &options, 1);
+native/main.c:731:13: missed: statement clobbers memory: backend_96 = sq_backend_name (_1);
+native/main.c:741:8: missed: statement clobbers memory: _3 = sq_read_file (input_path_93, &input_bytes, &input_size);
+native/main.c:755:21: missed: statement clobbers memory: values_107 = malloc (_8);
+native/main.c:756:23: missed: statement clobbers memory: record_109 = malloc (_9);
+native/main.c:757:20: missed: statement clobbers memory: sums_111 = calloc (count_104, 8);
+native/main.c:758:23: missed: statement clobbers memory: squares_113 = calloc (count_104, 8);
+native/main.c:763:3: missed: statement clobbers memory: sq_load_f32_array_le (values_107, input_bytes.76_16, count_104);
+native/main.c:764:12: missed: statement clobbers memory: status_116 = sq_compute_scale (values_107, count_104, &scale);
+native/main.c:768:7: missed: statement clobbers memory: _17 = strcmp (backend_96, "cpu");
+native/main.c:769:14: missed: statement clobbers memory: status_118 = sq_cpu_compress_workspace_reserve (&cpu_workspace, 0, 0, count_104);
+native/main.c:828:23: missed: statement clobbers memory: output_121 = malloc (output_size_119);
+native/main.c:837:8: missed: statement clobbers memory: _52 = sq_write_file (output_path_94, output_121, output_size_119);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, "{\"backend\":\"%s\",\"bits\":%u,\"count\":%llu,\"seeds\":%llu,\"seed_start\":%llu,\"tensor_id\":%llu,\"invocation_id\":%llu,\"scale\":%.9g,\"scale_bits\":\"0x%08x\"}\n", backend_96, _56, count_104, seeds_98, seed_start_99, tensor_id_100, invocation_id_101, _55, _184);
+native/main.c:782:9: missed: statement clobbers memory: _19 = strcmp (backend_96, "cuda");
+native/main.c:802:16: missed: statement clobbers memory: status_127 = sq_cpu_compress (0, _27, values_107, count_104, seed_124, tensor_id_100, invocation_id_101, 1, scale.77_18, 0B, 0, &cpu_workspace, record_109);
+native/main.c:786:16: missed: statement clobbers memory: status_129 = sq_cuda_compress (&config, _22, &record_scale, 0B);
+native/main.c:795:16: missed: statement clobbers memory: status_132 = sq_header_encode (_25, count_104, record_scale.78_23, record_109);
+native/main.c:809:14: missed: statement clobbers memory: status_136 = sq_decode_record (record_109, _9, &decoded, &decoded_count);
+native/main.c:823:5: missed: statement clobbers memory: free (pretmp_213);
+native/main.c:851:3: missed: statement clobbers memory: free (output_61);
+native/main.c:852:3: missed: statement clobbers memory: free (decoded.87_57);
+native/main.c:853:3: missed: statement clobbers memory: free (squares_64);
+native/main.c:854:3: missed: statement clobbers memory: free (sums_63);
+native/main.c:855:3: missed: statement clobbers memory: free (record_60);
+native/main.c:856:3: missed: statement clobbers memory: sq_cpu_compress_workspace_destroy (&cpu_workspace);
+native/main.c:857:3: missed: statement clobbers memory: free (values_62);
+native/main.c:858:3: missed: statement clobbers memory: free (input_bytes.88_58);
+native/main.c:323:10: missed: not vectorized: vectorization is not profitable.
+native/main.c:323:10: missed: not vectorized: vectorization is not profitable.
+native/main.c:323:10: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:323:10: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:323:10: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:323:10: optimized: basic block part vectorized using 16 byte vectors
+native/main.c:865:19: missed: statement clobbers memory: _2 = strcmp (_1, "--help");
+native/main.c:866:7: missed: statement clobbers memory: _3 = strcmp (_1, "-h");
+native/main.c:870:7: missed: statement clobbers memory: _4 = strcmp (_1, "compress");
+native/main.c:872:14: missed: statement clobbers memory: _5 = strcmp (_1, "bench");
+native/main.c:874:14: missed: statement clobbers memory: _6 = strcmp (_1, "decompress");
+native/main.c:876:14: missed: statement clobbers memory: _7 = strcmp (_1, "expect");
+native/main.c:877:14: missed: statement clobbers memory: status_22 = expect_file (argc_18(D), argv_19(D));
+native/main.c:652:12: missed: statement clobbers memory: status_35 = sq_cli_parse (2, argc_18(D), argv_19(D), &options);
+native/main.c:654:14: missed: statement clobbers memory: status_36 = sq_cli_validate (2, &options, 1);
+native/main.c:662:8: missed: statement clobbers memory: _39 = sq_read_file (input_path_37, &record, &record_size);
+native/main.c:665:12: missed: statement clobbers memory: status_42 = sq_decode_record (record.62_41, record_size.61_40, &values, &count);
+native/main.c:674:43: missed: statement clobbers memory: iftmp.65_45 = malloc (output_size_44);
+native/main.c:680:8: missed: statement clobbers memory: _48 = sq_write_file (output_path_38, iftmp.65_127, output_size_44);
+native/main.c:685:3: missed: statement clobbers memory: free (output_49);
+native/main.c:686:3: missed: statement clobbers memory: free (values.70_50);
+native/main.c:687:3: missed: statement clobbers memory: free (record.71_51);
+native/main.c:873:14: missed: statement clobbers memory: status_26 = bench_file (argc_18(D), argv_19(D));
+native/main.c:871:14: missed: statement clobbers memory: status_28 = compress_file (argc_18(D), argv_19(D));
+native/main.c:883:11: missed: statement clobbers memory: _9 = sq_status_message (status_125);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:79:10: missed: statement clobbers memory: __fprintf_chk (stderr.3_11, 2, "%s: %s\n", _10, _9);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:79:10: missed: statement clobbers memory: __fprintf_chk (iftmp.0_30, 2, "Usage:\n  stoquant compress --input INPUT.f32 --output RECORD --seed UINT64\n      [--backend cpu|cpu-avx2|cuda] [--bits 4|8] [--tensor-id UINT32]\n      [--invocation-id UINT32] [--scale FP32] [--words WORDS.u32]\n      [--threads UINT32] [--block-size UINT32] [--grid-size UINT32]\n      [--k1 reference|optimized] [--timings]\n  stoquant bench --input INPUT.f32 --seed UINT64\n      [--output RECORD | --record-output RECORD]\n      [--backend cpu|cpu-avx2|cuda] [--bits 4|8] [--tensor-id UINT32]\n      [--invocation-id UINT32] [--scale FP32] [--words WORDS.u32]\n      [--threads UINT32]\n      [--boundary resident|resident-graph|host-origin|gpu-origin]\n      [--transfer-policy pageable|pinned] [--warmup UINT32 (default 10)]\n      [--reps UINT32 (default 30)]\n      [--block-size UINT32] [--grid-size UINT32]\n      [--k1 reference|optimized] [--timings]\n  stoquant decompress --input RECORD --output OUTPUT.f32\n  stoquant expect --input INPUT.f32 --output SUMS.f64 --seeds UINT64\n      [--seed-start UINT64 (default 1)] [--backend cpu|cuda]\n      [--bits 4|8] [--tensor-id UINT32] [--invocation-id UINT32]\n\nInput and output tensors use little-endian raw FP32. Prescribed\nrandom words use little-endian raw uint32, one per element.\nexpect writes little-endian FP64 per-element sums of the decoded\nvalues, then per-element sums of their squares.\ncpu-avx2 writes the same bytes as cpu; --threads defaults to the\nprocessor count in the process affinity mask (Windows) or online (elsewhere).\n--k1 (cuda only) picks the scale-stage kernels; both write the same bytes\nand reference is the default.\n");
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:79:10: missed: statement clobbers memory: __fprintf_chk (iftmp.0_31, 2, "Usage:\n  stoquant compress --input INPUT.f32 --output RECORD --seed UINT64\n      [--backend cpu|cpu-avx2|cuda] [--bits 4|8] [--tensor-id UINT32]\n      [--invocation-id UINT32] [--scale FP32] [--words WORDS.u32]\n      [--threads UINT32] [--block-size UINT32] [--grid-size UINT32]\n      [--k1 reference|optimized] [--timings]\n  stoquant bench --input INPUT.f32 --seed UINT64\n      [--output RECORD | --record-output RECORD]\n      [--backend cpu|cpu-avx2|cuda] [--bits 4|8] [--tensor-id UINT32]\n      [--invocation-id UINT32] [--scale FP32] [--words WORDS.u32]\n      [--threads UINT32]\n      [--boundary resident|resident-graph|host-origin|gpu-origin]\n      [--transfer-policy pageable|pinned] [--warmup UINT32 (default 10)]\n      [--reps UINT32 (default 30)]\n      [--block-size UINT32] [--grid-size UINT32]\n      [--k1 reference|optimized] [--timings]\n  stoquant decompress --input RECORD --output OUTPUT.f32\n  stoquant expect --input INPUT.f32 --output SUMS.f64 --seeds UINT64\n      [--seed-start UINT64 (default 1)] [--backend cpu|cuda]\n      [--bits 4|8] [--tensor-id UINT32] [--invocation-id UINT32]\n\nInput and output tensors use little-endian raw FP32. Prescribed\nrandom words use little-endian raw uint32, one per element.\nexpect writes little-endian FP64 per-element sums of the decoded\nvalues, then per-element sums of their squares.\ncpu-avx2 writes the same bytes as cpu; --threads defaults to the\nprocessor count in the process affinity mask (Windows) or online (elsewhere).\n--k1 (cuda only) picks the scale-stage kernels; both write the same bytes\nand reference is the default.\n");
+native/byteorder.h:14:12: optimized: basic block part vectorized using 16 byte vectors
+
+Command: gcc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -fopt-info-vec-optimized -fopt-info-vec-missed -c native/cli.c -o /home/jupyter-christian_bunyi@dl-3b8eb/projects/csc612m-mco2-code/results/2026-11-17-9446386.partial/_temp/vec_obj/native_cli.c.o
+Exit code: 0
+
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:266:26: missed: couldn't vectorize loop
+native/cli.c:266:26: missed: not vectorized: control flow in loop.
+native/cli.c:436:54: missed: couldn't vectorize loop
+native/cli.c:436:54: missed: not vectorized: loop nest containing two or more consecutive inner loops cannot be vectorized
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:290:26: missed: couldn't vectorize loop
+native/cli.c:290:26: missed: not vectorized: control flow in loop.
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:303:26: missed: couldn't vectorize loop
+native/cli.c:303:26: missed: not vectorized: control flow in loop.
+native/cli.c:316:24: missed: couldn't vectorize loop
+native/cli.c:316:24: missed: not vectorized: control flow in loop.
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:190:41: missed: couldn't vectorize loop
+native/cli.c:190:41: missed: not vectorized: control flow in loop.
+native/cli.c:329:25: missed: couldn't vectorize loop
+native/cli.c:329:25: missed: not vectorized: control flow in loop.
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:59:10: missed: statement clobbers memory: __builtin_memset (options_20(D), 0, 144);
+native/cli.c:330:9: missed: statement clobbers memory: _37 = strcmp (_36, _4);
+native/cli.c:220:7: missed: statement clobbers memory: _321 = strcmp (_12, "reference");
+native/cli.c:222:14: missed: statement clobbers memory: _322 = strcmp (_12, "optimized");
+native/cli.c:317:9: missed: statement clobbers memory: _252 = strcmp (_251, _12);
+native/cli.c:304:9: missed: statement clobbers memory: _244 = strcmp (_243, _12);
+native/cli.c:291:9: missed: statement clobbers memory: _218 = strcmp (_217, _12);
+native/cli.c:206:12: missed: statement clobbers memory: parsed_207 = strtof (_12, &end);
+native/cli.c:345:20: optimized: basic block part vectorized using 16 byte vectors
+native/cli.c:345:20: optimized: basic block part vectorized using 16 byte vectors
+native/cli.c:345:20: optimized: basic block part vectorized using 16 byte vectors
+native/cli.c:266:26: missed: couldn't vectorize loop
+native/cli.c:266:26: missed: not vectorized: control flow in loop.
+native/cli.c:278:26: missed: couldn't vectorize loop
+native/cli.c:278:26: missed: not vectorized: control flow in loop.
+native/cli.c:589:14: missed: couldn't vectorize loop
+native/cli.c:589:14: missed: not vectorized: control flow in loop.
+native/cli.c:569:10: missed: statement clobbers memory: file_25 = fopen (path_23(D), "rb");
+native/cli.c:573:7: missed: statement clobbers memory: _1 = fseeko (file_25, 0, 2);
+native/cli.c:576:12: missed: statement clobbers memory: length_28 = ftello (file_25);
+native/cli.c:580:7: missed: statement clobbers memory: _2 = fseeko (file_25, 0, 0);
+native/cli.c:584:25: missed: statement clobbers memory: buffer_42 = malloc (length.9_13);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:215:10: missed: statement clobbers memory: _47 = __fread_chk (_5, _54, 1, _6, file_25);
+native/cli.c:600:7: missed: statement clobbers memory: _7 = fclose (file_25);
+native/cli.c:601:5: missed: statement clobbers memory: free (buffer_9);
+native/cli.c:609:3: missed: statement clobbers memory: free (buffer_10);
+native/cli.c:610:9: missed: statement clobbers memory: fclose (file_25);
+native/cli.c:615:16: missed: statement clobbers memory: file_12 = fopen (path_10(D), "wb");
+native/cli.c:621:21: missed: statement clobbers memory: _1 = fwrite (bytes_14(D), 1, size_13(D), file_12);
+native/cli.c:622:7: missed: statement clobbers memory: _2 = fclose (file_12);
+
+Command: gcc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -fopt-info-vec-optimized -fopt-info-vec-missed -c native/bench_report.c -o /home/jupyter-christian_bunyi@dl-3b8eb/projects/csc612m-mco2-code/results/2026-11-17-9446386.partial/_temp/vec_obj/native_bench_report.c.o
+Exit code: 0
+
+native/bench_report.c:59:17: missed: couldn't vectorize loop
+native/bench_report.c:59:17: missed: not vectorized: control flow in loop.
+/usr/include/x86_64-linux-gnu/bits/stdio.h:84:10: missed: statement clobbers memory: putc (91, stdout.1_13);
+/usr/include/x86_64-linux-gnu/bits/stdio.h:84:10: missed: statement clobbers memory: putc (44, stdout.1_15);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, "%llu", _21);
+/usr/include/x86_64-linux-gnu/bits/stdio.h:84:10: missed: statement clobbers memory: putc (93, stdout.1_16);
+native/bench_report.c:105:17: missed: couldn't vectorize loop
+native/bench_report.c:105:17: missed: not vectorized: control flow in loop.
+native/bench_report.c:45:17: missed: couldn't vectorize loop
+native/bench_report.c:45:17: missed: not vectorized: control flow in loop.
+native/bench_report.c:45:17: missed: couldn't vectorize loop
+native/bench_report.c:45:17: missed: not vectorized: control flow in loop.
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, "{\"configuration\":{\"backend\":\"%s\",\"bits\":%u,\"count\":%llu,\"seed\":%llu,\"tensor_id\":%llu,\"invocation_id\":%llu,\"warmup\":%llu,\"reps\":%llu,\"repetition_invocation_ids\":", _9, _8, _6, _5, _4, _3, _2, _1);
+native/bench_report.c:82:3: missed: statement clobbers memory: print_invocation_ids (result_43(D), _11, _10);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, ",\"warmup_invocation_ids\":");
+native/bench_report.c:84:3: missed: statement clobbers memory: print_invocation_ids (result_43(D), _12, 0);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, ",\"boundary\":\"%s\",\"transfer_policy\":\"%s\",\"block_size\":%d,\"grid_size\":%d,", _16, _15, _14, _13);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, "\"k1\":\"%s\",", _17);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, "\"threads\":%d,", _18);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, "\"prescribed_scale\":");
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, "null");
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, "%.9g", _21);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, "},\"samples_ms\":");
+/usr/include/x86_64-linux-gnu/bits/stdio.h:84:10: missed: statement clobbers memory: putc (91, stdout.1_61);
+/usr/include/x86_64-linux-gnu/bits/stdio.h:84:10: missed: statement clobbers memory: putc (44, stdout.1_63);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, "%.9f", _69);
+/usr/include/x86_64-linux-gnu/bits/stdio.h:84:10: missed: statement clobbers memory: putc (93, stdout.1_68);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, ",\"%s\":", _27);
+/usr/include/x86_64-linux-gnu/bits/stdio.h:84:10: missed: statement clobbers memory: putc (91, stdout.1_70);
+/usr/include/x86_64-linux-gnu/bits/stdio.h:84:10: missed: statement clobbers memory: putc (44, stdout.1_72);
+native/bench_report.c:49:5: missed: statement clobbers memory: _75 = _28 (_74);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, "%.9f", _75);
+/usr/include/x86_64-linux-gnu/bits/stdio.h:84:10: missed: statement clobbers memory: putc (93, stdout.1_77);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, ",\"capture_and_instantiate_ms\":%.6f", _33);
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, ",\"header_bytes\":%d,\"payload_bytes\":%llu}\n", 20, _34);
+
+Command: gcc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -fopt-info-vec-optimized -fopt-info-vec-missed -c native/sq_status.c -o /home/jupyter-christian_bunyi@dl-3b8eb/projects/csc612m-mco2-code/results/2026-11-17-9446386.partial/_temp/vec_obj/native_sq_status.c.o
+Exit code: 0
+
+
+
+Command: gcc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -fopt-info-vec-optimized -fopt-info-vec-missed -c native/codec.c -o /home/jupyter-christian_bunyi@dl-3b8eb/projects/csc612m-mco2-code/results/2026-11-17-9446386.partial/_temp/vec_obj/native_codec.c.o
+Exit code: 0
+
+native/codec.c:97:44: missed: couldn't vectorize loop
+native/codec.c:97:44: missed: not vectorized: control flow in loop.
+native/codec.c:120:36: missed: couldn't vectorize loop
+native/codec.c:120:36: missed: not vectorized: control flow in loop.
+native/codec.c:55:7: missed: statement clobbers memory: _7 = memcmp (record_59(D), &sq_magic, 4);
+native/codec.c:90:24: missed: statement clobbers memory: decoded_70 = malloc (_21);
+native/codec.c:129:9: missed: statement clobbers memory: free (decoded_70);
+native/codec.c:125:9: missed: statement clobbers memory: free (decoded_70);
+native/codec.c:115:9: missed: statement clobbers memory: free (decoded_70);
+native/codec.c:104:9: missed: statement clobbers memory: free (decoded_70);
+native/codec.c:100:9: missed: statement clobbers memory: free (decoded_70);
+
+Command: gcc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -fopt-info-vec-optimized -fopt-info-vec-missed -c native/quantizer.c -o /home/jupyter-christian_bunyi@dl-3b8eb/projects/csc612m-mco2-code/results/2026-11-17-9446386.partial/_temp/vec_obj/native_quantizer.c.o
+Exit code: 0
+
+native/quantizer.c:38:49: missed: couldn't vectorize loop
+native/quantizer.c:38:49: missed: not vectorized: inner-loop count not invariant.
+native/quantizer.c:39:19: missed: couldn't vectorize loop
+native/quantizer.c:40:23: missed: not vectorized: no vectype for stmt: _8 = terms[_7];
+ scalar_type: float
+native/quantizer.c:33:17: missed: couldn't vectorize loop
+native/quantizer.c:34:31: missed: not vectorized: no vectype for stmt: _4 = *_3;
+ scalar_type: const float
+native/quantizer.c:31:14: missed: statement clobbers memory: __builtin_memset (&terms, 0, 1024);
+native/quantizer.c:169:15: missed: couldn't vectorize loop
+native/quantizer.c:169:15: missed: not vectorized: control flow in loop.
+native/quantizer.c:15:10: missed: couldn't vectorize loop
+native/quantizer.c:15:10: missed: not vectorized: control flow in loop.
+native/quantizer.c:15:10: missed: couldn't vectorize loop
+native/quantizer.c:15:10: missed: not vectorized: control flow in loop.
+native/quantizer.c:56:23: missed: couldn't vectorize loop
+native/quantizer.c:56:23: missed: not vectorized: number of iterations cannot be computed.
+native/quantizer.c:113:42: missed: couldn't vectorize loop
+native/quantizer.c:113:42: missed: not vectorized: inner-loop count not invariant.
+native/quantizer.c:114:19: missed: couldn't vectorize loop
+native/quantizer.c:117:29: missed: not vectorized: no vectype for stmt: _20 = *_19;
+ scalar_type: float
+native/quantizer.c:110:28: missed: couldn't vectorize loop
+native/quantizer.c:111:19: missed: statement clobbers memory: _17 = reduce_block (values_44(D), count_43(D), start_80, max_abs_86);
+native/quantizer.c:56:23: missed: couldn't vectorize loop
+native/quantizer.c:56:23: missed: not vectorized: number of iterations cannot be computed.
+native/quantizer.c:82:10: missed: couldn't vectorize loop
+native/quantizer.c:82:10: missed: not vectorized: control flow in loop.
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:59:10: missed: statement clobbers memory: __builtin_memset (partials_49(D), 0, _14);
+native/quantizer.c:111:19: missed: statement clobbers memory: _17 = reduce_block (values_44(D), count_43(D), start_80, max_abs_86);
+native/quantizer.c:122:18: missed: statement clobbers memory: root_10 = sqrtf (_27);
+native/quantizer.c:56:23: missed: couldn't vectorize loop
+native/quantizer.c:56:23: missed: not vectorized: number of iterations cannot be computed.
+native/quantizer.c:146:25: missed: statement clobbers memory: partials_16 = malloc (prephitmp_14);
+native/quantizer.c:151:12: missed: statement clobbers memory: status_18 = sq_compute_scale_with_workspace (values_12(D), count_11(D), scale_10(D), partials_5, _27);
+native/quantizer.c:153:3: missed: statement clobbers memory: free (partials_5);
+native/quantizer.c:226:21: missed: couldn't vectorize loop
+native/quantizer.c:226:21: missed: would need a runtime alias check
+native/quantizer.c:213:12: missed: statement clobbers memory: status_47 = scan_44(D) (values_39(D), count_38(D), scan_context_45(D), &has_nonzero);
+native/quantizer.c:233:20: missed: statement clobbers memory: __builtin_memset (payload_41(D), _3, pairs_48);
+native/quantizer.c:264:19: missed: couldn't vectorize loop
+native/quantizer.c:265:42: missed: not vectorized: no vectype for stmt: _5 = *_4;
+ scalar_type: const float
+native/quantizer.c:283:19: missed: couldn't vectorize loop
+native/quantizer.c:285:31: missed: not vectorized: no vectype for stmt: _18 = *_17;
+ scalar_type: const float
+native/quantizer.c:252:12: missed: statement clobbers memory: status_76 = sq_encode_payload_prologue (_1, values_70(D), count_71(D), scale_72(D), words_73(D), payload_74(D), scan_scalar_encode_input, 0B, &state);
+
+Command: gcc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -fopt-info-vec-optimized -fopt-info-vec-missed -c native/rng_cpu.c -o /home/jupyter-christian_bunyi@dl-3b8eb/projects/csc612m-mco2-code/results/2026-11-17-9446386.partial/_temp/vec_obj/native_rng_cpu.c.o
+Exit code: 0
+
+native/rng_cpu.c:7:12: missed: couldn't vectorize loop
+native/rng_cpu.c:7:12: missed: not vectorized: control flow in loop.
+native/rng_cpu.c:7:12: missed: couldn't vectorize loop
+native/rng_cpu.c:7:12: missed: not vectorized: control flow in loop.
+
+Command: gcc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -fopt-info-vec-optimized -fopt-info-vec-missed -c native/cpu_compress.c -o /home/jupyter-christian_bunyi@dl-3b8eb/projects/csc612m-mco2-code/results/2026-11-17-9446386.partial/_temp/vec_obj/native_cpu_compress.c.o
+Exit code: 0
+
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:59:10: missed: statement clobbers memory: __builtin_memset (workspace_1(D), 0, 32);
+native/cpu_compress.c:30:19: missed: statement clobbers memory: partial_count_26 = sq_scale_workspace_elements (count_23(D));
+native/cpu_compress.c:37:45: missed: statement clobbers memory: generated_words_28 = realloc (_12, _11);
+native/cpu_compress.c:47:18: missed: statement clobbers memory: scale_partials_33 = realloc (_15, _14);
+native/cpu_compress.c:62:3: missed: statement clobbers memory: free (_1);
+native/cpu_compress.c:63:3: missed: statement clobbers memory: free (_2);
+/usr/include/x86_64-linux-gnu/bits/string_fortified.h:59:10: missed: statement clobbers memory: __builtin_memset (workspace_4(D), 0, 32);
+native/cpu_compress.c:75:10: missed: statement clobbers memory: _46 = sq_avx2_compute_scale_with_workspace (values_16(D), count_17(D), &scale, scale_partials_14, _1, threads_19(D));
+native/cpu_compress.c:72:12: missed: statement clobbers memory: _45 = sq_compute_scale_with_workspace (values_16(D), count_17(D), &scale, scale_partials_14, _1);
+native/cpu_compress.c:132:12: missed: statement clobbers memory: status_59 = sq_header_encode (_51, count_17(D), scale.0_53, record_30(D));
+native/cpu_compress.c:84:5: missed: statement clobbers memory: sq_avx2_rng_words (&stream, count_17(D), generated_words_13, threads_19(D));
+native/cpu_compress.c:82:5: missed: statement clobbers memory: sq_rng_words_cpu (&stream, count_17(D), generated_words_13);
+native/cpu_compress.c:132:12: missed: statement clobbers memory: status_28 = sq_header_encode (_34, count_17(D), scale.0_64, record_30(D));
+native/cpu_compress.c:95:10: missed: statement clobbers memory: _52 = sq_avx2_encode_payload (_20, values_16(D), count_17(D), scale.2_5, iftmp.1_7, _65, threads_19(D));
+native/cpu_compress.c:93:12: missed: statement clobbers memory: _50 = sq_encode_payload (_20, values_16(D), count_17(D), scale.2_5, iftmp.1_7, _65);
+native/sq_rng.h:63:16: missed: not vectorized: vectorization is not profitable.
+native/sq_rng.h:63:16: missed: not vectorized: vectorization is not profitable.
+native/sq_rng.h:63:16: missed: not vectorized: vectorization is not profitable.
