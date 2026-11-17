@@ -174,6 +174,11 @@ build-avx2-test:
 vec-report: build-cpu
     uv run python -m stoquant vec-report
 
+# Check that GCC reports every tagged AVX2 hot loop as vectorized (Linux)
+[unix]
+vec-report: build-cpu
+    uv run python -m stoquant vec-report
+
 [windows]
 build-quantizer-test:
     uv run python -m stoquant.native_build build-quantizer-test

@@ -18,6 +18,7 @@ import sys
 import tempfile
 from collections.abc import Callable, Sequence
 from pathlib import Path
+from typing import NamedTuple
 
 from stoquant import layout
 from stoquant.native_build import source_lists
@@ -85,6 +86,60 @@ def generate_msvc_vectorization_report(
     return output_text
 
 
+def generate_gcc_vectorization_report(
+    root: Path,
+    output_file: Path,
+    host_flags: Sequence[str],
+    object_dir: Path,
+    sources: Sequence[str],
+    runner: Callable[..., subprocess.CompletedProcess[str]] = subprocess.run,
+) -> str:
+    """Compile each C source with its build flags plus GCC's vectorization reports."""
+    object_dir.mkdir(parents=True, exist_ok=True)
+    sections = []
+    failed = None
+    for source in sources:
+        object_path = object_dir / f"{source.replace('/', '_')}.o"
+        cmd = [
+            "gcc",
+            *host_flags,
+            "-fopt-info-vec-optimized",
+            "-fopt-info-vec-missed",
+            "-c",
+            source,
+            "-o",
+            str(object_path),
+        ]
+        res = runner(cmd, cwd=root, capture_output=True, text=True, check=False)
+        diagnostics = (res.stdout + "\n" + res.stderr).strip()
+        sections.append(f"Command: {' '.join(cmd)}\nExit code: {res.returncode}\n\n{diagnostics}")
+        if res.returncode != 0 and failed is None:
+            failed = res.returncode
+    output_text = "\n\n".join(sections)
+    output_file.write_text(output_text, encoding="utf-8")
+    if failed is not None:
+        raise RuntimeError(f"GCC vectorization compile failed (exit {failed}); see {output_file}")
+    return output_text
+
+
+class ReportNames(NamedTuple):
+    """Manifest key and file names for one platform's vectorization reports."""
+
+    key: str
+    scalar_file: str
+    avx2_file: str
+
+
+def report_names(platform: str) -> ReportNames:
+    """Windows keeps its msvc_* names; other platforms get additive gcc_* names."""
+    prefix = "msvc" if platform == "nt" else "gcc"
+    return ReportNames(
+        f"{prefix}_vectorization_report",
+        f"{prefix}_vectorization_report.txt",
+        f"{prefix}_vectorization_report_avx2.txt",
+    )
+
+
 HOT_TAG = "/* avx2-hot */"
 SOURCE_NAME = "quantizer_avx2.c"
 
@@ -102,6 +157,18 @@ def unvectorized_hot_loops(source_text: str, report_text: str) -> list[int]:
     vectorized, scalar = set(), set()
     for m in pattern.finditer(report_text):
         (vectorized if m.group(2).upper() == "C5001" else scalar).add(int(m.group(1)))
+    return [n for n in hot_lines(source_text) if n not in vectorized or n in scalar]
+
+
+def gcc_unvectorized_hot_loops(source_text: str, report_text: str) -> list[int]:
+    """Tagged lines not reported as "loop vectorized" in every inlined copy (GCC -fopt-info)."""
+    pattern = re.compile(
+        rf"(?:^|[\\/\s]){re.escape(SOURCE_NAME)}:(\d+):\d+: (optimized: loop vectorized|missed: couldn't vectorize loop)",
+        re.MULTILINE,
+    )
+    vectorized, scalar = set(), set()
+    for m in pattern.finditer(report_text):
+        (vectorized if m.group(2).startswith("optimized") else scalar).add(int(m.group(1)))
     return [n for n in hot_lines(source_text) if n not in vectorized or n in scalar]
 
 
@@ -125,14 +192,20 @@ def main(argv: list[str] | None = None, prog: str | None = None) -> int:
     output.parent.mkdir(parents=True, exist_ok=True)
     try:
         with tempfile.TemporaryDirectory(dir=root / "build") as objects:
-            report = generate_msvc_vectorization_report(
-                root, output, flags, Path(objects), avx2_sources
-            )
+            if os.name == "nt":
+                report = generate_msvc_vectorization_report(
+                    root, output, flags, Path(objects), avx2_sources
+                )
+            else:
+                report = generate_gcc_vectorization_report(
+                    root, output, flags, Path(objects), avx2_sources
+                )
     except RuntimeError as exc:
         print(str(exc), file=sys.stderr)
         return 1
     source = (layout.NATIVE_DIR / SOURCE_NAME).read_text(encoding="utf-8")
-    missing = unvectorized_hot_loops(source, report)
+    check = unvectorized_hot_loops if os.name == "nt" else gcc_unvectorized_hot_loops
+    missing = check(source, report)
     total = len(hot_lines(source))
     if total == 0:
         print(f"no {HOT_TAG} loops found", file=sys.stderr)

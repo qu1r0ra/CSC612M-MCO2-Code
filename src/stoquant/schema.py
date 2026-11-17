@@ -140,6 +140,7 @@ class MatrixManifest(TypedDict):
     cases: list[str]
     summary_csv: NotRequired[str]
     msvc_vectorization_report: NotRequired[str]
+    gcc_vectorization_report: NotRequired[str]
     vectorization_rule: NotRequired[str]
     all_cases_passed: bool
     failed_cases: NotRequired[list[str]]
