@@ -8,9 +8,9 @@
 
 When does CUDA compression cost less time than sequential C compression? This project measures norm-scaled stochastic quantization: it replaces FP32 values with compact, randomly rounded codes and reconstructs approximations using a shared scale.
 
-The required course comparison is **single-thread scalar C versus CUDA SIMT**, at **4 and 8 bits**, on dense synthetic vectors of **nine sizes from 1,024 to 4,194,304 elements** (2^10 to 2^14, then 2^16, 2^18, 2^20, 2^22). The repository also provides an optional AVX2/OpenMP backend through the CLI, build, and tests. Scalar C is the course baseline.
+The required course comparison is **single-thread scalar C versus CUDA SIMT**, at **4 and 8 bits**, on dense synthetic vectors of **nine sizes from 1,024 to 4,194,304 elements** (2^10 to 2^14, then 2^16, 2^18, 2^20, 2^22).
 
-This repository contains the course implementation, tests, benchmark tooling, and historical reports. Its upstream source is [stochastic-quantization-backends](https://github.com/qu1r0ra/stochastic-quantization-backends). The publication paper is separate from this course package. Source correspondence and candidate verification are recorded below; Chan's rerun is still pending.
+This repository holds the course implementation, its tests, the benchmark tooling, and the earlier reports. The code comes from [stochastic-quantization-backends](https://github.com/qu1r0ra/stochastic-quantization-backends); the publication paper is a separate project. The table below links the source comparison and the verification receipt.
 
 | Final provenance | Evidence |
 | --- | --- |
@@ -34,7 +34,7 @@ This repository contains the course implementation, tests, benchmark tooling, an
 - **Fixed reduction order.** Floating-point addition is not associative, so K1 uses one pairwise tree over 256-element blocks on both backends. The scale is then identical on CPU and CUDA, and the records can be compared byte for byte.
 - **Counter-based random numbers.** Philox gives each group of four elements its random words from the seed and identifiers alone, so the rounding choices do not depend on thread scheduling or launch geometry.
 - **Packing on the GPU.** K3 packs the codes before they leave the device. Copying unpacked codes back would lengthen the transfer that the host-origin path counts.
-- **Scalar baseline.** The course asks for a sequential comparison, so the baseline stays single-threaded and simple. The AVX2 backend is an extra and is outside the comparison.
+- **Scalar baseline.** The course asks for a sequential comparison, so the baseline is single-threaded, unvectorized C.
 
 ### Build, verify, and run
 
@@ -52,7 +52,7 @@ just test-rng
 just test-cuda
 ```
 
-`test-cpu` builds the CPU CLI and native codec, quantizer, AVX2, and RNG tests, then runs the Python oracle/CLI suite. `test-cuda` builds a CUDA-enabled CLI and runs CUDA acceptance tests. A later CPU build replaces the CLI; rebuild CUDA before selecting it.
+`test-cpu` builds the CPU CLI and the native tests, then runs the Python oracle and CLI suite. `test-cuda` builds a CUDA-enabled CLI and runs the CUDA acceptance tests. Both write the same `build\stoquant.exe`, so after a CPU build, rebuild CUDA before using `--backend cuda`.
 
 Generate input, compress at both widths with both required backends, and decode:
 
@@ -68,7 +68,7 @@ foreach ($bits in 4, 8) {
 }
 ```
 
-Matching hashes check parity for this example only. Decoded values require numerical checks rather than equality to the lossy input. On a CPU-only machine, use `just build-cpu` and only `'cpu'` in the inner loop. Optional AVX2 compression uses `--backend cpu-avx2 --threads N` on supported hardware.
+Matching hashes show that C and CUDA produced the same record for this input. The decoded values are approximations of the input, so check them numerically. On a CPU-only machine, use `just build-cpu` and only `'cpu'` in the inner loop.
 
 ### Evaluation methodology
 
@@ -76,7 +76,7 @@ The four course benchmark paths are scalar C (`cpu-comparator`), CUDA resident, 
 
 The [benchmark protocol](docs/benchmark-protocol.md) defines synchronized elapsed timing, balanced path orders over repeated processes, warm-ups, raw samples, medians, IQR, trial ranges, and evidence eligibility. Stage events diagnose costs; summing stage medians does not produce measured end-to-end time. Report absolute scalar time beside speedups, preserve losing/inconclusive cases, and distinguish supported direction from supported magnitude.
 
-These commands use the driver directly, avoiding notification configuration required by the `just bench-matrix` wrapper. Use a clean committed candidate. Review the non-evidence pilot and satisfy readiness gates before starting the evidence command.
+These commands call the driver directly and skip the notification setup that the `just bench-matrix` wrapper needs. Run them from a clean, committed tree. The pilot is not evidence; review it and the readiness checks before starting the course sweep.
 
 ```powershell
 just build-cuda
@@ -126,6 +126,10 @@ Pooled median times, headline sweep (ms):
 | 2^22 | 4 | 66.5 | 0.4215 | 0.302 | 3.285 |
 | 2^22 | 8 | 67.05 | 0.4183 | 0.3205 | 3.593 |
 
+![Pooled median time against input size for scalar C and the three CUDA paths, at 4 and 8 bits, on logarithmic axes](results/2026-11-17-3feab89/derived/f1_time_vs_elements.png)
+
+*Median time against input size, headline sweep. C time rises faster than any CUDA time and passes host-origin between 2^13 and 2^14 elements. Bands show the range of trial medians; lines join measured sizes only.*
+
 Speedup over the comparator, with its verdict and trial range, headline sweep. A dagger marks a supported direction whose spread exceeds 1.25, so only the direction is claimed.
 
 | Elements | Bits | CUDA resident | CUDA resident-graph | CUDA host-origin |
@@ -149,6 +153,10 @@ Speedup over the comparator, with its verdict and trial range, headline sweep. A
 | 2^22 | 4 | faster, 158× [154, 168] | faster, 220× [220, 223] | faster, 20.2× [19.3, 20.5] |
 | 2^22 | 8 | faster, 160× [159, 165] | faster, 209× [208, 210] | faster, 18.7× [18.4, 18.7] |
 
+![Speedup over scalar C against input size for the three CUDA paths, with 95% bootstrap intervals](results/2026-11-17-3feab89/derived/f2_speedup_vs_elements.png)
+
+*Speedup over scalar C, headline sweep, with 95% bootstrap intervals over trial medians. Filled markers have a supported direction and magnitude, hollow markers a supported direction only, and faded markers an inconclusive verdict.*
+
 - **Small inputs favor the scalar comparator.** At 2^10 elements the comparator is faster than resident and host-origin at both widths. Graph replay is slower at 8 bits and inconclusive at 4 bits. Fixed launch and transfer overhead is a likely explanation; these runs do not measure it.
 - **Host-origin crossover.** Host-origin, the path that counts copies, is slower through 2^12 elements and faster from 2^14 at both widths. At 4 bits the crossover lies between 2^13 and 2^14 (8,192 and 16,384 elements) in both sweeps. At 8 bits the second sweep gives the same interval; in the headline sweep the 2^13 case is inconclusive (0.616×, trial range 0.43 to 1.03), so that sweep brackets it only between 2^12 and 2^14. The 4-bit 2^14 margin is the thinnest in the table (1.17×, trial range 1.01 to 1.93). Nothing was measured between 2^13 and 2^14.
 - **Resident paths.** Resident is slower through 2^12, inconclusive at 2^13 at both widths, and faster from 2^14. Resident-graph at 8 bits crosses between 2^10 and 2^11. At 4 bits it has no size with a supported slower verdict, because its 2^10 case is inconclusive; it is faster from 2^11.
@@ -157,21 +165,27 @@ Speedup over the comparator, with its verdict and trial range, headline sweep. A
 - **Spread check.** Three headline cells keep their direction but exceed the 1.25 spread limit (host-origin at 2^12 and 8 bits, and at 2^16 at both widths); the second sweep has two, both at 2^16. They carry a direction claim only and are marked † above.
 - **Record sizes.** Each record has a 20-byte header and a payload of n/2 bytes at 4 bits or n bytes at 8 bits. At 2^22 elements that is 2,097,152 and 4,194,304 payload bytes.
 
-Full per-case tables and crossover detail: [headline report](results/2026-11-17-3feab89/derived/report.md) and [second-sweep report](results/2026-11-17-fbeede0/derived/report.md). Figures F1–F4 are in each snapshot's `derived/` folder.
+![Share of CUDA stage medians for the resident and host-origin paths at three sizes](results/2026-11-17-3feab89/derived/f3_stage_breakdown.png)
 
-The checkpoint measured three sizes at an older revision. It supplies no final-candidate results.
+*Where host-origin time goes, headline sweep: CUDA stage medians for resident (R) and host-origin (H) at three sizes, with the path median above each bar. Copies are about half of host-origin time at 2^14 and most of it at 2^18 and 2^22. Stage times diagnose the split and are not added into path times.*
+
+![Speedup of the resident-graph path over the plain resident path](results/2026-11-17-3feab89/derived/f4_graph_vs_resident.png)
+
+*Graph replay against plain resident launches, headline sweep. Replay is faster at every size and width, most at small sizes and least at 2^22. Neither path includes copies, and graph capture is excluded.*
+
+Full per-case tables and crossover detail are in the [headline report](results/2026-11-17-3feab89/derived/report.md) and the [second-sweep report](results/2026-11-17-fbeede0/derived/report.md), which has its own copies of these figures.
 
 ### Limitations and lessons
 
 This measures synthetic-vector compression and reconstruction, without training accuracy, convergence, network transmission, or federated-learning benefit. Ideal-arithmetic unbiasedness differs from finite-precision and empirical checks. Scalar C speedups do not establish an advantage over every optimized CPU implementation. Resident timings exclude transfers; graph replay uses a different launch boundary. A rerun on another machine establishes only the behavior it exercised. A100 and publication experiments are separate work.
 
-**TODO — actual AHA moments:** record observed surprises, the execution/debugging evidence behind each, and what changed in the team's understanding. Distinguish measured explanations from hypotheses; fill this from actual experience.
+**TODO (AHA moments):** record observed surprises, the execution or debugging evidence behind each, and what changed in the team's understanding. Keep measured explanations apart from hypotheses.
 
-### Final artifacts — pending
+### Final artifacts (pending)
 
-- **TODO — screenshots:** embed readable candidate build/test, scalar/CUDA compression at both widths, decode/parity, and benchmark captures. Caption revision, command, and what each demonstrates.
-- **TODO — final video:** add the accessible recording link after checking playback, audio, execution segments, and duration. The working plan is at most 20 minutes, pending instructor clarification.
-- **TODO — final course report:** link the built PDF of the course report (drafted in the paper repository, `course/final/report/`) and verify access. Keep the separate publication paper outside the package.
+- **TODO (screenshots):** embed readable captures of the build and tests, C and CUDA compression at both widths, decoding and parity, and a benchmark run. Caption each with its revision, command, and what it shows.
+- **TODO (final video):** add the recording link after checking playback, audio, the execution segments, and length. The plan is at most 20 minutes, pending the instructor's confirmation.
+- **TODO (final course report):** link the built PDF of the course report (drafted in the paper repository, `course/final/report/`) and verify access. Keep the separate publication paper outside the package.
 
 ---
 
@@ -182,7 +196,7 @@ This measures synthetic-vector compression and reconstruction, without training 
 - [Checkpoint verification and benchmark summary](CHECKPOINT-WORKING-EVIDENCE.md): test results, the correctness gate, and the timing table.
 - [Benchmark snapshot](results/2026-10-29-b2f6b09/): raw records and `summary.csv` for revision `b2f6b09`, produced by `uv run python -m stoquant bench-matrix --counts 1024 262144 4194304 --bits 4 8`.
 
-This historical snapshot covers three sizes. Its report commits final work to the fourth size, further decoder/edge checks, instructions, demonstration, and independent teammate reproduction. Preserve it as checkpoint evidence.
+This snapshot covers three sizes at an older revision and supplies no final results. Its report lists the work left for the final: the fourth size, more decoder and edge-case checks, instructions, a demonstration, and a teammate's independent rerun.
 
 ---
 

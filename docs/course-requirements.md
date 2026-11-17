@@ -21,5 +21,5 @@ sweeps do and do not cover.
 | Presentation in the required input, process, output, limitations, sequential run, parallel run, and results order | Presentation deck, demonstration, timed rehearsal, and recording | Pending artifacts |
 
 The accepted [proposal](../proposal-paper.pdf) and [checkpoint report](../checkpoint2-milestone-report.pdf)
-remain available. The checkpoint snapshot covers three of the four final sizes;
-it is historical evidence, not the final four-size result.
+remain available. The checkpoint snapshot covers three of the nine final sizes
+and supplies no final results.
