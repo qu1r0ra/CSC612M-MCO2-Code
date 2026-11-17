@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import itertools
+import os
 from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
@@ -51,6 +52,7 @@ MAX_PERMUTATION_PATHS = 4
 # Issue #22: the opt-in multithreaded AVX2 comparator. It is timed on the same
 # host-host boundary as the scalar comparator, which stays every claim's baseline.
 HOST_BOUNDARIES = ("comparator", "optimized")
+MAX_CPU_THREADS = 256  # native SQ_MAX_CPU_THREADS
 K1_VARIANTS = ("reference", "optimized")
 
 
@@ -80,6 +82,10 @@ class BenchPath:
         args = [] if self.boundary in HOST_BOUNDARIES else ["--boundary", self.boundary]
         if self.policy == "pinned":
             args += ["--transfer-policy", "pinned"]
+        if self.backend == "cpu-avx2" and os.name != "nt":
+            # The Linux binary defaults to the online CPU count, not the inherited
+            # affinity; pass the pinned count so the team matches the Windows rule.
+            args += ["--threads", str(min(len(os.sched_getaffinity(0)), MAX_CPU_THREADS))]
         return args
 
     @property

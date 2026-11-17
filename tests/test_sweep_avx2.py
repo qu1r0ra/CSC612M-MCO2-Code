@@ -42,7 +42,8 @@ def test_avx2_path_is_opt_in_and_leaves_the_default_design_unchanged():
         "cuda-resident-graph",
         "cuda-host-origin",
     ]
-    assert paths[1].extra_args == []
+    if os.name == "nt":
+        assert paths[1].extra_args == []
     assert paths[1].policy == "none"
     # Five paths need a Williams design, so the default 24 trials no longer divide.
     assert trial_design(len(paths)) == "williams"
@@ -52,6 +53,19 @@ def test_avx2_path_is_opt_in_and_leaves_the_default_design_unchanged():
         "cpu-comparator",
         "cpu-avx2-optimized",
     ]
+
+
+@pytest.mark.skipif(os.name == "nt", reason="the Windows binary already defaults to the mask")
+def test_linux_avx2_path_passes_the_pinned_affinity_as_its_team_size():
+    paths = build_paths(["cpu", "cpu-avx2"])
+    allowed = sorted(os.sched_getaffinity(0))[:2]
+    previous = os.sched_getaffinity(0)
+    os.sched_setaffinity(0, allowed)
+    try:
+        assert paths[1].extra_args == ["--threads", str(len(allowed))]
+        assert paths[0].extra_args == []
+    finally:
+        os.sched_setaffinity(0, previous)
 
 
 def test_avx2_path_is_descriptive_and_never_an_inversion():
@@ -177,11 +191,8 @@ def test_driver_cpu_avx2_snapshot_records_threads_and_flags(tmp_path):
         assert "-mavx2" not in flags["comparator_c"]
         assert "-mavx2" in flags["avx2_c"]
         assert "-fopenmp" in flags["avx2_c"]
-    if os.name == "nt":
-        mask = affinity_mask_excluding(EXCLUDED_LOGICAL_CPUS, get_process_affinity())
-        expected_threads = min(mask.bit_count(), 256)
-    else:
-        expected_threads = min(os.sysconf("SC_NPROCESSORS_ONLN"), 256)
+    mask = affinity_mask_excluding(EXCLUDED_LOGICAL_CPUS, get_process_affinity())
+    expected_threads = min(mask.bit_count(), 256)
     assert manifest["matrix_parameters"]["cpu_avx2_threads"] == [expected_threads]
 
     case = json.loads(

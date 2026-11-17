@@ -823,8 +823,8 @@ def write_manifest(
                         {c["threads"] for c in case_results if "threads" in c}
                     ),
                     "cpu_avx2_threads_rule": (
-                        "stoquant default: logical processors in the inherited affinity mask "
-                        "(Windows; online processors elsewhere)"
+                        "logical processors in the inherited affinity mask: the stoquant "
+                        "default on Windows, passed as --threads by the driver elsewhere"
                     ),
                 }
                 if settings.has_avx2
