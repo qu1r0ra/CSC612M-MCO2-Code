@@ -177,8 +177,11 @@ def test_driver_cpu_avx2_snapshot_records_threads_and_flags(tmp_path):
         assert "-mavx2" not in flags["comparator_c"]
         assert "-mavx2" in flags["avx2_c"]
         assert "-fopenmp" in flags["avx2_c"]
-    mask = affinity_mask_excluding(EXCLUDED_LOGICAL_CPUS, get_process_affinity())
-    expected_threads = min(mask.bit_count(), 256)
+    if os.name == "nt":
+        mask = affinity_mask_excluding(EXCLUDED_LOGICAL_CPUS, get_process_affinity())
+        expected_threads = min(mask.bit_count(), 256)
+    else:
+        expected_threads = min(os.sysconf("SC_NPROCESSORS_ONLN"), 256)
     assert manifest["matrix_parameters"]["cpu_avx2_threads"] == [expected_threads]
 
     case = json.loads(
