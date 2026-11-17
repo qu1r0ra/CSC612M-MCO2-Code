@@ -2,7 +2,7 @@
 
 ## Final report
 
-**Status: measurements are complete (two full nine-size sweeps) and the candidate verification receipt is written. Chan's rerun, screenshots, the video, and the final report link are pending.**
+**Status: measurements are complete (two full nine-size sweeps) and the candidate verification receipt is written. Chan's rerun, the video, and the final report link are pending.**
 
 ### Purpose and scope
 
@@ -181,9 +181,36 @@ This measures synthetic-vector compression and reconstruction, without training 
 
 **TODO (AHA moments):** record observed surprises, the execution or debugging evidence behind each, and what changed in the team's understanding. Keep measured explanations apart from hypotheses.
 
+### Execution screenshots
+
+All six captures come from the RTX 5060 machine at revision `9f6a687`. Its source matches the measured revision `3feab89` apart from `.gitattributes`; the other changes since then are documentation and result snapshots. The input is a 1,024-element float32 vector (numpy seed 2026) with `--seed 123 --tensor-id 7 --invocation-id 9`.
+
+![Toolchain check](docs/screenshots/01-toolchain.png)
+
+*`just toolchain`: CUDA 13.5 compiler, MSVC 19.52, and the RTX 5060 (compute capability 12.0, driver 610.88).*
+
+![Compression with the C and CUDA backends at both widths](docs/screenshots/02-compress-both-widths-c-and-cuda.png)
+
+*`stoquant compress --bits {4,8} --backend {cpu,cuda}`: the records are 532 bytes at 4 bits and 1,044 bytes at 8 bits. Each width has the same SHA-256 hash from both backends.*
+
+![Decoding and parity](docs/screenshots/03-decode-and-parity.png)
+
+*`stoquant decompress` on the four records: the decoded files are identical across backends. The maximum absolute error is 4.649857 at 4 bits (one quantization step is 4.7071) and 0.25110057 at 8 bits (one step is 0.2594).*
+
+![CPU test suite](docs/screenshots/04-test-cpu.png)
+
+*`just test-cpu`: 463 passed and 295 skipped (the skipped cases need CUDA).*
+
+![CUDA test suite](docs/screenshots/05-test-cuda.png)
+
+*`just test-cuda`: 311 passed.*
+
+![Reduced benchmark run](docs/screenshots/06-benchmark-run.png)
+
+*`stoquant bench-matrix` with `--counts 1024 16384 --bits 4 8 --trials 4 --reps 10 --warmup 3`: all 16 cases pass the correctness gate. This reduced run shows the harness and the summary table only. The reported results come from the two full sweeps above.*
+
 ### Final artifacts (pending)
 
-- **TODO (screenshots):** embed readable captures of the build and tests, C and CUDA compression at both widths, decoding and parity, and a benchmark run. Caption each with its revision, command, and what it shows.
 - **TODO (final video):** add the recording link after checking playback, audio, the execution segments, and length. The plan is at most 20 minutes, pending the instructor's confirmation.
 - **TODO (final course report):** link the built PDF of the course report (drafted in the paper repository, `course/final/report/`) and verify access. Keep the separate publication paper outside the package.
 
