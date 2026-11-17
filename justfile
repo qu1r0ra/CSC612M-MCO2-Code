@@ -68,8 +68,11 @@ test_asan_probe_sources := "tests/asan_overread_probe.c"
 # Only the AVX2 comparator gets vector, OpenMP and non-strict FP flags. Neither
 # /fp:precise nor -ffp-contract=off contracts a*b+c, and its tests pin the bytes.
 # The file reads float storage as uint32_t, so gcc drops type-based aliasing.
+# gcc 12+ -O2 defaults to -fvect-cost-model=very-cheap, which skips four of the seven
+# avx2-hot loops; dynamic vectorizes all seven on gcc 13.3 without -O3 (which loses the
+# Philox loop) and without reassociating floating point.
 avx2_cl_flags := "/nologo /O2 /W4 /WX /std:c11 /fp:precise /arch:AVX2 /openmp /D_CRT_SECURE_NO_WARNINGS " + cl_includes
-avx2_cc_flags := "-O2 -std=c11 -Wall -Wextra -Werror -mavx2 -fopenmp -ffp-contract=off -fno-strict-aliasing " + cc_includes
+avx2_cc_flags := "-O2 -std=c11 -Wall -Wextra -Werror -mavx2 -fopenmp -ffp-contract=off -fno-strict-aliasing -fvect-cost-model=dynamic " + cc_includes
 
 # Record the CUDA toolkit and GPU used for a build
 [windows]
@@ -171,6 +174,11 @@ build-avx2-test:
 
 # Check that MSVC reports every tagged AVX2 hot loop as vectorized
 [windows]
+vec-report: build-cpu
+    uv run python -m stoquant vec-report
+
+# Check that GCC reports every tagged AVX2 hot loop as vectorized (Linux)
+[unix]
 vec-report: build-cpu
     uv run python -m stoquant vec-report
 

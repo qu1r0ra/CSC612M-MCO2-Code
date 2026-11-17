@@ -142,7 +142,13 @@ CSV_COMPARED_COLUMNS = {
 SEEDED_FIGURES = {"f_unbiasedness.png"}
 VEC_VERDICT = re.compile(
     r"info C500[12]: (loop vectorized|loop not vectorized due to reason '\d+')"
+    r"|(optimized: loop vectorized|missed: couldn't vectorize loop)"
 )
+# GCC's -fopt-info wording, folded onto the MSVC verdict labels.
+GCC_VERDICT_LABELS = {
+    "optimized: loop vectorized": "loop vectorized",
+    "missed: couldn't vectorize loop": "loop not vectorized",
+}
 
 
 def rules(patterns: list[tuple[str, str]]) -> list[tuple[re.Pattern[str], str]]:
@@ -202,7 +208,8 @@ def fingerprint_csv(path: Path) -> dict[str, Any]:
 def fingerprint_vec_report(path: Path) -> dict[str, Any]:
     """Per-report verdict counts: function names and source paths change in stage 1."""
     verdicts = Counter(
-        m.group(1) for m in VEC_VERDICT.finditer(path.read_text(encoding="utf-8", errors="replace"))
+        m.group(1) or GCC_VERDICT_LABELS[m.group(2)]
+        for m in VEC_VERDICT.finditer(path.read_text(encoding="utf-8", errors="replace"))
     )
     return dict(sorted(verdicts.items()))
 
@@ -217,7 +224,7 @@ def fingerprint_live_dir(root: Path) -> dict[str, Any]:
             out[name] = flat
         elif file.suffix == ".csv":
             out[name] = fingerprint_csv(file)
-        elif file.name.startswith("msvc_vectorization_report"):
+        elif file.name.startswith(("msvc_vectorization_report", "gcc_vectorization_report")):
             out[name] = fingerprint_vec_report(file)
         elif file.suffix == ".png" and file.name not in SEEDED_FIGURES:
             out[name] = "<present: drawn from timings>"

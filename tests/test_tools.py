@@ -72,3 +72,24 @@ def test_equivalence_compare_redacts_build_stamp_revision_and_binary_hash():
         captured["live/bench-dense/files/manifest.json/build_stamp/tree_fingerprint"]
         == "clean-tree"
     )
+
+
+def test_gcc_vectorization_reports_are_fingerprinted_by_verdict(tmp_path):
+    report = tmp_path / "gcc_vectorization_report_avx2.txt"
+    report.write_text(
+        "native/quantizer_avx2.c:115:5: optimized: loop vectorized using 32 byte vectors\n"
+        "native/quantizer_avx2.c:150:9: missed: couldn't vectorize loop\n",
+        encoding="utf-8",
+    )
+
+    assert equivalence.fingerprint_vec_report(report) == {
+        "loop not vectorized": 1,
+        "loop vectorized": 1,
+    }
+    live = tmp_path / "live"
+    live.mkdir()
+    (live / report.name).write_bytes(report.read_bytes())
+    assert equivalence.fingerprint_live_dir(live)[report.name] == {
+        "loop not vectorized": 1,
+        "loop vectorized": 1,
+    }

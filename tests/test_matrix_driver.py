@@ -1,5 +1,6 @@
 import csv
 import json
+import os
 import subprocess
 
 import pytest
@@ -25,6 +26,7 @@ from stoquant.stats import (
 from stoquant.sweep import (
     compact_invocation_ids,
 )
+from stoquant.vectorization import report_names
 
 
 def test_driver_cpu_only_produces_valid_snapshot(tmp_path):
@@ -166,7 +168,8 @@ def test_driver_tiny_matrix_produces_valid_snapshot(tmp_path):
     assert "build_flags" in manifest
     for key in ("source", "commands", "comparator_c", "cuda_nvcc"):
         assert key in manifest["build_flags"]
-    assert "/DSQ_ENABLE_CUDA" in manifest["build_flags"]["comparator_c"]
+    cuda_define = "/DSQ_ENABLE_CUDA" if os.name == "nt" else "-DSQ_ENABLE_CUDA"
+    assert cuda_define in manifest["build_flags"]["comparator_c"]
     assert "--fmad=false" in manifest["build_flags"]["cuda_nvcc"]
     assert manifest["transfer_policies"] == ["pageable"]
     assert "transfer_policy" not in manifest["toolkit_and_driver"]
@@ -219,11 +222,15 @@ def test_driver_tiny_matrix_produces_valid_snapshot(tmp_path):
     assert not (snapshot_dir / "_temp").exists()
 
     # Vectorization report
-    vec_report_path = snapshot_dir / manifest["msvc_vectorization_report"]
+    vec_report_path = snapshot_dir / manifest[report_names(os.name).key]
     assert vec_report_path.is_file()
     vec_report = vec_report_path.read_text(encoding="utf-8")
-    assert "/DSQ_ENABLE_CUDA" in vec_report
-    assert "/Qvec-report:2" in vec_report
+    if os.name == "nt":
+        assert "/DSQ_ENABLE_CUDA" in vec_report
+        assert "/Qvec-report:2" in vec_report
+    else:
+        assert "-DSQ_ENABLE_CUDA" in vec_report
+        assert "-fopt-info-vec-optimized" in vec_report
     assert "Exit code: 0" in vec_report
     assert str(ROOT.resolve()) not in vec_report
 

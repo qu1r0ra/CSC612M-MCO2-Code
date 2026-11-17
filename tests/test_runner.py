@@ -433,6 +433,7 @@ def test_avx2_explicit_thread_count_must_match_request():
 
 
 def test_bad_calibration_probe_fails_only_its_case():
+    paths = build_paths(["cpu", "cpu-avx2"])
     fake = FakeBenchProcess(
         [
             process_result(
@@ -440,7 +441,15 @@ def test_bad_calibration_probe_fails_only_its_case():
                 | {"samples_ms": []}
             ),
             process_result(
-                bench_payload(count=8, bits=8, backend="cpu-avx2", seed=42, warmups=1, reps=1)
+                bench_payload(
+                    count=8,
+                    bits=8,
+                    backend="cpu-avx2",
+                    seed=42,
+                    warmups=1,
+                    reps=1,
+                    extra_args=paths[1].extra_args,
+                )
             ),
         ]
     )
@@ -452,7 +461,7 @@ def test_bad_calibration_probe_fails_only_its_case():
         reps=1,
         compression_seed=42,
         k1="reference",
-        paths=build_paths(["cpu", "cpu-avx2"]),
+        paths=paths,
         bench_process=fake,
     )
     gate = {

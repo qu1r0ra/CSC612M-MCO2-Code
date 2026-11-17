@@ -8,6 +8,7 @@ creation as specified by the course technical contract and benchmark protocol.
 from __future__ import annotations
 
 import math
+import os
 import shutil
 import subprocess
 from collections.abc import Sequence
@@ -80,7 +81,11 @@ from stoquant.stats import (
     compute_case_statistics,
     compute_stage_medians,
 )
-from stoquant.vectorization import generate_msvc_vectorization_report
+from stoquant.vectorization import (
+    generate_gcc_vectorization_report,
+    generate_msvc_vectorization_report,
+    report_names,
+)
 
 
 @dataclass(frozen=True)
@@ -377,8 +382,12 @@ def write_vectorization_reports(
 ) -> Path:
     """Compile with the comparator's own flags; returns the scalar report's path."""
     sources = source_lists(root)
-    vec_report_path = target_dir / "msvc_vectorization_report.txt"
-    generate_msvc_vectorization_report(
+    names = report_names(os.name)
+    generate = (
+        generate_msvc_vectorization_report if os.name == "nt" else generate_gcc_vectorization_report
+    )
+    vec_report_path = target_dir / names.scalar_file
+    generate(
         root,
         vec_report_path,
         setup.host_tokens,
@@ -386,9 +395,9 @@ def write_vectorization_reports(
         sources["native_host_sources"],
     )
     if settings.has_avx2:
-        generate_msvc_vectorization_report(
+        generate(
             root,
-            target_dir / "msvc_vectorization_report_avx2.txt",
+            target_dir / names.avx2_file,
             setup.avx2_tokens,
             setup.temp_dir / "vec_obj_avx2",
             sources["native_avx2_sources"],
@@ -814,8 +823,8 @@ def write_manifest(
                         {c["threads"] for c in case_results if "threads" in c}
                     ),
                     "cpu_avx2_threads_rule": (
-                        "stoquant default: logical processors in the inherited affinity mask "
-                        "(Windows; online processors elsewhere)"
+                        "logical processors in the inherited affinity mask: the stoquant "
+                        "default on Windows, passed as --threads by the driver elsewhere"
                     ),
                 }
                 if settings.has_avx2
@@ -872,7 +881,7 @@ def write_manifest(
             (meta["count"] if dense else key): meta for key, meta in inputs.clean_meta.items()
         },
         "summary_csv": csv_path.name,
-        "msvc_vectorization_report": vec_report_path.name,
+        report_names(os.name).key: vec_report_path.name,
         "cases": [c["case_id"] for c in case_results],
         "all_cases_passed": not failed_case_ids,
     }
