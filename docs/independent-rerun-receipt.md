@@ -2,7 +2,7 @@
 
 Status: template. Chan fills this in from a run on another machine. Until it is filled and merged, no independent-rerun result exists.
 
-The measurements this receipt is compared against are the two nine-size course sweeps (`bench-matrix --course`) on the project machine, a headline run and a replicate. Their snapshot folders are named in the final report once they exist; the earlier four-size snapshots are history and are not the comparison. A rerun by a co-author is repeatability evidence: same procedure, a different machine, run by a member of the same team. It is not reproducibility or replication, and it is not external artifact evaluation.
+The measurements this receipt is compared against are the two nine-size course sweeps (`bench-matrix --course`) on the project machine, a headline run and a replicate. They are `results/2026-11-17-3feab89/` (headline, PR #13) and `results/2026-11-17-fbeede0/` (replicate, PR #14). Both have 72 of 72 cases passed and `evidence: true`. The earlier four-size snapshots are history and are not the comparison. A rerun by a co-author is repeatability evidence: same procedure, a different machine, run by a member of the same team. It is not reproducibility or replication, and it is not external artifact evaluation.
 
 ## What the rerun checks
 
@@ -21,13 +21,17 @@ Absolute times differ across GPUs and CPUs, so equality of timings is neither re
 
 A cell that disagrees does not by itself invalidate the claims. The consolidation names each disagreement and states whether the main claims change. Analyses added after seeing the rerun data are marked exploratory.
 
+## Known difference on the project machine
+
+The two project-machine sweeps agree on every crossover the report claims except one: CUDA host-origin at 8 bits. The headline does not resolve a crossover there. The replicate resolves it between 2^13 and 2^14. At 2^13 the headline gives 0.6157 (CI 0.6079 to 0.6612, inconclusive) and the replicate gives 0.6271 (CI 0.6123 to 0.6469, slower). A verdict or crossover disagreement in that cell is not by itself a failure. Record what you see and do not force agreement.
+
 ## Two runs
 
 Run the full sweep twice, as the project machine did, with the same command and no tuning between runs. Report both. A run that fails the readiness gate or is interrupted is reported as such and is not replaced silently; a rerun after a failure is a new, named run.
 
 ## Procedure
 
-Use PowerShell on Windows from a fresh clone of `https://github.com/qu1r0ra/CSC612M-MCO2-Code` at `main`, with a clean working tree.
+Use PowerShell on Windows from a fresh clone of `https://github.com/qu1r0ra/CSC612M-MCO2-Code` at `main`, with a clean working tree. The project machine's code tree is `5c4e64f`, identical to `fbeede0`; its correctness record is `docs/verification-receipt.md`. Record the revision you cloned in the run identity table.
 
 ```powershell
 git clone https://github.com/qu1r0ra/CSC612M-MCO2-Code
@@ -41,6 +45,8 @@ just test-rng
 just test-cuda
 just equivalence-smoke
 ```
+
+`just equivalence-smoke` needs the CUDA build. If a recipe relinks `build/stoquant.exe` as CPU-only before it (for example `just vec-report`), run `just build-cuda` again first.
 
 For the two benchmark runs, close other programs, plug in power, and keep the machine idle. The readiness gate needs at least 4 GiB of available RAM, no other `stoquant` process, a clean tree, and no GPU clock-event reason other than `GpuIdle`. `just bench-matrix` also needs the owner's notification settings, which are not part of the rerun, so build first and call the driver directly:
 
