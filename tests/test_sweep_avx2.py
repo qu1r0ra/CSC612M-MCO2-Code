@@ -167,10 +167,16 @@ def test_driver_cpu_avx2_snapshot_records_threads_and_flags(tmp_path):
     assert manifest["matrix_parameters"]["paths"] == ["cpu-comparator", "cpu-avx2-optimized"]
     assert manifest["all_cases_passed"] is True
     flags = manifest["build_flags"]
-    assert "/fp:strict" in flags["comparator_c"]
-    assert "/arch:AVX2" not in flags["comparator_c"]
-    assert "/arch:AVX2" in flags["avx2_c"]
-    assert "/openmp" in flags["avx2_c"]
+    if os.name == "nt":
+        assert "/fp:strict" in flags["comparator_c"]
+        assert "/arch:AVX2" not in flags["comparator_c"]
+        assert "/arch:AVX2" in flags["avx2_c"]
+        assert "/openmp" in flags["avx2_c"]
+    else:
+        assert "-ffp-contract=off" in flags["comparator_c"]
+        assert "-mavx2" not in flags["comparator_c"]
+        assert "-mavx2" in flags["avx2_c"]
+        assert "-fopenmp" in flags["avx2_c"]
     mask = affinity_mask_excluding(EXCLUDED_LOGICAL_CPUS, get_process_affinity())
     expected_threads = min(mask.bit_count(), 256)
     assert manifest["matrix_parameters"]["cpu_avx2_threads"] == [expected_threads]
