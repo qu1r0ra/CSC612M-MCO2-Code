@@ -14,7 +14,7 @@ Candidate: `main` at `5c4e64f` of `qu1r0ra/CSC612M-MCO2-Code`, run on the projec
 | Operating system | Windows 11 Pro 10.0.26300 |
 | Random123 | v1.14.0, commit `726a093`, vendored in `third_party/random123` |
 
-Flags are in [reproduction.md](reproduction.md#verified-toolchain). `just toolchain` was not rerun at `5c4e64f`; the values above are the ones recorded in the `a2a746f` run on the same project machine.
+Flags are in [reproduction.md](reproduction.md#verified-toolchain). `just toolchain` was rerun at `fbeede0` after the sweeps (see the notes below the run table) and printed the same values.
 
 ## Run at 5c4e64f (2026-11-17)
 
@@ -32,7 +32,7 @@ Commands ran from the repository root through `just`, one after another, from 02
 | `just unbiasedness` | 0 | 65 | Builds the CUDA CLI and runs the expectation suite: four inputs, both widths, CPU and CUDA backends, 4,096 seeds | 8 of 8 cases pass with identical CPU and CUDA results; max error over bound 0.627 to 0.959 (gate is 1); variance ratio 0.9991 to 1.0002; snapshot `results/2026-11-17-5c4e64f-unbiasedness/` (`evidence: true`, no non-evidence reasons) |
 
 - **Ordering.** `just vec-report` relinks `build/stoquant.exe` as a CPU-only binary, so `just build-cuda` must run before `just equivalence-smoke`. The smoke refuses a CPU-only binary before any case runs. The rerun's exit code was not written to the exit-code log; its log ends "behavior smoke passed in 2.3s".
-- **Not run at this revision.** `just toolchain` and `just test-rng`. `test-rng` last passed at `a2a746f` (7 seconds, 0 failures); its checks are not repeated here.
+- **Run afterward at `fbeede0`.** `just toolchain` and `just test-rng` ran on the project machine on 2026-11-17 after both sweeps had finished, with no sweep running. `toolchain` exited 0 and printed `nvcc` 13.5 (V13.5.37), MSVC `cl` 19.52.37029 for x64, and an RTX 5060, driver 610.88, compute capability 12.0, matching the toolchain table above. `test-rng` exited 0 with 0 failures: GPU words match CPU for n=1000003, block=1024, grid=3; the threshold checks; and CPU and GPU Bernoulli at p = 0, 1, 1-2^-24, 0.5. Durations were not recorded.
 - **Timing.** This receipt ran before the sweeps. The sweeps ran at `fbeede0`, whose tree is identical to `5c4e64f`, so the receipt was not rerun after them.
 
 ## Skipped or not run
@@ -61,7 +61,6 @@ The record-producing code is the same in both repositories. The differences are 
 
 - Chan's rerun on a second machine ([receipt template](independent-rerun-receipt.md)).
 - A line-by-line review of the shared-module differences listed above, if the final report is to state that the course Python is behavior-equivalent to upstream. Repeat the upstream comparison at the final revision if the report states it.
-- `just toolchain` and `just test-rng` at the final revision, if the final report cites them as run there.
 - Screenshots, the demonstration video, member observations, and the final presentation.
 
 ## Earlier candidate: a2a746f (2026-11-16)
