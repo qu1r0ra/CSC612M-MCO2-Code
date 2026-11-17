@@ -172,6 +172,8 @@ An evidence sweep refuses to start unless the readiness check passes: at least 4
 
 `just bench-matrix` requires the local ntfy settings and sends a preflight notification before it starts the benchmark driver. Notification setup does not change the benchmark protocol or results.
 
+Remote comparator runs (the JupyterLab hub) invoke `python -m stoquant bench-matrix` directly, without the notify wrapper, because the owner keeps notifications off for them; the protocol and results are unchanged.
+
 ```powershell
 # Pilot: four sizes (2^10, 2^14, 2^18, 2^22), both bit widths, into results/pilots/ (never evidence)
 just bench-matrix --pilot
