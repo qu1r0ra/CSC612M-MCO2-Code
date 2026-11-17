@@ -175,7 +175,8 @@ def test_python_child_uses_the_current_interpreter(tmp_path):
             check=False,
         )
     assert result.returncode == 0
-    assert str(Path(sys.executable).resolve()).lower() in result.stdout.lower()
+    # A venv's python is a symlink on Linux; the child reports the unresolved path.
+    assert Path(result.stdout.strip()).resolve() == Path(sys.executable).resolve()
 
 
 def test_failed_start_notification_prevents_child_launch(tmp_path):

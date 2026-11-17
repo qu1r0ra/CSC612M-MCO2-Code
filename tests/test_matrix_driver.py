@@ -168,7 +168,8 @@ def test_driver_tiny_matrix_produces_valid_snapshot(tmp_path):
     assert "build_flags" in manifest
     for key in ("source", "commands", "comparator_c", "cuda_nvcc"):
         assert key in manifest["build_flags"]
-    assert "/DSQ_ENABLE_CUDA" in manifest["build_flags"]["comparator_c"]
+    cuda_define = "/DSQ_ENABLE_CUDA" if os.name == "nt" else "-DSQ_ENABLE_CUDA"
+    assert cuda_define in manifest["build_flags"]["comparator_c"]
     assert "--fmad=false" in manifest["build_flags"]["cuda_nvcc"]
     assert manifest["transfer_policies"] == ["pageable"]
     assert "transfer_policy" not in manifest["toolkit_and_driver"]
