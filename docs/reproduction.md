@@ -13,7 +13,7 @@ The CUDA tool supports 8-bit and 4-bit compression and shares the CPU decoder. `
 
 ## Verified toolchain
 
-Verified on 2026-11-16 with the earlier four-size benchmark snapshots `results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/` (superseded by the nine-size course sweeps; the toolchain is unchanged):
+Verified on 2026-11-17 at revision `5c4e64f` (see the [verification receipt](verification-receipt.md)). The benchmark snapshots are the nine-size course sweeps `results/2026-11-17-3feab89/` and `results/2026-11-17-fbeede0/`; the earlier four-size snapshots `results/2026-11-16-b3b3e8a/` and `results/2026-11-16-4f1ae10/` are superseded. The toolchain versions are those recorded in the `a2a746f` run; `just toolchain` was not rerun at `5c4e64f`:
 
 | Component | Version |
 | --- | --- |
@@ -259,7 +259,7 @@ This is a selected behavior smoke against implementations in the current tree. I
 
 ## Receipts
 
-- [Candidate verification receipt](verification-receipt.md): the commands above run against revision `a2a746f` on the project machine, with outcomes, skipped checks, and source correspondence with upstream.
+- [Candidate verification receipt](verification-receipt.md): the commands above run against revision `5c4e64f` on the project machine, with outcomes and skipped checks. The earlier `a2a746f` run and its source correspondence with upstream are kept in the same receipt.
 - [Independent rerun receipt](independent-rerun-receipt.md): the template for the second-machine rerun, with its agreement tolerance fixed in advance.
 
 ## Scope boundary
