@@ -175,9 +175,20 @@ Speedup over the comparator, with its verdict and trial range, headline sweep. A
 
 Full per-case tables and crossover detail are in the [headline report](results/2026-11-17-3feab89/derived/report.md) and the [second-sweep report](results/2026-11-17-fbeede0/derived/report.md), which has its own copies of these figures.
 
+### Supplementary A100 replication
+
+The same course grid ran twice on a Linux JupyterLab hub with an NVIDIA A100-PCIE-40GB (compute capability 8.0, driver 575.51.02, CUDA 12.9, gcc 13.3 on Ubuntu 24.04). Both runs used revision `9446386`, whose native sources match the Windows replicate tree `5c4e64f`, and both passed the readiness gate and all 72 correctness checks. The snapshots, landed at `7b8ca60`, are [`results/2026-11-17-9446386-hub-a100`](results/2026-11-17-9446386-hub-a100/derived/report.md) and `results/2026-11-17-9446386-hub-a100-r2`.
+
+This shows that the code builds, passes its checks, and gives the same kind of result on a second platform. It does not compare the machines: OS, compiler, CPU, and GPU all differ, so the A100 speedups are not set against the RTX 5060 sweeps, and the Windows results stay the primary evidence.
+
+- **Run to run.** All 72 verdicts match across the two runs, with no direction flip. The median time changes by 0.22% at the median and 4.8% at most (the 2^10, 4-bit comparator). The same four cases are inconclusive in both: resident-graph at 2^11 and 4 bits, resident at 2^12 and 8 bits, and host-origin at 2^13 at both widths.
+- **Claim flags.** Two cases swap their revision 2 claim flag between runs: resident at 2^13 and 8 bits (unsupported in the first run, supported in the second) and host-origin at 2^16 and 4 bits (the reverse). Treat both as run-to-run variance, not as a result.
+- **Host-origin crossover.** Host-origin is slower through 2^12, inconclusive at 2^13, and faster from 2^14 at both widths in both runs. The crossover lies somewhere between 2^12 and 2^14, and nothing was measured finer than that.
+- **At 2^22 elements.** The scalar comparator takes about 46.1 ms at 4 bits and 50.1 ms at 8 bits in both runs. Resident is 170–180× faster, resident-graph 199–209×, and host-origin 11.1–11.5×. Host-origin includes host–device copies that the resident paths exclude.
+
 ### Limitations and lessons
 
-This measures synthetic-vector compression and reconstruction, without training accuracy, convergence, network transmission, or federated-learning benefit. Ideal-arithmetic unbiasedness differs from finite-precision and empirical checks. Scalar C speedups do not establish an advantage over every optimized CPU implementation. Resident timings exclude transfers; graph replay uses a different launch boundary. A rerun on another machine establishes only the behavior it exercised. A100 and publication experiments are separate work.
+This measures synthetic-vector compression and reconstruction, without training accuracy, convergence, network transmission, or federated-learning benefit. Ideal-arithmetic unbiasedness differs from finite-precision and empirical checks. Scalar C speedups do not establish an advantage over every optimized CPU implementation. Resident timings exclude transfers; graph replay uses a different launch boundary. A rerun on another machine establishes only the behavior it exercised. The A100 replication above is supplementary, and publication experiments are separate work.
 
 **TODO (AHA moments):** record observed surprises, the execution or debugging evidence behind each, and what changed in the team's understanding. Keep measured explanations apart from hypotheses.
 
