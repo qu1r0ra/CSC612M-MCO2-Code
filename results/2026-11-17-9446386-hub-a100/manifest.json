@@ -1,0 +1,632 @@
+{
+  "manifest_version": "3.3",
+  "date": "2026-11-17",
+  "created_at_utc": "2026-11-17T11:40:58.934452+00:00",
+  "git_provenance": {
+    "code_revision": "9446386f72226c3111449ab1b8793ae4227b2afb",
+    "code_revision_short": "9446386",
+    "git_dirty": false,
+    "dirty_files": [],
+    "tree_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "hardware": {
+    "gpu_name": "NVIDIA A100-PCIE-40GB",
+    "compute_capability": "8.0",
+    "host_cpu": "x86_64"
+  },
+  "toolkit_and_driver": {
+    "cuda_toolkit": "Cuda compilation tools, release 12.9, V12.9.86",
+    "driver_version": "575.51.02",
+    "c_compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "build_flags": {
+    "source": "verified build stamp (build-cuda)",
+    "commands": [
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/main.c -o build/cuda/main.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/cli.c -o build/cuda/cli.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/bench_report.c -o build/cuda/bench_report.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/sq_status.c -o build/cuda/sq_status.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/codec.c -o build/cuda/codec.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/quantizer.c -o build/cuda/quantizer.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/rng_cpu.c -o build/cuda/rng_cpu.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/cpu_compress.c -o build/cuda/cpu_compress.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -mavx2 -fopenmp -ffp-contract=off -fno-strict-aliasing -fvect-cost-model=dynamic -Inative -Ithird_party/random123/include -c native/quantizer_avx2.c -o build/cuda/quantizer_avx2.o",
+      "nvcc -O2 -arch=native -Inative -Ithird_party/random123/include --fmad=false --ftz=false --prec-div=true --prec-sqrt=true --Werror all-warnings -c native/quantizer_cuda.cu -o build/cuda/quantizer_cuda.o",
+      "nvcc -O2 -arch=native -Inative -Ithird_party/random123/include build/cuda/main.o build/cuda/cli.o build/cuda/bench_report.o build/cuda/sq_status.o build/cuda/codec.o build/cuda/quantizer.o build/cuda/rng_cpu.o build/cuda/cpu_compress.o build/cuda/quantizer_avx2.o build/cuda/quantizer_cuda.o -lm -Xcompiler -fopenmp -o build/stoquant"
+    ],
+    "comparator_c": "-O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include",
+    "avx2_c": "-O2 -std=c11 -Wall -Wextra -Werror -mavx2 -fopenmp -ffp-contract=off -fno-strict-aliasing -fvect-cost-model=dynamic -Inative -Ithird_party/random123/include",
+    "cuda_nvcc": "-O2 -arch=native -Inative -Ithird_party/random123/include --fmad=false --ftz=false --prec-div=true --prec-sqrt=true --Werror all-warnings"
+  },
+  "build_stamp": {
+    "version": 1,
+    "revision": "9446386f72226c3111449ab1b8793ae4227b2afb",
+    "tree_dirty": false,
+    "tree_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "recipe": "build-cuda",
+    "commands": [
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/main.c -o build/cuda/main.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/cli.c -o build/cuda/cli.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/bench_report.c -o build/cuda/bench_report.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/sq_status.c -o build/cuda/sq_status.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/codec.c -o build/cuda/codec.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/quantizer.c -o build/cuda/quantizer.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/rng_cpu.c -o build/cuda/rng_cpu.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/cpu_compress.c -o build/cuda/cpu_compress.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -mavx2 -fopenmp -ffp-contract=off -fno-strict-aliasing -fvect-cost-model=dynamic -Inative -Ithird_party/random123/include -c native/quantizer_avx2.c -o build/cuda/quantizer_avx2.o",
+      "nvcc -O2 -arch=native -Inative -Ithird_party/random123/include --fmad=false --ftz=false --prec-div=true --prec-sqrt=true --Werror all-warnings -c native/quantizer_cuda.cu -o build/cuda/quantizer_cuda.o",
+      "nvcc -O2 -arch=native -Inative -Ithird_party/random123/include build/cuda/main.o build/cuda/cli.o build/cuda/bench_report.o build/cuda/sq_status.o build/cuda/codec.o build/cuda/quantizer.o build/cuda/rng_cpu.o build/cuda/cpu_compress.o build/cuda/quantizer_avx2.o build/cuda/quantizer_cuda.o -lm -Xcompiler -fopenmp -o build/stoquant"
+    ],
+    "compiler_flags": [
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/main.c -o build/cuda/main.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/cli.c -o build/cuda/cli.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/bench_report.c -o build/cuda/bench_report.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/sq_status.c -o build/cuda/sq_status.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/codec.c -o build/cuda/codec.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/quantizer.c -o build/cuda/quantizer.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/rng_cpu.c -o build/cuda/rng_cpu.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -ffp-contract=off -DSQ_ENABLE_CUDA -Inative -Ithird_party/random123/include -c native/cpu_compress.c -o build/cuda/cpu_compress.o",
+      "cc -O2 -std=c11 -Wall -Wextra -Werror -mavx2 -fopenmp -ffp-contract=off -fno-strict-aliasing -fvect-cost-model=dynamic -Inative -Ithird_party/random123/include -c native/quantizer_avx2.c -o build/cuda/quantizer_avx2.o",
+      "nvcc -O2 -arch=native -Inative -Ithird_party/random123/include --fmad=false --ftz=false --prec-div=true --prec-sqrt=true --Werror all-warnings -c native/quantizer_cuda.cu -o build/cuda/quantizer_cuda.o",
+      "nvcc -O2 -arch=native -Inative -Ithird_party/random123/include build/cuda/main.o build/cuda/cli.o build/cuda/bench_report.o build/cuda/sq_status.o build/cuda/codec.o build/cuda/quantizer.o build/cuda/rng_cpu.o build/cuda/cpu_compress.o build/cuda/quantizer_avx2.o build/cuda/quantizer_cuda.o -lm -Xcompiler -fopenmp -o build/stoquant"
+    ],
+    "binary_sha256": "6263b50899c2313e972d06c135120999bd7a1e1327bad22849496db7fc59fa0b"
+  },
+  "transfer_policies": [
+    "pageable"
+  ],
+  "gpu_state": {
+    "note": "Instantaneous nvidia-smi readings before the warm-up, after it, and after the last timed process; they describe the GPU around the run, not clock stability during it.",
+    "start": {
+      "pstate": "P0",
+      "clocks.sm": "210 MHz",
+      "clocks.mem": "1215 MHz",
+      "clocks.max.sm": "1410 MHz",
+      "temperature.gpu": "29",
+      "power.draw": "32.83 W",
+      "clocks_event_reasons.active": "0x0000000000000001",
+      "captured_at_utc": "2026-11-17T11:03:51.212818+00:00"
+    },
+    "warmup": {
+      "seconds_requested": 20.0,
+      "seconds_elapsed": 20.01098595559597,
+      "workload": "cuda resident, 8-bit, input_n4194304, 100 reps per process",
+      "processes": 44
+    },
+    "after_warmup": {
+      "pstate": "P0",
+      "clocks.sm": "1080 MHz",
+      "clocks.mem": "1215 MHz",
+      "clocks.max.sm": "1410 MHz",
+      "temperature.gpu": "30",
+      "power.draw": "38.74 W",
+      "clocks_event_reasons.active": "0x0000000000000000",
+      "captured_at_utc": "2026-11-17T11:04:13.667919+00:00"
+    },
+    "end": {
+      "pstate": "P0",
+      "clocks.sm": "1410 MHz",
+      "clocks.mem": "1215 MHz",
+      "clocks.max.sm": "1410 MHz",
+      "temperature.gpu": "40",
+      "power.draw": "58.61 W",
+      "clocks_event_reasons.active": "0x0000000000000000",
+      "captured_at_utc": "2026-11-17T11:40:58.909691+00:00"
+    }
+  },
+  "matrix_parameters": {
+    "k1": "reference",
+    "input_family": "dense",
+    "counts": [
+      1024,
+      2048,
+      4096,
+      8192,
+      16384,
+      65536,
+      262144,
+      1048576,
+      4194304
+    ],
+    "model_tensors": null,
+    "model_limit": null,
+    "bit_widths": [
+      4,
+      8
+    ],
+    "backends": [
+      "cpu",
+      "cuda"
+    ],
+    "warmup": 10,
+    "in_process_warmup_seconds": 1.0,
+    "in_process_warmup_rule": "per path: max(warmup, ceil(target_seconds * 1000 / probe median ms)), probe = one untimed stoquant bench process with the base warmup and reps",
+    "reps": 30,
+    "trials": 24,
+    "paths": [
+      "cpu-comparator",
+      "cuda-resident",
+      "cuda-resident-graph",
+      "cuda-host-origin"
+    ],
+    "trial_design": "all-permutations",
+    "trial_orders": [
+      [
+        "cpu-comparator",
+        "cuda-resident",
+        "cuda-resident-graph",
+        "cuda-host-origin"
+      ],
+      [
+        "cpu-comparator",
+        "cuda-resident",
+        "cuda-host-origin",
+        "cuda-resident-graph"
+      ],
+      [
+        "cpu-comparator",
+        "cuda-resident-graph",
+        "cuda-resident",
+        "cuda-host-origin"
+      ],
+      [
+        "cpu-comparator",
+        "cuda-resident-graph",
+        "cuda-host-origin",
+        "cuda-resident"
+      ],
+      [
+        "cpu-comparator",
+        "cuda-host-origin",
+        "cuda-resident",
+        "cuda-resident-graph"
+      ],
+      [
+        "cpu-comparator",
+        "cuda-host-origin",
+        "cuda-resident-graph",
+        "cuda-resident"
+      ],
+      [
+        "cuda-resident",
+        "cpu-comparator",
+        "cuda-resident-graph",
+        "cuda-host-origin"
+      ],
+      [
+        "cuda-resident",
+        "cpu-comparator",
+        "cuda-host-origin",
+        "cuda-resident-graph"
+      ],
+      [
+        "cuda-resident",
+        "cuda-resident-graph",
+        "cpu-comparator",
+        "cuda-host-origin"
+      ],
+      [
+        "cuda-resident",
+        "cuda-resident-graph",
+        "cuda-host-origin",
+        "cpu-comparator"
+      ],
+      [
+        "cuda-resident",
+        "cuda-host-origin",
+        "cpu-comparator",
+        "cuda-resident-graph"
+      ],
+      [
+        "cuda-resident",
+        "cuda-host-origin",
+        "cuda-resident-graph",
+        "cpu-comparator"
+      ],
+      [
+        "cuda-resident-graph",
+        "cpu-comparator",
+        "cuda-resident",
+        "cuda-host-origin"
+      ],
+      [
+        "cuda-resident-graph",
+        "cpu-comparator",
+        "cuda-host-origin",
+        "cuda-resident"
+      ],
+      [
+        "cuda-resident-graph",
+        "cuda-resident",
+        "cpu-comparator",
+        "cuda-host-origin"
+      ],
+      [
+        "cuda-resident-graph",
+        "cuda-resident",
+        "cuda-host-origin",
+        "cpu-comparator"
+      ],
+      [
+        "cuda-resident-graph",
+        "cuda-host-origin",
+        "cpu-comparator",
+        "cuda-resident"
+      ],
+      [
+        "cuda-resident-graph",
+        "cuda-host-origin",
+        "cuda-resident",
+        "cpu-comparator"
+      ],
+      [
+        "cuda-host-origin",
+        "cpu-comparator",
+        "cuda-resident",
+        "cuda-resident-graph"
+      ],
+      [
+        "cuda-host-origin",
+        "cpu-comparator",
+        "cuda-resident-graph",
+        "cuda-resident"
+      ],
+      [
+        "cuda-host-origin",
+        "cuda-resident",
+        "cpu-comparator",
+        "cuda-resident-graph"
+      ],
+      [
+        "cuda-host-origin",
+        "cuda-resident",
+        "cuda-resident-graph",
+        "cpu-comparator"
+      ],
+      [
+        "cuda-host-origin",
+        "cuda-resident-graph",
+        "cpu-comparator",
+        "cuda-resident"
+      ],
+      [
+        "cuda-host-origin",
+        "cuda-resident-graph",
+        "cuda-resident",
+        "cpu-comparator"
+      ]
+    ],
+    "case_order_seed": 612,
+    "case_order": [
+      {
+        "count": 2048,
+        "bits": 4
+      },
+      {
+        "count": 262144,
+        "bits": 4
+      },
+      {
+        "count": 1024,
+        "bits": 8
+      },
+      {
+        "count": 262144,
+        "bits": 8
+      },
+      {
+        "count": 16384,
+        "bits": 8
+      },
+      {
+        "count": 1048576,
+        "bits": 4
+      },
+      {
+        "count": 65536,
+        "bits": 8
+      },
+      {
+        "count": 4096,
+        "bits": 4
+      },
+      {
+        "count": 65536,
+        "bits": 4
+      },
+      {
+        "count": 4096,
+        "bits": 8
+      },
+      {
+        "count": 4194304,
+        "bits": 8
+      },
+      {
+        "count": 8192,
+        "bits": 8
+      },
+      {
+        "count": 8192,
+        "bits": 4
+      },
+      {
+        "count": 16384,
+        "bits": 4
+      },
+      {
+        "count": 4194304,
+        "bits": 4
+      },
+      {
+        "count": 2048,
+        "bits": 8
+      },
+      {
+        "count": 1048576,
+        "bits": 8
+      },
+      {
+        "count": 1024,
+        "bits": 4
+      }
+    ],
+    "invocation_scheme": "every trial reuses base invocation 0; identifiers per repetition are copied from each stoquant bench configuration",
+    "input_seed": 2026,
+    "compression_seed": 42
+  },
+  "statistics_method": {
+    "pooled": "median and IQR over all measured repetitions of all trials",
+    "quantile_method": "numpy.percentile(method='linear')",
+    "numpy_version": "2.5.3",
+    "speedup_point": "baseline pooled median / candidate pooled median",
+    "speedup_range": "[baseline min trial median / candidate max trial median, baseline max trial median / candidate min trial median]",
+    "spread_ratio": "max trial median / min trial median",
+    "spread_threshold": 1.25,
+    "spread_p90_p10": "p90 / p10 of the trial medians",
+    "stability_threshold": 1.25,
+    "claim_rules": {
+      "verdict": "verdict is 'faster' when baseline trial-median minimum / candidate trial-median maximum > 1, 'slower' when baseline trial-median maximum / candidate trial-median minimum < 1, and 'inconclusive' otherwise",
+      "direction_supported": "direction_supported: verdict is not 'inconclusive' and boundary_inversion is false (host-origin pooled median is not below the pooled median of any resident path)",
+      "magnitude_supported": "magnitude_supported: direction_supported and both the candidate and the baseline have spread_p90_p10 <= 1.25 (90th over 10th percentile of trial medians, numpy method 'linear')",
+      "claim_supported_rev2": "claim_supported_rev2: verdict is not 'inconclusive', boundary_inversion is false, and both the candidate and the baseline have spread_ratio <= 1.25 (maximum over minimum trial median)",
+      "baselines": "every path is measured against a policy-matched CPU baseline: resident, resident-graph, host-origin, and CPU gpu-origin paths against the CPU comparator (host-host); CUDA gpu-origin against CPU gpu-origin of the same transfer policy. Pinned paths add vs_pageable against their pageable twin; CUDA gpu-origin adds a descriptive vs_comparator with no claim flags"
+    },
+    "bootstrap": {
+      "resamples": 10000,
+      "seed": 31,
+      "level": 0.95,
+      "rule": "95% percentile bootstrap: resample each path's trial medians with replacement, independently, 10000 times from numpy.random.default_rng(31); the statistic is the baseline median of resampled trial medians over the candidate median of resampled trial medians"
+    }
+  },
+  "run_conditions": {
+    "evidence": true,
+    "non_evidence_reasons": [],
+    "pilot": false,
+    "readiness": {
+      "passed": true,
+      "failures": [],
+      "overridden": false,
+      "enforced": true,
+      "facts": {
+        "physical_memory": {
+          "total_bytes": 201325555712,
+          "available_bytes": 72045948928,
+          "used_percent": 64.21420585518557
+        },
+        "stoquant_pids": [],
+        "git_dirty_files": [],
+        "gpu_clock_event_reasons": "0x0000000000000001",
+        "power_plan": "unavailable",
+        "hags_hwschmode": "unavailable",
+        "uptime_seconds": 2427066.01
+      },
+      "min_available_physical_bytes": 4294967296
+    },
+    "affinity": {
+      "excluded_logical_cpus": [
+        0,
+        1
+      ],
+      "mask": "0xe7ffff6c81bbd939fd00702401fc",
+      "previous_mask": "0xe7ffff6c81bbd939fd00702401ff",
+      "applied_to": "driver process before any benchmark or probe process; inherited"
+    }
+  },
+  "inputs": {
+    "1024": {
+      "input_family": "dense",
+      "input_key": "n1024",
+      "count": 1024,
+      "filename": "input_n1024.f32",
+      "generator": "numpy.random.default_rng([count, seed])",
+      "bit_generator": "PCG64",
+      "seed": [
+        1024,
+        2026
+      ],
+      "sha256": "2496de1b2222fce9151e9b3f70b05354bdb62f86687dec3f01795df2d906f2bf"
+    },
+    "2048": {
+      "input_family": "dense",
+      "input_key": "n2048",
+      "count": 2048,
+      "filename": "input_n2048.f32",
+      "generator": "numpy.random.default_rng([count, seed])",
+      "bit_generator": "PCG64",
+      "seed": [
+        2048,
+        2026
+      ],
+      "sha256": "d2aba6846002610fc8c5672e8d52e83bc7410d20c262ae08f90e093cbb941ed3"
+    },
+    "4096": {
+      "input_family": "dense",
+      "input_key": "n4096",
+      "count": 4096,
+      "filename": "input_n4096.f32",
+      "generator": "numpy.random.default_rng([count, seed])",
+      "bit_generator": "PCG64",
+      "seed": [
+        4096,
+        2026
+      ],
+      "sha256": "6c2287629c1f10043cac4b8c90d5ea103e50fc3c7197ad28449a030292f2e374"
+    },
+    "8192": {
+      "input_family": "dense",
+      "input_key": "n8192",
+      "count": 8192,
+      "filename": "input_n8192.f32",
+      "generator": "numpy.random.default_rng([count, seed])",
+      "bit_generator": "PCG64",
+      "seed": [
+        8192,
+        2026
+      ],
+      "sha256": "93c6fe21f3baf9ec26f5c053d8501f36e9bc696917f1a1653794c12d66ff108a"
+    },
+    "16384": {
+      "input_family": "dense",
+      "input_key": "n16384",
+      "count": 16384,
+      "filename": "input_n16384.f32",
+      "generator": "numpy.random.default_rng([count, seed])",
+      "bit_generator": "PCG64",
+      "seed": [
+        16384,
+        2026
+      ],
+      "sha256": "c2baf248e0e12ab22ff19cfd21bfc4ed8f57de976fc3b01025f6d5306720b311"
+    },
+    "65536": {
+      "input_family": "dense",
+      "input_key": "n65536",
+      "count": 65536,
+      "filename": "input_n65536.f32",
+      "generator": "numpy.random.default_rng([count, seed])",
+      "bit_generator": "PCG64",
+      "seed": [
+        65536,
+        2026
+      ],
+      "sha256": "867eba77d5adbe4df4f7249e60281037a923db71779b4f64d9f87b54cccdb379"
+    },
+    "262144": {
+      "input_family": "dense",
+      "input_key": "n262144",
+      "count": 262144,
+      "filename": "input_n262144.f32",
+      "generator": "numpy.random.default_rng([count, seed])",
+      "bit_generator": "PCG64",
+      "seed": [
+        262144,
+        2026
+      ],
+      "sha256": "ebb2634d8539cb65d41763b83436514194881291a8aa396f25d30f8716f7f625"
+    },
+    "1048576": {
+      "input_family": "dense",
+      "input_key": "n1048576",
+      "count": 1048576,
+      "filename": "input_n1048576.f32",
+      "generator": "numpy.random.default_rng([count, seed])",
+      "bit_generator": "PCG64",
+      "seed": [
+        1048576,
+        2026
+      ],
+      "sha256": "3b0ec80f0327b56debaf8c814f49b31c0f4a4f13ef27204a73e8770d0d9d04ff"
+    },
+    "4194304": {
+      "input_family": "dense",
+      "input_key": "n4194304",
+      "count": 4194304,
+      "filename": "input_n4194304.f32",
+      "generator": "numpy.random.default_rng([count, seed])",
+      "bit_generator": "PCG64",
+      "seed": [
+        4194304,
+        2026
+      ],
+      "sha256": "08cd8e53a00185ba3beef38cacc8b1eb7221d0e9be6afaa8167271a10e56191b"
+    }
+  },
+  "summary_csv": "summary.csv",
+  "gcc_vectorization_report": "gcc_vectorization_report.txt",
+  "cases": [
+    "case_cpu_comparator_bits4_n1024",
+    "case_cuda_resident_bits4_n1024",
+    "case_cuda_resident-graph_bits4_n1024",
+    "case_cuda_host-origin_bits4_n1024",
+    "case_cpu_comparator_bits8_n1024",
+    "case_cuda_resident_bits8_n1024",
+    "case_cuda_resident-graph_bits8_n1024",
+    "case_cuda_host-origin_bits8_n1024",
+    "case_cpu_comparator_bits4_n2048",
+    "case_cuda_resident_bits4_n2048",
+    "case_cuda_resident-graph_bits4_n2048",
+    "case_cuda_host-origin_bits4_n2048",
+    "case_cpu_comparator_bits8_n2048",
+    "case_cuda_resident_bits8_n2048",
+    "case_cuda_resident-graph_bits8_n2048",
+    "case_cuda_host-origin_bits8_n2048",
+    "case_cpu_comparator_bits4_n4096",
+    "case_cuda_resident_bits4_n4096",
+    "case_cuda_resident-graph_bits4_n4096",
+    "case_cuda_host-origin_bits4_n4096",
+    "case_cpu_comparator_bits8_n4096",
+    "case_cuda_resident_bits8_n4096",
+    "case_cuda_resident-graph_bits8_n4096",
+    "case_cuda_host-origin_bits8_n4096",
+    "case_cpu_comparator_bits4_n8192",
+    "case_cuda_resident_bits4_n8192",
+    "case_cuda_resident-graph_bits4_n8192",
+    "case_cuda_host-origin_bits4_n8192",
+    "case_cpu_comparator_bits8_n8192",
+    "case_cuda_resident_bits8_n8192",
+    "case_cuda_resident-graph_bits8_n8192",
+    "case_cuda_host-origin_bits8_n8192",
+    "case_cpu_comparator_bits4_n16384",
+    "case_cuda_resident_bits4_n16384",
+    "case_cuda_resident-graph_bits4_n16384",
+    "case_cuda_host-origin_bits4_n16384",
+    "case_cpu_comparator_bits8_n16384",
+    "case_cuda_resident_bits8_n16384",
+    "case_cuda_resident-graph_bits8_n16384",
+    "case_cuda_host-origin_bits8_n16384",
+    "case_cpu_comparator_bits4_n65536",
+    "case_cuda_resident_bits4_n65536",
+    "case_cuda_resident-graph_bits4_n65536",
+    "case_cuda_host-origin_bits4_n65536",
+    "case_cpu_comparator_bits8_n65536",
+    "case_cuda_resident_bits8_n65536",
+    "case_cuda_resident-graph_bits8_n65536",
+    "case_cuda_host-origin_bits8_n65536",
+    "case_cpu_comparator_bits4_n262144",
+    "case_cuda_resident_bits4_n262144",
+    "case_cuda_resident-graph_bits4_n262144",
+    "case_cuda_host-origin_bits4_n262144",
+    "case_cpu_comparator_bits8_n262144",
+    "case_cuda_resident_bits8_n262144",
+    "case_cuda_resident-graph_bits8_n262144",
+    "case_cuda_host-origin_bits8_n262144",
+    "case_cpu_comparator_bits4_n1048576",
+    "case_cuda_resident_bits4_n1048576",
+    "case_cuda_resident-graph_bits4_n1048576",
+    "case_cuda_host-origin_bits4_n1048576",
+    "case_cpu_comparator_bits8_n1048576",
+    "case_cuda_resident_bits8_n1048576",
+    "case_cuda_resident-graph_bits8_n1048576",
+    "case_cuda_host-origin_bits8_n1048576",
+    "case_cpu_comparator_bits4_n4194304",
+    "case_cuda_resident_bits4_n4194304",
+    "case_cuda_resident-graph_bits4_n4194304",
+    "case_cuda_host-origin_bits4_n4194304",
+    "case_cpu_comparator_bits8_n4194304",
+    "case_cuda_resident_bits8_n4194304",
+    "case_cuda_resident-graph_bits8_n4194304",
+    "case_cuda_host-origin_bits8_n4194304"
+  ],
+  "all_cases_passed": true
+}
