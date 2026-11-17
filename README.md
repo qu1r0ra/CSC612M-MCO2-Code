@@ -2,7 +2,7 @@
 
 ## Final report
 
-**Status: measurements are complete (two full nine-size sweeps) and the candidate verification receipt is written. Chan's rerun, the video, and the final report link are pending.**
+**Status: measurements are complete (two full nine-size sweeps) and the candidate verification receipt is written. Chan's rerun, the video, the final report link, and the AHA accounts from Chan and Umali are pending.**
 
 ### Purpose and scope
 
@@ -160,7 +160,7 @@ Speedup over the comparator, with its verdict and trial range, headline sweep. A
 - **Small inputs favor the scalar comparator.** At 2^10 elements the comparator is faster than resident and host-origin at both widths. Graph replay is slower at 8 bits and inconclusive at 4 bits. Fixed launch and transfer overhead is a likely explanation; these runs do not measure it.
 - **Host-origin crossover.** Host-origin, the path that counts copies, is slower through 2^12 elements and faster from 2^14 at both widths. At 4 bits the crossover lies between 2^13 and 2^14 (8,192 and 16,384 elements) in both sweeps. At 8 bits the second sweep gives the same interval; in the headline sweep the 2^13 case is inconclusive (0.616×, trial range 0.43 to 1.03), so that sweep brackets it only between 2^12 and 2^14. The 4-bit 2^14 margin is the thinnest in the table (1.17×, trial range 1.01 to 1.93). Nothing was measured between 2^13 and 2^14.
 - **Resident paths.** Resident is slower through 2^12, inconclusive at 2^13 at both widths, and faster from 2^14. Resident-graph at 8 bits crosses between 2^10 and 2^11. At 4 bits it has no size with a supported slower verdict, because its 2^10 case is inconclusive; it is faster from 2^11.
-- **The gap widens with size.** In the headline sweep the speedup grows with every step in size for every path and width. At 2^22, resident reaches 158–160×, resident-graph 209–220×, and host-origin 18.7–20.2× (the comparator takes 66.5 and 67.1 ms). Host-origin includes host–device copies that the resident paths exclude. At 2^22 and 4 bits that is 3.29 ms against 0.42 ms.
+- **The gap widens with size.** In the headline sweep the speedup grows with every step in size for every path and width. At 2^22, resident reaches 158 to 160×, resident-graph 209 to 220×, and host-origin 18.7 to 20.2× (the comparator takes 66.5 and 67.1 ms). Host-origin includes host-device copies that the resident paths exclude. At 2^22 and 4 bits that is 3.29 ms against 0.42 ms.
 - **Repeatability.** The two sweeps ran on one machine by one operator and give the same verdict in 53 of 54 CUDA cases. The one difference is host-origin at 2^13 and 8 bits: inconclusive in the headline sweep and slower in the second (0.616× and 0.627×). The largest change in any median between sweeps is 7.6%, and the largest change in any speedup is 7.1%, both at 2^10, 4-bit, resident.
 - **Spread check.** Three headline cells keep their direction but exceed the 1.25 spread limit (host-origin at 2^12 and 8 bits, and at 2^16 at both widths); the second sweep has two, both at 2^16. They carry a direction claim only and are marked † above.
 - **Record sizes.** Each record has a 20-byte header and a payload of n/2 bytes at 4 bits or n bytes at 8 bits. At 2^22 elements that is 2,097,152 and 4,194,304 payload bytes.
@@ -184,7 +184,7 @@ The runs show that the code builds, passes its checks, and repeats its verdicts 
 - **Run to run.** All 72 verdicts match across the two runs, with no direction flip. The median time change is 0.22%, and the largest is 4.8% (the 2^10, 4-bit comparator). The same four cases are inconclusive in both: resident-graph at 2^11 and 4 bits, resident at 2^12 and 8 bits, and host-origin at 2^13 at both widths.
 - **Claim flags.** Two cases swap their revision 2 claim flag between runs: resident at 2^13 and 8 bits (unsupported in the first run, supported in the second) and host-origin at 2^16 and 4 bits (the reverse). We treat both as run-to-run variance.
 - **Host-origin crossover.** Host-origin is slower through 2^12, inconclusive at 2^13, and faster from 2^14 at both widths in both runs. The crossover lies somewhere between 2^12 and 2^14, and nothing was measured finer than that.
-- **At 2^22 elements.** The scalar comparator takes about 46.1 ms at 4 bits and 50.1 ms at 8 bits in both runs. Resident is 170–180× faster, resident-graph 199–209×, and host-origin 11.1–11.5×. Host-origin includes host–device copies that the resident paths exclude.
+- **At 2^22 elements.** The scalar comparator takes about 46.1 ms at 4 bits and 50.1 ms at 8 bits in both runs. Resident is 170 to 180× faster, resident-graph 199 to 209×, and host-origin 11.1 to 11.5×. Host-origin includes host-device copies that the resident paths exclude.
 
 ### Limitations and lessons
 

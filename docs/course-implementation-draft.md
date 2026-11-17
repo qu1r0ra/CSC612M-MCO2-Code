@@ -1,6 +1,6 @@
 # Course implementation and verification discussion (draft)
 
-Status: draft course discussion, prepared November 15, 2026. The complete four-size results are recorded in two sweeps (November 16, 2026). Final candidate verification and final execution artifacts are pending.
+Status: draft course discussion, prepared November 15, 2026. The complete nine-size results are recorded in two sweeps (November 17, 2026) and the candidate verification is recorded in the receipt. Final execution artifacts and teammate accounts are pending.
 
 ## What the program does
 
@@ -8,7 +8,7 @@ The project asks when GPU compression saves time once computation and data trans
 
 The course compares scalar, single-thread C with CUDA at 4 and 8 bits. Scalar C processes values sequentially. CUDA uses SIMT execution: many GPU threads execute the same function, called a kernel, on different data. An optional AVX2/OpenMP CPU backend is also available; the required comparison remains scalar C versus CUDA.
 
-The course experiment calls for dense synthetic vectors of 1,024, 16,384, 262,144, and 4,194,304 elements at both widths. Historical checkpoint measurements on one RTX 5060 found C faster at the smallest tested size and CUDA faster at the largest, including transfers. The absolute times and evidence limits appear below. The complete four-size comparison is recorded in two sweeps, with final checks still pending. This experiment measures compression; it cannot establish faster training, better model accuracy, or communication savings in a deployed system.
+The proposal named dense synthetic vectors of 1,024, 16,384, 262,144, and 4,194,304 elements at both widths; the final grid extends this to nine sizes. Historical checkpoint measurements on one RTX 5060 found C faster at the smallest tested size and CUDA faster at the largest, including transfers. The absolute times and evidence limits appear below. The complete nine-size comparison is recorded in two sweeps. This experiment measures compression; it cannot establish faster training, better model accuracy, or communication savings in a deployed system.
 
 ## From values to a packed record
 
@@ -42,7 +42,7 @@ Both implementations use Random123's Philox4x32-10 random-number generator. Each
 
 Matching these draws and the scale calculation allows C and CUDA to produce byte-identical records. The implementation rejects identifiers that exceed their supported range instead of truncating them. The [Philox mapping](../native/sq_rng.h) gives the exact key, counter, and integer threshold rules for checking this behavior.
 
-The resident-graph path records the same K1–K3 work in a CUDA Graph, a prepared sequence of GPU operations, then replays it. Graph capture and setup occur outside timing and their cost is recorded separately. Replay reuses the captured base invocation's random draws; ordinary resident and host-origin repetitions advance invocation identifiers.
+The resident-graph path records the same K1 to K3 work in a CUDA Graph, a prepared sequence of GPU operations, then replays it. Graph capture and setup occur outside timing and their cost is recorded separately. Replay reuses the captured base invocation's random draws; ordinary resident and host-origin repetitions advance invocation identifiers.
 
 ## What each timing includes
 
@@ -55,7 +55,7 @@ The four course paths answer different questions about where the data starts and
 | Scalar C comparator | Host input to host packed bytes | Sequential compression using preallocated buffers |
 | CUDA resident | Device input through K1, K2, K3 to device packed payload, including completion synchronization | Compression with input and output kept on the GPU |
 | CUDA resident-graph | Prepared graph launch and completion synchronization over the same pipeline | Repeated device work with graph setup excluded |
-| CUDA host-origin | Host invocation setup, input copy to GPU, validation reset, K1–K3, packed payload and scale copies to host, synchronization | Compression including both transfers, using ordinary pageable host memory |
+| CUDA host-origin | Host invocation setup, input copy to GPU, validation reset, K1 to K3, packed payload and scale copies to host, synchronization | Compression including both transfers, using ordinary pageable host memory |
 
 Host-origin excludes the status and validation-flag readbacks, header construction, and host decoding. It therefore measures the specified compression boundary, rather than a complete application round trip. Resident times describe work with data already on the GPU.
 
@@ -89,7 +89,7 @@ Final results: see the two full sweeps in the table above and the "Final measure
 
 Final execution screenshots and the presentation video are **pending**. Evidence accompanying them should identify the candidate revision, command, and observed outcome, such as record comparison, decoding, edge checks, or benchmark validation. A decoded file's byte count establishes only its size; numerical reconstruction requires a separate check. A terminal timing from a single demonstration is distinct from the repeated benchmark results.
 
-Teammate AHA accounts are **pending**. Each account should describe the teammate's initial expectation, the code or output that challenged it, and the resulting change in understanding or implementation. These personal observations require the teammate's confirmation and remain separate from measured findings.
+Bunyi's two AHA accounts are in the README and report. Chan's and Umali's are **pending**. Each account should describe the teammate's initial expectation, the code or output that challenged it, and the resulting change in understanding or implementation. These personal observations require the teammate's confirmation and remain separate from measured findings.
 
 ## Source map
 
