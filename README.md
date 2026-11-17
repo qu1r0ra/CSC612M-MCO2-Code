@@ -190,7 +190,11 @@ The runs show that the code builds, passes its checks, and repeats its verdicts 
 
 This measures synthetic-vector compression and reconstruction, without training accuracy, convergence, network transmission, or federated-learning benefit. Ideal-arithmetic unbiasedness differs from finite-precision and empirical checks. Scalar C speedups do not establish an advantage over every optimized CPU implementation. Resident timings exclude transfers; graph replay uses a different launch boundary. A rerun on another machine establishes only the behavior it exercised. The A100 replication above is supplementary, and publication experiments are separate work.
 
-**TODO (AHA moments):** record observed surprises, the execution or debugging evidence behind each, and what changed in the team's understanding. Keep measured explanations apart from hypotheses.
+#### AHA moments
+
+- **Bunyi: the kernel speedup is not the delivered speedup.** I expected the large resident speedup to carry through to real use. At 4,194,304 elements on the RTX 5060, resident is 158 to 160 times faster than scalar C, but host-origin, which includes the copies to and from the GPU, is 18.7 to 20.2 times faster. The A100 runs show the same gap, 170 to 180 times against 11.1 to 11.5. So the speedup we can claim depends on whether the copies count, and the report's headline counts them. The gaps are measured. That the copies from pageable memory cause them is a hypothesis, because the sweeps do not test pinned memory.
+
+**TODO (AHA moments):** add Chan's and Umali's accounts, each with an expectation, the run or test that contradicted it, and what changed. Keep measured explanations apart from hypotheses.
 
 ### Execution screenshots
 
