@@ -1,6 +1,6 @@
 # Candidate verification receipt
 
-Candidate: `main` at `5c4e64f` of `qu1r0ra/CSC612M-MCO2-Code`, run on the project machine on 2026-11-17. The tree at `5c4e64f` is identical to `fbeede0` on `main`, the merge that landed PR #13 and the revision that ran the replicate sweep. The earlier candidate `a2a746f` (2026-11-16) stays below as history. This receipt covers the project machine; the second-machine rerun by Chan has its own [receipt](independent-rerun-receipt.md).
+Candidate: `main` at `5c4e64f` of `qu1r0ra/CSC612M-MCO2-Code`, run on the project machine on 2026-11-17. The tree at `5c4e64f` is identical to `fbeede0` on `main`, the merge that landed PR #13 and the revision that ran the replicate sweep. The earlier candidate `a2a746f` (2026-11-16) stays below as history. This receipt covers the project machine. Chan completed both sweeps on a second machine. See the [co-author rerun receipt](independent-rerun-receipt.md).
 
 ## Environment
 
@@ -59,7 +59,6 @@ The record-producing code is the same in both repositories. The differences are 
 
 ## Remaining gates
 
-- Chan's rerun on a second machine ([receipt template](independent-rerun-receipt.md)).
 - A line-by-line review of the shared-module differences listed above, if the final report is to state that the course Python is behavior-equivalent to upstream. Repeat the upstream comparison at the final revision if the report states it.
 - Screenshots, the demonstration video, member observations, and the final presentation.
 

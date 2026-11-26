@@ -2,7 +2,7 @@
 
 ## Final report
 
-**Status: measurements are complete (two full nine-size sweeps) and the candidate verification receipt is written. Chan's rerun, the video, the final report link, and the AHA accounts from Chan and Umali are pending.**
+**Status: measurements are complete (two full nine-size sweeps) and the candidate verification receipt is written. Chan completed the co-author rerun. The video, the final report link, and the AHA accounts from Chan and Umali are pending.**
 
 ### Purpose and scope
 
@@ -17,7 +17,7 @@ This repository holds the course implementation, its tests, the benchmark toolin
 | Course candidate and upstream correspondence | Compared at candidate `a2a746f` against upstream `9ccbe03`: native, vendored, and project-configuration sources match except one comment. Four course files changed afterward and were not compared again; course-specific omissions are listed in the [verification receipt](docs/verification-receipt.md#source-correspondence-with-the-upstream-repository). Shared Python differences not yet reviewed line by line. |
 | Requirement coverage | [Requirement-to-evidence checklist](docs/course-requirements.md) |
 | Candidate verification | [Verification receipt](docs/verification-receipt.md): ten commands, all exit 0, with environment, skipped checks, and source correspondence |
-| Independent rerun (repeatability) | **TODO:** Chan's filled [receipt](docs/independent-rerun-receipt.md) from another machine, with revision, differences, failures, and scope exercised |
+| Co-author rerun (repeatability) | Chan completed both sweeps on a second machine. [Receipt](docs/independent-rerun-receipt.md) and [logs](docs/rerun-logs/2026-11-26-5c4e64f-chan/) |
 
 ### Input, process, output
 
@@ -225,6 +225,8 @@ All six captures come from the RTX 5060 machine at revision `9f6a687`. Its sourc
 
 *`stoquant bench-matrix` with `--counts 1024 16384 --bits 4 8 --trials 4 --reps 10 --warmup 3`: all 16 cases pass the correctness gate. This reduced run shows the harness and the summary table only. The reported results come from the two full sweeps above.*
 
+The team’s AI-use declaration is in the [final course report](https://github.com/qu1r0ra/CSC612M-MCO2-Paper/blob/main/course/final/report/report.tex) under “AI-Use Declaration.”
+
 ### Final artifacts (pending)
 
 - **TODO (final video):** add the recording link after checking playback, audio, the execution segments, and length. The plan is at most 20 minutes, pending the instructor's confirmation.
@@ -239,7 +241,7 @@ All six captures come from the RTX 5060 machine at revision `9f6a687`. Its sourc
 - [Checkpoint verification and benchmark summary](CHECKPOINT-WORKING-EVIDENCE.md): test results, the correctness gate, and the timing table.
 - [Benchmark snapshot](results/2026-10-29-b2f6b09/): raw records and `summary.csv` for revision `b2f6b09`, produced by `uv run python -m stoquant bench-matrix --counts 1024 262144 4194304 --bits 4 8`.
 
-This snapshot covers three sizes at an older revision and supplies no final results. Its report lists the work left for the final: the fourth size, more decoder and edge-case checks, instructions, a demonstration, and a teammate's independent rerun.
+This snapshot covers three sizes at an older revision and supplies no final results. Its report lists the work left for the final: the fourth size, more decoder and edge-case checks, instructions, a demonstration, and a rerun by a co-author.
 
 ---
 
