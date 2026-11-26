@@ -1,0 +1,9 @@
+uv-sync exit=0
+toolchain exit=0
+verify exit=0
+test-cpu exit=0
+test-rng exit=1
+test-rng-retry exit=0
+test-cuda exit=0
+equivalence-smoke exit=0
+build-for-sweeps exit=0

@@ -1,0 +1,43 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\src\stoquant\__main__.py", line 36, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\src\stoquant\__main__.py", line 31, in main
+    result = module.main(rest, prog=f"stoquant {args.command}")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\src\stoquant\cli.py", line 185, in main
+    snapshot_dir = run_benchmark_matrix(
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\src\stoquant\matrix.py", line 184, in run_benchmark_matrix
+    Sweep(settings).run()
+  File "C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\src\stoquant\sweep.py", line 236, in run
+    order = order_and_warm_up(setup, inputs, settings)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\src\stoquant\sweep.py", line 413, in order_and_warm_up
+    gpu_warmup = warm_up_gpu(
+                 ^^^^^^^^^^^^
+  File "C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\src\stoquant\runner.py", line 143, in warm_up_gpu
+    payload, error = run_bench_process(
+                     ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\src\stoquant\runner.py", line 207, in run_bench_process
+    proc = process.run(bench_cmd, creationflags=creationflags)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\src\stoquant\runner.py", line 63, in run
+    return subprocess.run(
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\enzch\AppData\Roaming\uv\python\cpython-3.12.12-windows-x86_64-none\Lib\subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\enzch\AppData\Roaming\uv\python\cpython-3.12.12-windows-x86_64-none\Lib\subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\enzch\AppData\Roaming\uv\python\cpython-3.12.12-windows-x86_64-none\Lib\subprocess.py", line 1628, in _communicate
+    self.stdout_thread.join(self._remaining_time(endtime))
+  File "C:\Users\enzch\AppData\Roaming\uv\python\cpython-3.12.12-windows-x86_64-none\Lib\threading.py", line 1153, in join
+    self._wait_for_tstate_lock(timeout=max(timeout, 0))
+  File "C:\Users\enzch\AppData\Roaming\uv\python\cpython-3.12.12-windows-x86_64-none\Lib\threading.py", line 1169, in _wait_for_tstate_lock
+    if lock.acquire(block, timeout):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

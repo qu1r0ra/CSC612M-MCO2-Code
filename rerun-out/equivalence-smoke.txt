@@ -1,0 +1,8 @@
+uv run python tools/equivalence_smoke.py
+pass: normal_1024, 4-bit, 4 encoders and decoders
+pass: normal_1024, 8-bit, 4 encoders and decoders
+pass: mixed_odd_4099, 4-bit, 4 encoders and decoders
+pass: mixed_odd_4099, 8-bit, 4 encoders and decoders
+pass: zero_513, 4-bit, 4 encoders and decoders
+pass: zero_513, 8-bit, 4 encoders and decoders
+behavior smoke passed in 2.1s (cap: 5 minutes)

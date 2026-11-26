@@ -1,0 +1,38 @@
+Using CPython 3.12.12
+Creating virtual environment at: .venv
+   Building stoquant @ file:///C:/Users/enzch/Documents/Academics/Academics/T10/CSC612M/MCO2/CSC612M-MCO2-Code-rerun
+      Built stoquant @ file:///C:/Users/enzch/Documents/Academics/Academics/T10/CSC612M/MCO2/CSC612M-MCO2-Code-rerun
+Prepared 1 package in 645ms
+Installed 32 packages in 3.18s
+ + basedpyright==1.40.1
+ + cfgv==3.5.0
+ + clang-format==23.1.1
+ + clang-tidy==22.1.8
+ + colorama==0.4.6
+ + contourpy==1.4.0
+ + cycler==0.12.1
+ + distlib==0.4.3
+ + filelock==4.0.5
+ + fonttools==4.66.0
+ + identify==2.6.20
+ + iniconfig==2.3.0
+ + kiwisolver==1.5.1
+ + matplotlib==3.11.2
+ + nodeenv==1.11.0
+ + nodejs-wheel-binaries==24.19.0
+ + numpy==2.5.3
+ + packaging==26.3
+ + pillow==12.3.0
+ + platformdirs==4.12.1
+ + pluggy==1.6.0
+ + pre-commit==4.6.2
+ + pygments==2.21.0
+ + pyparsing==3.3.3
+ + pytest==9.1.1
+ + python-dateutil==2.9.0.post0
+ + python-discovery==1.6.1
+ + pyyaml==6.0.3
+ + ruff==0.16.9
+ + six==1.17.0
+ + stoquant==0.1.0 (from file:///C:/Users/enzch/Documents/Academics/Academics/T10/CSC612M/MCO2/CSC612M-MCO2-Code-rerun)
+ + virtualenv==21.13.0

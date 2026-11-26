@@ -1,0 +1,17 @@
+Run 1 launch: 2026-11-26T00:38:43.4423766+08:00
+HEAD: 5c4e64fd0c91f6b5a2bb9fd0a4a214bdd7087e57
+Git tree: clean
+AC line: Online
+Power plan: Power Scheme GUID: 6fecc5ae-f350-48a5-b669-b472cb895ccf  (Turbo)
+Available RAM MiB: 16960
+Installed RAM bytes: 34359738368
+GPU temperature and clock events: 54, 0x0000000000000000
+Top processes by cumulative CPU time:
+  ChatGPT 168
+  Superhuman.WebUI 140.9375
+  Discord 119.234375
+  Grammarly.Desktop 96.765625
+  ChatGPT 72.15625
+  explorer 69.984375
+  audiodg 67.09375
+  AUEPMaster 65.390625

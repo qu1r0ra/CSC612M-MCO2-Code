@@ -1,0 +1,92 @@
+uv run ruff format --check .
+72 files already formatted
+uv run python tools/clang_format.py --check
+uv run ruff check .
+All checks passed!
+uv run basedpyright
+0 errors, 0 warnings, 0 notes
+./tools/with-msvc.ps1 uv run python tools/native_lint.py
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/main.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/main.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/cli.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/cli.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/bench_report.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/bench_report.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/sq_status.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/sq_status.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/codec.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/codec.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/quantizer.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/quantizer.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/rng_cpu.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/rng_cpu.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/cpu_compress.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/cpu_compress.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/quantizer_avx2.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:precise /arch:AVX2 /openmp /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/rng_cpu.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet tests/test_rng.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet tests/test_codec.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/codec.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet tests/test_quantizer.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/quantizer.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet tests/test_quantizer_avx2.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/cpu_compress.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet tests/test_rng_cpu.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet tests/asan_overread_probe.c -- --driver-mode=cl /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/quantizer_cuda.cu -- -xcuda --cuda-device-only --cuda-gpu-arch=sm_120 --cuda-path=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.1 -std=c++17 -Wno-unknown-cuda-version -DR123_CUDA_DEVICE=__device__ -DR123_USE_MULHILO64_CUDA_INTRIN=1 -DR123_USE_MULHILO64_ASM=0 -DR123_USE_MULHILO64_MSVC_INTRIN=0 -DR123_USE_MULHILO64_C99=0 -DR123_USE_MULHILO64_MULHI_INTRIN=0 -DR123_USE_GNU_UINT128=0 -Inative -Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/stream_probe.cu -- -xcuda --cuda-device-only --cuda-gpu-arch=sm_120 --cuda-path=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.1 -std=c++17 -Wno-unknown-cuda-version -DR123_CUDA_DEVICE=__device__ -DR123_USE_MULHILO64_CUDA_INTRIN=1 -DR123_USE_MULHILO64_ASM=0 -DR123_USE_MULHILO64_MSVC_INTRIN=0 -DR123_USE_MULHILO64_C99=0 -DR123_USE_MULHILO64_MULHI_INTRIN=0 -DR123_USE_GNU_UINT128=0 -Inative -Ithird_party/random123/include
++ C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\.venv\Scripts\clang-tidy.EXE --quiet native/rng_cuda.cu -- -xcuda --cuda-device-only --cuda-gpu-arch=sm_120 --cuda-path=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.1 -std=c++17 -Wno-unknown-cuda-version -DR123_CUDA_DEVICE=__device__ -DR123_USE_MULHILO64_CUDA_INTRIN=1 -DR123_USE_MULHILO64_ASM=0 -DR123_USE_MULHILO64_MSVC_INTRIN=0 -DR123_USE_MULHILO64_C99=0 -DR123_USE_MULHILO64_MULHI_INTRIN=0 -DR123_USE_GNU_UINT128=0 -Inative -Ithird_party/random123/include
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/main.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+main.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/main.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+main.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/cli.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+cli.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/cli.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+cli.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/bench_report.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+bench_report.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/bench_report.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+bench_report.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/sq_status.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+sq_status.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/sq_status.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+sq_status.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/codec.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+codec.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/codec.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+codec.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/quantizer.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+quantizer.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/quantizer.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+quantizer.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/rng_cpu.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+rng_cpu.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/rng_cpu.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+rng_cpu.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/cpu_compress.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+cpu_compress.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /DSQ_ENABLE_CUDA /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/cpu_compress.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+cpu_compress.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:precise /arch:AVX2 /openmp /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/quantizer_avx2.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+quantizer_avx2.c
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/rng_cpu.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+rng_cpu.c
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c tests/test_rng.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+test_rng.c
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c tests/test_codec.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+test_codec.c
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/codec.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+codec.c
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c tests/test_quantizer.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+test_quantizer.c
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/quantizer.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+quantizer.c
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c tests/test_quantizer_avx2.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+test_quantizer_avx2.c
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c native/cpu_compress.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+cpu_compress.c
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c tests/test_rng_cpu.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+test_rng_cpu.c
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /analyze /analyze:external- /external:anglebrackets /external:W0 /wd6993 /c tests/asan_overread_probe.c /FoC:\Users\enzch\AppData\Local\Temp\tmpr2rcxvzm\
+asan_overread_probe.c

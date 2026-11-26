@@ -1,0 +1,5 @@
+
+Algorithm : SHA256
+Hash      : 3D10097D23E266AA6B73FD6ED2494D0E5B6A56CE65B92CFB0AE632F67D566761
+Path      : C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\build\stoquant.exe
+
