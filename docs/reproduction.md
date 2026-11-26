@@ -262,7 +262,7 @@ This is a selected behavior smoke against implementations in the current tree. I
 ## Receipts
 
 - [Candidate verification receipt](verification-receipt.md): the commands above run against revision `5c4e64f` on the project machine, with outcomes and skipped checks. The earlier `a2a746f` run and its source correspondence with upstream are kept in the same receipt.
-- [Independent rerun receipt](independent-rerun-receipt.md): the template for the second-machine rerun, with its agreement tolerance fixed in advance.
+- [Co-author rerun receipt](independent-rerun-receipt.md) for Chan’s two completed sweeps on a second machine.
 
 ## Scope boundary
 

@@ -1,0 +1,1 @@
+C4127 in test-rng. Retried with NVCC_APPEND_FLAGS=-Xcompiler=/wd4127

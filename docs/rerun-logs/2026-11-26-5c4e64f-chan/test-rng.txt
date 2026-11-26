@@ -1,0 +1,25 @@
+uv run python -m stoquant.native_build build-rng
++ nvcc -O2 -arch=native -Inative -Ithird_party/random123/include --Werror all-warnings -Xcompiler /W4 -Xcompiler /WX -Xcompiler /wd4068 native/rng_cpu.c native/rng_cuda.cu tests/test_rng.c -o build/test_rng.exe
+rng_cpu.c
+rng_cuda.cu
+tmpxft_00001528_00000000-8_rng_cuda.cudafe1.cpp
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(324): error C2220: the following warning is treated as an error
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(324): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(324): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(324): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(325): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(325): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(326): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(327): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(330): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(330): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(330): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(331): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(331): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(332): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(338): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(341): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(341): warning C4127: conditional expression is constant
+C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun\third_party\random123\include\Random123\array.h(341): warning C4127: conditional expression is constant
+native build failed: native build command failed with exit 2
+error: recipe `build-rng` failed on line 90 with exit code 1

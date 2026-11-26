@@ -1,0 +1,37 @@
+uv run python -m stoquant.native_build build-cuda
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /DSQ_ENABLE_CUDA /Inative /Ithird_party/random123/include /c native/main.c /Fo:build/cuda/main.obj
+main.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /DSQ_ENABLE_CUDA /Inative /Ithird_party/random123/include /c native/cli.c /Fo:build/cuda/cli.obj
+cli.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /DSQ_ENABLE_CUDA /Inative /Ithird_party/random123/include /c native/bench_report.c /Fo:build/cuda/bench_report.obj
+bench_report.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /DSQ_ENABLE_CUDA /Inative /Ithird_party/random123/include /c native/sq_status.c /Fo:build/cuda/sq_status.obj
+sq_status.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /DSQ_ENABLE_CUDA /Inative /Ithird_party/random123/include /c native/codec.c /Fo:build/cuda/codec.obj
+codec.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /DSQ_ENABLE_CUDA /Inative /Ithird_party/random123/include /c native/quantizer.c /Fo:build/cuda/quantizer.obj
+quantizer.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /DSQ_ENABLE_CUDA /Inative /Ithird_party/random123/include /c native/rng_cpu.c /Fo:build/cuda/rng_cpu.obj
+rng_cpu.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /DSQ_ENABLE_CUDA /Inative /Ithird_party/random123/include /c native/cpu_compress.c /Fo:build/cuda/cpu_compress.obj
+cpu_compress.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:precise /arch:AVX2 /openmp /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/quantizer_avx2.c /Fo:build/cuda/quantizer_avx2.obj
+quantizer_avx2.c
++ nvcc -O2 -arch=native -Inative -Ithird_party/random123/include --fmad=false --ftz=false --prec-div=true --prec-sqrt=true --Werror all-warnings -Xcompiler /W4 -Xcompiler /WX -Xcompiler /wd4068 -c native/quantizer_cuda.cu -o build/cuda/quantizer_cuda.obj
+quantizer_cuda.cu
+tmpxft_0000d054_00000000-8_quantizer_cuda.cudafe1.cpp
++ nvcc -O2 -arch=native -Inative -Ithird_party/random123/include build/cuda/main.obj build/cuda/cli.obj build/cuda/bench_report.obj build/cuda/sq_status.obj build/cuda/codec.obj build/cuda/quantizer.obj build/cuda/rng_cpu.obj build/cuda/cpu_compress.obj build/cuda/quantizer_avx2.obj build/cuda/quantizer_cuda.obj -o build/stoquant.exe
+main.obj
+cli.obj
+bench_report.obj
+sq_status.obj
+codec.obj
+quantizer.obj
+rng_cpu.obj
+cpu_compress.obj
+quantizer_avx2.obj
+quantizer_cuda.obj
+uv run python -m stoquant.native_build build-stream-probe
++ nvcc -O2 -arch=native -Inative -Ithird_party/random123/include --Werror all-warnings -Xcompiler /W4 -Xcompiler /WX -Xcompiler /wd4068 native/stream_probe.cu -o build/stream_probe.exe
+stream_probe.cu
+tmpxft_0000533c_00000000-8_stream_probe.cudafe1.cpp

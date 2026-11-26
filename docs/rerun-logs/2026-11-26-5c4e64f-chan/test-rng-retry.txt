@@ -1,0 +1,22 @@
+uv run python -m stoquant.native_build build-rng
++ nvcc -O2 -arch=native -Inative -Ithird_party/random123/include --Werror all-warnings -Xcompiler /W4 -Xcompiler /WX -Xcompiler /wd4068 native/rng_cpu.c native/rng_cuda.cu tests/test_rng.c -o build/test_rng.exe
+rng_cpu.c
+rng_cuda.cu
+tmpxft_0000c4f4_00000000-8_rng_cuda.cudafe1.cpp
+test_rng.c
+./build/test_rng
+# device: NVIDIA GeForce RTX 5060 Laptop GPU (compute capability 12.0)
+ok   Philox4x32-10 KAT row 0 on GPU
+ok   Philox4x32-10 KAT row 1 on GPU
+ok   Philox4x32-10 KAT row 2 on GPU
+ok   GPU words match CPU for n=1000003, block=1, grid=0
+ok   GPU words match CPU for n=1000003, block=32, grid=1
+ok   GPU words match CPU for n=1000003, block=96, grid=13
+ok   GPU words match CPU for n=1000003, block=128, grid=7
+ok   GPU words match CPU for n=1000003, block=256, grid=0
+ok   GPU words match CPU for n=1000003, block=1024, grid=3
+ok   threshold(0) = 0
+ok   threshold(1) = 2^32
+ok   CPU Bernoulli at p = 0, 1, 1-2^-24, 0.5
+ok   GPU Bernoulli at p = 0, 1, 1-2^-24, 0.5
+# 0 failure(s)

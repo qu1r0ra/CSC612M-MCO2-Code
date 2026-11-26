@@ -1,0 +1,1 @@
+Benchmark completed successfully. Snapshot written to: results\2026-11-26-5c4e64f-chan-run1

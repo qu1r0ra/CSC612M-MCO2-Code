@@ -1,0 +1,11 @@
+nvcc --version
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Tue_Dec_16_19:27:18_Pacific_Standard_Time_2025
+Cuda compilation tools, release 13.1, V13.1.115
+Build cuda_13.1.r13.1/compiler.37061995_0
+./tools/with-msvc.ps1 cl.exe 2>&1 | Select-Object -First 1
+[31;1mMicrosoft (R) C/C++ Optimizing Compiler Version 19.44.35230 for x64[0m
+nvidia-smi --query-gpu=name,driver_version,compute_cap --format=csv
+name, driver_version, compute_cap
+NVIDIA GeForce RTX 5060 Laptop GPU, 591.84, 12.0

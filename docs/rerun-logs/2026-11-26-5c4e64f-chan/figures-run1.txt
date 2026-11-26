@@ -1,0 +1,6 @@
+uv run python -m stoquant figures "results/2026-11-26-5c4e64f-chan-run1" 
+results\2026-11-26-5c4e64f-chan-run1\derived\f1_time_vs_elements.png
+results\2026-11-26-5c4e64f-chan-run1\derived\f2_speedup_vs_elements.png
+results\2026-11-26-5c4e64f-chan-run1\derived\f3_stage_breakdown.png
+results\2026-11-26-5c4e64f-chan-run1\derived\f4_graph_vs_resident.png
+results\2026-11-26-5c4e64f-chan-run1\derived\report.md

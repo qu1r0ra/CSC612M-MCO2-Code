@@ -1,0 +1,179 @@
+uv run python -m stoquant.native_build build-cpu
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/main.c /Fo:build/cpu/main.obj
+main.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/cli.c /Fo:build/cpu/cli.obj
+cli.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/bench_report.c /Fo:build/cpu/bench_report.obj
+bench_report.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/sq_status.c /Fo:build/cpu/sq_status.obj
+sq_status.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/codec.c /Fo:build/cpu/codec.obj
+codec.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/quantizer.c /Fo:build/cpu/quantizer.obj
+quantizer.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/rng_cpu.c /Fo:build/cpu/rng_cpu.obj
+rng_cpu.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/cpu_compress.c /Fo:build/cpu/cpu_compress.obj
+cpu_compress.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:precise /arch:AVX2 /openmp /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/quantizer_avx2.c /Fo:build/cpu/quantizer_avx2.obj
+quantizer_avx2.c
++ cl.exe /nologo build/cpu/main.obj build/cpu/cli.obj build/cpu/bench_report.obj build/cpu/sq_status.obj build/cpu/codec.obj build/cpu/quantizer.obj build/cpu/rng_cpu.obj build/cpu/cpu_compress.obj build/cpu/quantizer_avx2.obj /Fe:build/stoquant.exe
+uv run python -m stoquant.native_build build-codec-test
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include tests/test_codec.c native/codec.c /Fe:build/test_codec.exe
+test_codec.c
+codec.c
+Generating Code...
+uv run python -m stoquant.native_build build-quantizer-test
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include tests/test_quantizer.c native/quantizer.c native/codec.c native/rng_cpu.c /Fe:build/test_quantizer.exe
+test_quantizer.c
+quantizer.c
+codec.c
+rng_cpu.c
+Generating Code...
+uv run python -m stoquant.native_build build-avx2-test
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c tests/test_quantizer_avx2.c /Fo:build/test-avx2/test_quantizer_avx2.obj
+test_quantizer_avx2.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/cpu_compress.c /Fo:build/test-avx2/cpu_compress.obj
+cpu_compress.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:precise /arch:AVX2 /openmp /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/quantizer_avx2.c /Fo:build/test-avx2/quantizer_avx2.obj
+quantizer_avx2.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/quantizer.c /Fo:build/test-avx2/quantizer.obj
+quantizer.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/codec.c /Fo:build/test-avx2/codec.obj
+codec.c
++ cl.exe /nologo /O2 /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include /c native/rng_cpu.c /Fo:build/test-avx2/rng_cpu.obj
+rng_cpu.c
++ cl.exe /nologo build/test-avx2/test_quantizer_avx2.obj build/test-avx2/cpu_compress.obj build/test-avx2/quantizer_avx2.obj build/test-avx2/quantizer.obj build/test-avx2/codec.obj build/test-avx2/rng_cpu.obj /Fe:build/test_quantizer_avx2.exe
+uv run python -m stoquant.native_build build-rng-cpu-test
++ cl.exe /nologo /W4 /WX /std:c11 /fp:strict /D_CRT_SECURE_NO_WARNINGS /Inative /Ithird_party/random123/include tests/test_rng_cpu.c native/rng_cpu.c /Fe:build/test_rng_cpu.exe
+test_rng_cpu.c
+rng_cpu.c
+Generating Code...
+./build/test_codec.exe
+ok   20-byte header serializes
+ok   magic at offset 0, size 4
+ok   version at offset 4, size 1
+ok   bit width at offset 5, size 1
+ok   reserved bytes at offset 6, size 2
+ok   element count at offset 8, size 8, little-endian
+ok   FP32 scale at offset 16, size 4, little-endian
+ok   complete header matches the frozen 20-byte layout
+ok   empty records require zero scale
+ok   4-bit header encodes bit width 4
+ok   decoder rejects out-of-range 8-bit code
+ok   decoder rejects out-of-range 4-bit code
+ok   decoder rejects nonzero padding nibble
+ok   decoder rejects nonfinite scale
+ok   decoder rejects negative scale
+ok   decoder rejects zero-scale 8-bit record with code other than s
+ok   decoder rejects zero-scale 4-bit record with code other than s
+ok   decoder accepts negative-zero scale with the 8-bit center code
+ok   8-bit negative-zero scale decodes to +0 bits
+ok   decoder accepts negative-zero scale with the 4-bit center code
+ok   4-bit negative-zero scale decodes to +0 bits
+ok   valid 4-bit record decodes with correct elements and zero padding
+# 0 failure(s)
+./build/test_quantizer.exe
+ok   empty input has zero scale
+ok   all-zero input has zero scale
+ok   max-rescaled fixed-order scale for [3, 4]
+ok   non-finite input is rejected
+ok   unrepresentable FP32 norm is rejected
+ok   prescribed scale and words produce signed 8-bit codes
+ok   zero-scale input maps to the center code
+ok   all-zero inputs reject a nonzero scale
+ok   4-bit output puts lower index in low nibble and zeroes high nibble
+ok   8-bit signed zero encodes to center code 127
+ok   8-bit signed zero decodes to +0.0f
+ok   4-bit signed zero encodes to center code 7 in low nibble
+ok   4-bit signed zero decodes to +0.0f
+ok   max-rescaled scale computes without intermediate overflow
+ok   large magnitudes encode without intermediate overflow
+ok   8-bit saturation clamps to 0 and 254 (2*s)
+ok   4-bit saturation clamps to 0 and 14 (2*s)
+ok   non-multiple length header encode
+ok   non-multiple length payload encode
+ok   odd-length 4-bit encoder preserves the final element nibble
+ok   non-multiple length decodes without error
+ok   odd-length 4-bit round trip preserves every decoded value
+ok   odd-length 4-bit payload leaves the unused high nibble clear
+ok   non-multiple length header encode
+ok   non-multiple length payload encode
+ok   odd-length 4-bit encoder preserves the final element nibble
+ok   non-multiple length decodes without error
+ok   odd-length 4-bit round trip preserves every decoded value
+ok   odd-length 4-bit payload leaves the unused high nibble clear
+ok   non-multiple length header encode
+ok   non-multiple length payload encode
+ok   odd-length 4-bit encoder preserves the final element nibble
+ok   non-multiple length decodes without error
+ok   odd-length 4-bit round trip preserves every decoded value
+ok   odd-length 4-bit payload leaves the unused high nibble clear
+ok   non-multiple length header encode
+ok   non-multiple length payload encode
+ok   odd-length 4-bit encoder preserves the final element nibble
+ok   non-multiple length decodes without error
+ok   odd-length 4-bit round trip preserves every decoded value
+ok   odd-length 4-bit payload leaves the unused high nibble clear
+ok   Layer 3 4-bit exact equality where p is 0 or 1
+ok   Layer 3 4-bit 5-sigma unbiasedness over 4096 seeds
+ok   Layer 3 8-bit exact equality where p is 0 or 1
+ok   Layer 3 8-bit 5-sigma unbiasedness over 4096 seeds
+# 0 failure(s)
+./build/test_quantizer_avx2.exe
+1990 checks, 0 failures
+./build/test_rng_cpu.exe
+ok   Philox4x32-10 KAT row 0
+ok   Philox4x32-10 KAT row 1
+ok   Philox4x32-10 KAT row 2
+ok   key = {seed lo, seed hi}
+ok   element 13 -> counter {group 3, 0, tensor, invocation}
+ok   64-bit group splits into lo/hi words
+ok   element i uses lane i mod 4 of group floor(i/4)
+ok   partial groups preserve Philox word mapping
+ok   identifiers at UINT32_MAX accepted
+ok   tensor identifier above UINT32_MAX rejected
+ok   invocation identifier above UINT32_MAX rejected
+# 0 failure(s)
+$env:STOQUANT_EXPECT_CPU_ONLY = '1'; uv run --group dev pytest
+============================= test session starts =============================
+platform win32 -- Python 3.12.12, pytest-9.1.1, pluggy-1.6.0
+rootdir: C:\Users\enzch\Documents\Academics\Academics\T10\CSC612M\MCO2\CSC612M-MCO2-Code-rerun
+configfile: pyproject.toml
+testpaths: tests
+plugins: platformdirs-4.12.1
+collected 758 items
+
+tests\test_bench_report.py .................                             [  2%]
+tests\test_build_stamp.py ...............                                [  4%]
+tests\test_cli.py ...................................................... [ 11%]
+........................................................................ [ 20%]
+........................................................................ [ 30%]
+..........................                                               [ 33%]
+tests\test_correctness.py ..                                             [ 34%]
+tests\test_cpu_only.py ....                                              [ 34%]
+tests\test_cuda.py sssssssssssssssssssssssssssssssssssssssssssssssssssss [ 41%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 51%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 60%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 70%]
+ssssssssssssssssssssss                                                   [ 72%]
+tests\test_matrix_design.py ..............                               [ 74%]
+tests\test_matrix_driver.py ..ssss........                               [ 76%]
+tests\test_matrix_host.py ............................                   [ 80%]
+tests\test_matrix_inputs.py .....                                        [ 81%]
+tests\test_matrix_outputs.py ..                                          [ 81%]
+tests\test_matrix_stats.py ...............                               [ 83%]
+tests\test_native_build.py ...                                           [ 83%]
+tests\test_oracle.py ........................                            [ 86%]
+tests\test_plot_imports.py .                                             [ 86%]
+tests\test_run_notifications.py ..........                               [ 88%]
+tests\test_runner.py ................................................... [ 94%]
+..                                                                       [ 95%]
+tests\test_schema.py ...                                                 [ 95%]
+tests\test_snapshot_store.py .....                                       [ 96%]
+tests\test_sweep_avx2.py ......                                          [ 97%]
+tests\test_tools.py ...                                                  [ 97%]
+tests\test_unbiasedness.py .............                                 [ 99%]
+tests\test_vec_report_check.py ......                                    [100%]
+
+================ 463 passed, 295 skipped in 125.96s (0:02:05) =================
