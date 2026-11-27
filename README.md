@@ -2,7 +2,7 @@
 
 ## Final report
 
-**Status: measurements are complete (two full nine-size sweeps) and the candidate verification receipt is written. Chan completed the co-author rerun. The video, the final report link, and the AHA accounts from Chan and Umali are pending.**
+**Status: measurements are complete (two full nine-size sweeps) and the candidate verification receipt is written. Chan completed the co-author rerun, and the final report has been drafted. The video, an accessible final report PDF link, and the AHA accounts from Chan and Umali are pending.**
 
 ### Purpose and scope
 
@@ -128,7 +128,7 @@ Pooled median times, headline sweep (ms):
 
 ![Pooled median time against input size for scalar C and the three CUDA paths, at 4 and 8 bits, on logarithmic axes](results/2026-11-17-3feab89/derived/f1_time_vs_elements.png)
 
-*Median time against input size, headline sweep. C time rises faster than any CUDA time and passes host-origin between 2^13 and 2^14 elements. Bands show the range of trial medians; lines join measured sizes only.*
+*Median time against input size, headline sweep. The pooled C and host-origin medians cross between 2^13 and 2^14 elements at both widths. The 8-bit verdict at 2^13 is inconclusive. Bands show the range of trial medians; lines join measured sizes only.*
 
 Speedup over the comparator, with its verdict and trial range, headline sweep. A dagger marks a supported direction whose spread exceeds 1.25, so only the direction is claimed.
 
@@ -175,9 +175,13 @@ Speedup over the comparator, with its verdict and trial range, headline sweep. A
 
 Full per-case tables and crossover detail are in the [headline report](results/2026-11-17-3feab89/derived/report.md) and the [second-sweep report](results/2026-11-17-fbeede0/derived/report.md), which has its own copies of these figures.
 
-### Supplementary A100 replication
+### Runs on Other Machines
 
-The same course grid ran twice on a Linux JupyterLab hub with an NVIDIA A100-PCIE-40GB (compute capability 8.0, driver 575.51.02, CUDA 12.9, gcc 13.3 on Ubuntu 24.04). Both runs used revision `9446386`, whose native sources match the Windows replicate tree `5c4e64f`, and both passed the readiness gate and all 72 correctness checks. The snapshots, landed at `7b8ca60`, are [`results/2026-11-17-9446386-hub-a100`](results/2026-11-17-9446386-hub-a100/derived/report.md) and `results/2026-11-17-9446386-hub-a100-r2`.
+Chan ran the same grid twice on an RTX 5060 laptop. Both sweeps passed all 72 correctness checks and agreed on 71 of 72 verdicts. The host-origin crossover was one measured size step later than the resolved desktop intervals. The [rerun receipt](docs/independent-rerun-receipt.md) records the setup and differences across the sweeps.
+
+### Supplementary Linux A100 Runs
+
+The same course grid ran twice on a Linux JupyterLab system with an NVIDIA A100-PCIE-40GB (compute capability 8.0, driver 575.51.02, CUDA 12.9, gcc 13.3 on Ubuntu 24.04). Both runs used revision `9446386`, whose native sources match the laptop rerun tree `5c4e64f`, and both passed the readiness gate and all 72 correctness checks. The snapshots, landed at `7b8ca60`, are [the first run](results/2026-11-17-9446386-hub-a100/derived/report.md) and [the second run](results/2026-11-17-9446386-hub-a100-r2/).
 
 The runs show that the code builds, passes its checks, and repeats its verdicts on a second platform. The OS, compiler, CPU, and GPU all differ from the Windows machine, so the A100 speedups are not compared with the RTX 5060 sweeps, and the Windows results stay the primary evidence.
 
@@ -188,7 +192,7 @@ The runs show that the code builds, passes its checks, and repeats its verdicts 
 
 ### Limitations and lessons
 
-This measures synthetic-vector compression and reconstruction, without training accuracy, convergence, network transmission, or federated-learning benefit. Ideal-arithmetic unbiasedness differs from finite-precision and empirical checks. Scalar C speedups do not establish an advantage over every optimized CPU implementation. Resident timings exclude transfers; graph replay uses a different launch boundary. A rerun on another machine establishes only the behavior it exercised. The A100 replication above is supplementary, and publication experiments are separate work.
+This measures synthetic-vector compression and reconstruction, without training accuracy, convergence, network transmission, or federated-learning benefit. Ideal-arithmetic unbiasedness differs from finite-precision and empirical checks. Scalar C speedups do not establish an advantage over every optimized CPU implementation. Resident timings exclude transfers; graph replay uses a different launch boundary. A rerun on another machine establishes only the behavior it exercised. The Linux A100 runs above are supplementary, and publication experiments are separate work.
 
 #### AHA moments
 
